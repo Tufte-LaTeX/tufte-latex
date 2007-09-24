@@ -34,6 +34,22 @@ then
   exit 1
 fi 
 
+if ! grep -q $version History.txt
+then
+  echo "Error: no release notes for '$version' found in History.txt"
+  grep -H $version History.txt
+  exit 1
+fi
+
+history_date=`date +%Y-%m-%d`
+
+if ! grep -q $history_date History.txt
+then
+  echo "Error: '$history_date' not found in History.txt"
+  grep -H $history_date History.txt
+  exit 1
+fi
+
 # Refresh sample document
 
 pdflatex sample-handout >  refresh-sample.log
@@ -42,7 +58,7 @@ rm -f sample-handout.{aux,log,out} refresh-sample.log
 # Make bundle
 
 mkdir -p pkg/$package-$version
-cp `cat Manifest.txt` pkg/$package-$version
+tar cf - `cat Manifest.txt` | ( cd pkg/$package-$version && tar xf - )
 zip -rq pkg/$package-$version.zip pkg/$package-$version
 
 cat << MESSAGE
