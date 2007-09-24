@@ -1,0 +1,7 @@
+== 1.0.0 / 2007-09-24
+
+* First public release
+
+== 0.1.0 / 2004-02-04
+
+* Birthday!

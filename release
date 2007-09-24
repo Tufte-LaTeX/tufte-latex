@@ -1,0 +1,63 @@
+#!/bin/sh
+
+package='tufte-latex'
+class='tufte-handout.cls'
+
+set -e
+
+if test $# -ne 1; then
+  echo "usage: $0 VERSION"
+  exit 1
+fi
+
+version=$1
+
+if ! echo $version | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$"
+then
+  echo "VERSION should be of the form 1.2.5 (major.minor.revision)"
+  exit 1
+fi
+
+if ! grep -q $version $class
+then
+  echo "Error: version skew. '$version' does not match that in class"
+  grep -H ProvidesClass $class
+  exit 1
+fi
+
+date=`date +%Y/%m/%d`
+
+if ! grep -q $date $class
+then
+  echo "Error: date skew. '$date' does not match that in class"
+  grep -H ProvidesClass $class
+  exit 1
+fi 
+
+# Refresh sample document
+
+pdflatex sample-handout >  refresh-sample.log
+rm -f sample-handout.{aux,log,out} refresh-sample.log
+
+# Make bundle
+
+mkdir -p pkg/$package-$version
+cp `cat Manifest.txt` pkg/$package-$version
+zip -rq pkg/$package-$version.zip pkg/$package-$version
+
+cat << MESSAGE
+
+`openssl dgst -sha1 pkg/$package-$version.zip`
+
+Don't forget to tag,
+
+ svn cp -m'To tag release $version.' \\
+   https://$package.googlecode.com/svn/trunk \\
+   https://$package.googlecode.com/svn/tags/rel_$version
+
+and upload,
+
+ http://code.google.com/p/$package/downloads/list
+ http://ctan.org/upload
+
+MESSAGE
