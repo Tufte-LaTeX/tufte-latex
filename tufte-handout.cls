@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
-\ProvidesClass{tufte-handout}[2007/09/24 v1.0.0 Tufte-handout class]
+\ProvidesClass{tufte-handout}[2007/09/24 v1.0.1 Tufte-handout class]
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}%
                 \typeout{NOTE: Passing ``\CurrentOption" option on to the
                          standard LaTeX book class}}

@@ -8,7 +8,7 @@ produce Tufte style handouts, reports, and notes.
 Try typesetting sample.tex with the following sequence
 of commands,
 
- pdflatex sample
+ pdflatex sample-handout
 
 The result should look like sample.pdf.
 
