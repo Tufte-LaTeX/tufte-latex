@@ -30,8 +30,8 @@ or search the news:comp.text.tex group via,
 
 == Bugs/Features/Support
 
-For kudos, feature requests, or support requests that you
-feel are /particular to this Tufte LaTeX package/, i.e., not
+For kudos, feature requests, patches, or support requests that you
+feel are /particular/ to this Tufte LaTeX package, i.e., not
 a general LaTeX issue, please use this project's issue tracker
 available at
 
@@ -39,9 +39,8 @@ available at
 
 == Contributing
 
-Patches are welcome via the issue tracker.  Alternatively,
-if you'd like to become a developer on this project, email
-Bil.Kleb at NASA gov.
+Patches are most welcome via the issue tracker!  Submit a series of
+high quality patches, and we'll add you as a developer on this project.
 
 == License
 
