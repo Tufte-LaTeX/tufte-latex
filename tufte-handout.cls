@@ -1,18 +1,28 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 
-\ProvidesClass{tufte-handout}[2007/10/18 v1.1.0 Tufte-handout class]
+\ProvidesClass{tufte-handout}[2007/10/20 v1.2.0 Tufte-handout class]
 
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}%
-                \typeout{NOTE: Passing ``\CurrentOption" option on to the
-                         standard LaTeX book class}}
+%%
+% a4paper option
+
+\newif\if@tufteh@afourpaper \@tufteh@afourpaperfalse
+\DeclareOption{a4paper}{\@tufteh@afourpapertrue}
+
+% Note: should probably specify options not supported like Mittelbach's aipproc.cls
+
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions
 
 \LoadClass[11pt]{article}%
 
 %%
-% Set page layout geometry -- someone please submit a patch to make letterpaper optional!
+% Set page layout geometry
 
-\RequirePackage[letterpaper,includemp,width=6.5in,marginparsep=0.375in,marginparwidth=2in]{geometry}
+\if@tufteh@afourpaper
+  \RequirePackage[a4paper,includemp,width=170mm,marginparsep=10mm,marginparwidth=50mm]{geometry}
+\else
+  \RequirePackage[letterpaper,includemp,width=6.5in,marginparsep=0.375in,marginparwidth=2in]{geometry}
+\fi
 
 %%
 % Separation marginpars by a line's worth of space.
@@ -128,63 +138,69 @@
 %%
 % Sidenote: "Where God meant footnotes to go." --Tufte
 
-\newcommand{\sidenote}[2][-0.8\baselineskip]%
-            {\footnotemark%
-             \marginpar{\@tufteh@marginfont
-                        \vspace*{#1}
-                        \textsuperscript{\thefootnote}%
-                        \@tufteh@raggedright #2}}
+\newcommand{\sidenote}[2]%
+  [-0.8\baselineskip]%
+  {\footnotemark%
+   \marginpar{\@tufteh@marginfont
+              \vspace*{#1}
+              \textsuperscript{\thefootnote}%
+              \@tufteh@raggedright #2}}
 
 %%
 % Sidenote without the footnote mark
 
-\providecommand\marginnote[1]{\marginpar{\footnotesize\raggedright #1}}
+\providecommand\marginnote[1]%
+  {\marginpar{\@tufteh@marginfont\raggedright #1}}
 
 %%
-% Margin figure
+% Margin figure -- if anyone can make this an environment instead -- patch welcome!
 
-\newcommand{\marginfigure}[2][-1.2ex]%
-  {\marginpar{\def\@captype{figure}
-              \normalfont\scriptsize
+\newcommand{\marginfigure}[2]%
+  [-1.2ex]%
+  {\marginpar{\@tufteh@marginfont
+              \def\@captype{figure}
               \vspace*{#1}
               \@tufteh@raggedright #2}}
 
 %%
 % Margin table
 
-\newcommand{\margintable}[2][-1.2ex]%
-  {\marginpar{\def\@captype{table}
-              \normalfont\scriptsize
+\newcommand{\margintable}[2]%
+  [-1.2ex]%
+  {\marginpar{\@tufteh@marginfont
+              \def\@captype{table}
               \vspace*{#1}
               \@tufteh@raggedright #2}}
 
 %%
 % Full-width figure
 
-\renewenvironment{figure*}[1][htbp]
-               {\@float{figure}[#1]
-                 \begin{adjustwidth}{}{-\tufteh@overhang}%
-                  \begin{minipage}{\linewidth}}
-               {  \end{minipage}%
-                 \end{adjustwidth}%
-                \end@float}
+\renewenvironment{figure*}[1]%
+  [htbp]%
+  {\@float{figure}[#1]%
+   \begin{adjustwidth}{}{-\@tufteh@overhang}%
+   \begin{minipage}{\linewidth}}%
+  {\end{minipage}%
+   \end{adjustwidth}%
+   \end@float}
 
 %%
 % Full-width table
 
-\renewenvironment{table*}[1][htbp]
-               {\@float{table}[#1]
-                 \begin{adjustwidth}{}{-\tufteh@overhang}%
-                  \begin{minipage}{\linewidth}}
-               {  \end{minipage}%
-                 \end{adjustwidth}%
-                \end@float}
+\renewenvironment{table*}[1]
+  [htbp]%
+  {\@float{table}[#1]%
+   \begin{adjustwidth}{}{-\@tufteh@overhang}%
+   \begin{minipage}{\linewidth}}%
+  {\end{minipage}%
+   \end{adjustwidth}%
+   \end@float}
 
 %%
 % Full-page-width area
 
 \newenvironment{fullwidth}
-  {\begin{adjustwidth}{}{-\tufteh@overhang}}%
+  {\begin{adjustwidth}{}{-\@tufteh@overhang}}%
   {\end{adjustwidth}}
 
 %%

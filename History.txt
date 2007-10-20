@@ -1,3 +1,11 @@
+== 1.2.0 / 2007-10-20
+
+* Enhancements
+  * Added a4paper option (Kevin Godby)
+  * Have \margin{note,figure,table} use \@tufteh@marginfont
+* Bug fix
+  * \@tufteh@overhang typo in figure*, table*, and fullwidth environments (Kevin Godby)
+
 == 1.1.0 / 2007-10-18
 
 * To add some missing environments and commands:
