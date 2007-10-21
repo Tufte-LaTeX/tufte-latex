@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 
-\ProvidesClass{tufte-handout}[2007/10/20 v1.2.0 Tufte-handout class]
+\ProvidesClass{tufte-handout}[2007/10/21 v1.2.1 Tufte-handout class]
 
 %%
 % a4paper option
@@ -145,6 +145,11 @@
               \vspace*{#1}
               \textsuperscript{\thefootnote}%
               \@tufteh@raggedright #2}}
+
+%%
+% Transform existing \footnotes into \sidenotes
+
+\let\footnote\sidenote
 
 %%
 % Sidenote without the footnote mark
