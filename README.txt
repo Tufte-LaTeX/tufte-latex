@@ -13,7 +13,7 @@ of commands,
  pdflatex sample-handout
  pdflatex sample-handout
 
-The result should look like sample.pdf.
+The result should look like sample-handout.pdf.
 
 == Troubleshooting
 
@@ -47,7 +47,7 @@ high quality patches, and we'll add you as a developer on this project.
 
 == License
 
-Copyright 2007 Bil Kleb and Bill Wood
+Copyright 2007-2008 Bil Kleb, Bill Wood, and Kevin Godby
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
