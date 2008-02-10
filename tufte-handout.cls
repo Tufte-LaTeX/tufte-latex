@@ -136,26 +136,36 @@
                            {\noindent\scshape #1}}
 
 %%
-% Sidenote: "Where God meant footnotes to go." --Tufte
-
-\newcommand{\sidenote}[2]%
-  [-0.8\baselineskip]%
-  {\footnotemark%
-   \marginpar{\@tufteh@marginfont
-              \vspace*{#1}
-              \textsuperscript{\thefootnote}%
-              \@tufteh@raggedright #2}}
-
-%%
 % Transform existing \footnotes into \sidenotes
+% Sidenote: ``Where God meant footnotes to go.'' ---Tufte
 
-\let\footnote\sidenote
+\RequirePackage[side,multiple,marginal]{footmisc}
+\setlength{\footnotemargin}{0.8em}
+\newcommand{\footnotelayout}{\@tufteh@marginfont\@tufteh@raggedright}
+\let\sidenote\footnote
+
+% Set the footnote mark (adjacent to the footnote) in the same typeface as the footenote itself.
+\def\@makefnmark{\hbox{\@textsuperscript{\@tufteh@marginfont\tiny\@thefnmark}}}
+
+% TODO Automatically determine the \footnotemargin value based on the width of the footnote mark.
 
 %%
 % Sidenote without the footnote mark
 
 \providecommand\marginnote[1]%
   {\marginpar{\@tufteh@marginfont\raggedright #1}}
+
+%%
+% Citations should go in the margin as well
+
+\RequirePackage{natbib}
+\RequirePackage{bibentry}	% allows bibitems to be typeset outside thebibliography environment
+\nobibliography*		% pre-loads the bibliography keys
+\renewcommand{\cite}[1]{\sidenote{\bibentry{#1}}}
+\providecommand{\doi}[1]{\textsc{doi:} #1} % pre-defining this so it may be used before the \bibliography command it issued
+
+% TODO Rewrite \cite so that you can specify multiple bib keys at once: \cite{Author01,Author02}
+% TODO Combine sequences of citations: 2,3,4,6 becomes 2-4,6
 
 %%
 % Margin figure -- if anyone can make this an environment instead -- patch welcome!
