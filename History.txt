@@ -1,3 +1,8 @@
+== 1.2.2 / 2008-02-09
+
+* Use footmisc package to set \footnotes as sidenotes
+* Use natbib package to set bibliography entries as sidenotes
+
 == 1.2.1 / 2007-10-21
 
 * To assure existing \footnotes become \sidenotes

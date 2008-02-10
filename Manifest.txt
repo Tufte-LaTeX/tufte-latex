@@ -3,6 +3,7 @@ Manifest.txt
 README.txt
 graphics/nasa_vision_sm.png
 graphics/satir_graph.png
+sample-handout.bib
 sample-handout.pdf
 sample-handout.tex
 tufte-handout.cls

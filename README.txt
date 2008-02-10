@@ -9,6 +9,9 @@ Try typesetting sample.tex with the following sequence
 of commands,
 
  pdflatex sample-handout
+ bibtex sample-handout
+ pdflatex sample-handout
+ pdflatex sample-handout
 
 The result should look like sample.pdf.
 
