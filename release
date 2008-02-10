@@ -53,6 +53,9 @@ fi
 # Refresh sample document
 
 pdflatex sample-handout >  refresh-sample.log
+bibtex sample-handout   >> refresh-sample.log
+pdflatex sample-handout >> refresh-sample.log
+pdflatex sample-handout >> refresh-sample.log
 rm -f sample-handout.{aux,log,out} refresh-sample.log
 
 # Make bundle
