@@ -3,7 +3,9 @@
 package='tufte-latex'
 class='tufte-handout.cls'
 
-set -e # exit on first error
+# Exit on first error:
+
+set -e
 
 # Verify prerequisites:
 
@@ -61,7 +63,8 @@ pdflatex sample-handout >> refresh-sample.log
 pdflatex sample-handout >> refresh-sample.log
 rm -f sample-handout.{aux,log,out,blg,bbl} refresh-sample.log
 
-# For googlecode upload, make a distinct version of sample-handout:
+# To ease googlecode upload, make a distinct version of sample-handout:
+
 cp sample-handout.pdf sample-handout-$version.pdf
 
 # Make bundle
@@ -69,6 +72,8 @@ cp sample-handout.pdf sample-handout-$version.pdf
 mkdir -p pkg/$package-$version
 tar cf - `cat Manifest.txt` | ( cd pkg/$package-$version && tar xf - )
 zip -rq pkg/$package-$version.zip pkg/$package-$version
+
+# Provide some cut-n-paste material for manual steps:
 
 cat << MESSAGE
 
