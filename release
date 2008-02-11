@@ -3,7 +3,7 @@
 package='tufte-latex'
 class='tufte-handout.cls'
 
-set -e
+set -e # exit on first error
 
 if test $# -ne 1; then
   echo "usage: $0 VERSION"
@@ -68,7 +68,7 @@ cat << MESSAGE
 
 `openssl dgst -sha1 pkg/$package-$version.zip`
 
-Don't forget to tag,
+Don't forget to tag (after committing changes),
 
  svn cp -m'To tag release $version.' \\
    https://$package.googlecode.com/svn/trunk \\
