@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 
-\ProvidesClass{tufte-handout}[2008/02/09 v1.2.2 Tufte-handout class]
+\ProvidesClass{tufte-handout}[2008/02/11 v1.2.3 Tufte-handout class]
 
 %%
 % a4paper option
