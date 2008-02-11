@@ -4,17 +4,19 @@
 
 \documentclass{tufte-handout}
 
- \usepackage{amsmath}
+ \usepackage{amsmath}  % \text in math mode
 
- \usepackage{graphicx}
-   \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
-   \graphicspath{{graphics/}}
+ \usepackage{graphicx} % images
+   \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio} % defaults
+   \graphicspath{{graphics/}} % search path
 
- \pagestyle{empty}
+ \pagestyle{empty} % no page numbers when printing on one sheet, folded in half.
 
- \AtBeginDocument{
-	\nobibliography{sample-handout}
-	\bibliographystyle{plainnat}
+ \AtBeginDocument{ % setup bibliography
+	\nobibliography{sample-handout} % bibtex database
+	\bibliographystyle{plainnat}    % style
+	% Note: you could put these commands at the end of document and
+	%       change to \bibliography if you want a "References" section
  }
 
 \begin{document}
