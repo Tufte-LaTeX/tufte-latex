@@ -8,7 +8,7 @@
 \newif\if@tufteh@afourpaper \@tufteh@afourpaperfalse
 \DeclareOption{a4paper}{\@tufteh@afourpapertrue}
 
-% Note: should probably specify options not supported like Mittelbach's aipproc.cls
+% FIXME: should probably specify options not supported like Mittelbach's aipproc.cls
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions
@@ -38,7 +38,7 @@
 % Modify \raggedright from latex.ltx to allow hyphenation per Donald Arseneau
 
 \def\@tufteh@raggedright{%
-  \let\\\@centercr\@rightskip\z@ plus 0.08\hsize% changed this line
+  \let\\\@centercr\@rightskip\z@ plus 0.08\hsize
   \rightskip\@rightskip
   \leftskip\z@skip}
 
@@ -54,7 +54,7 @@
 \setlength\belowdisplayskip{6pt plus 2pt minus 4pt}
 
 %%
-% To accomodate full-width display environments
+% To implement full-width display environments
 
 \RequirePackage{chngpage}
 
@@ -113,7 +113,7 @@
   \end{quotation}}
 
 %%
-% Require paralist package for tigher lists
+% Require paralist package for tighter lists
 
 \RequirePackage{paralist}
 
@@ -147,7 +147,7 @@
 % Set the footnote mark (adjacent to the footnote) in the same typeface as the footenote itself.
 \def\@makefnmark{\hbox{\@textsuperscript{\@tufteh@marginfont\tiny\@thefnmark}}}
 
-% TODO Automatically determine the \footnotemargin value based on the width of the footnote mark.
+% TODO: Automatically determine the \footnotemargin value based on the width of the footnote mark.
 
 %%
 % Sidenote without the footnote mark
@@ -161,14 +161,16 @@
 \RequirePackage{natbib}
 \RequirePackage{bibentry}	% allows bibitems to be typeset outside thebibliography environment
 \nobibliography*		% pre-loads the bibliography keys
-\renewcommand{\cite}[1]{\sidenote{\bibentry{#1}}}
+\renewcommand{\cite}[1]{\sidenote{\bibentry{#1}.}}
 \providecommand{\doi}[1]{\textsc{doi:} #1} % pre-defining this so it may be used before the \bibliography command it issued
 
-% TODO Rewrite \cite so that you can specify multiple bib keys at once: \cite{Author01,Author02}
-% TODO Combine sequences of citations: 2,3,4,6 becomes 2-4,6
+% TODO: Rewrite \cite so that you can specify multiple bib keys
+%       at once.  For example, \cite{Author01,Author02}
+% TODO: Combine sequences of citations so that 2,3,4,6 becomes 2-4,6
+%       but be careful of hypperref interaction
 
 %%
-% Margin figure -- if anyone can make this an environment instead -- patch welcome!
+% Margin figure
 
 \newcommand{\marginfigure}[2]%
   [-1.2ex]%
@@ -177,6 +179,8 @@
               \vspace*{#1}
               \@tufteh@raggedright #2}}
 
+% FIXME: if anyone can make this an environment instead -- patch welcome!
+	
 %%
 % Margin table
 
@@ -186,6 +190,8 @@
               \def\@captype{table}
               \vspace*{#1}
               \@tufteh@raggedright #2}}
+
+% FIXME: if anyone can make this an environment instead -- patch welcome!
 
 %%
 % Full-width figure

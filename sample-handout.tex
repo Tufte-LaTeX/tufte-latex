@@ -12,6 +12,11 @@
 
  \pagestyle{empty}
 
+ \AtBeginDocument{
+	\nobibliography{sample-handout}
+	\bibliographystyle{plainnat}
+ }
+
 \begin{document}
 
 \maketitle
@@ -111,8 +116,5 @@ Costs should only be tracked to the same level of precision as benefits
 are tracked, because the cost-to-benefit ratio has an approximate
 uncertainty equal to the maximum of the cost and benefit
 uncertainties.\cite{DeMarco2003}
-
-\bibliography{sample-handout}
-\bibliographystyle{plainnat}
 
 \end{document}
