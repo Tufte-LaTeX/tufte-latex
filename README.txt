@@ -9,7 +9,7 @@ Try typesetting sample.tex with the following sequence
 of commands,
 
  pdflatex sample-handout
- bibtex sample-handout
+ bibtex   sample-handout
  pdflatex sample-handout
  pdflatex sample-handout
 
@@ -19,11 +19,11 @@ The result should look like sample-handout.pdf.
 
 If you encounter errors of the form,
 
- ! LaTeX Error: File `bibinputs.sty' not found.
+ ! LaTeX Error: File `paralist.sty' not found.
 
-you will need to obtain these missing packages from CTAN
-<http://ctan.org>.  For package installation instructions and
-answers to many other questions, see the UK TeX FAQ,
+you will need to obtain missing packages from CTAN <http://ctan.org>.
+For package installation instructions and answers to many other
+questions, see the UK TeX FAQ,
 
  http://www.tex.ac.uk/cgi-bin/texfaq2html?introduction=yes
 
@@ -34,16 +34,15 @@ or search the news:comp.text.tex group via,
 == Bugs/Features/Support
 
 For kudos, feature requests, patches, or support requests that you
-feel are /particular/ to this Tufte LaTeX package, i.e., not
-a general LaTeX issue, please use this project's issue tracker
-available at
+feel are /particular/ to this Tufte LaTeX package, i.e. not a general
+LaTeX issue, please use this project's issue tracker available at
 
  http://tufte-latex.googlecode.com
 
 == Contributing
 
 Patches are most welcome via the issue tracker!  Submit a series of
-high quality patches, and we'll add you as a developer on this project.
+high quality patches, and you'll find yourself a developer on this project.
 
 == License
 
