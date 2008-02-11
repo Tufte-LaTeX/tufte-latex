@@ -61,6 +61,9 @@ pdflatex sample-handout >> refresh-sample.log
 pdflatex sample-handout >> refresh-sample.log
 rm -f sample-handout.{aux,log,out} refresh-sample.log
 
+# For googlecode upload, make a distinct version of sample-handout:
+cp sample-handout.pdf sample-handout-$version.pdf
+
 # Make bundle
 
 mkdir -p pkg/$package-$version
