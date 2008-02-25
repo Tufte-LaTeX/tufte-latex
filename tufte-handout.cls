@@ -135,10 +135,42 @@
     \def\makelabel##1{\hss\llap{##1}}}}
 
 %%
+% Improved letterspacing of small caps and all-caps text.
+%
+% First, try to use the `microtype' package, if it's available. 
+% Failing that, try to use the `soul' package, if it's available.
+% Failing that, well, I give up.
+
+\RequirePackage{textcase} % provides \MakeTextUppercase and \MakeTextLowercase
+\newcommand{\allcaps}[1]{\MakeTextUppercase{#1}}
+\newcommand{\smallcaps}[1]{\textsc{\MakeTextLowercase{#1}}}
+\newcommand{\smallcapsspacing}[1]{#1}
+
+\IfFileExists{microtype.sty}{%
+  \RequirePackage[final]{microtype}
+  % Set up letterspacing (using microtype package) -- requires pdfTeX v1.40+
+  \renewcommand{\smallcapsspacing}[1]{\textls[50]{##1}}
+  \renewcommand{\allcaps}[1]{\textls[200]{\MakeTextUppercase{##1}}}
+  \renewcommand{\smallcaps}[1]{\textsc{\MakeTextLowercase{##1}}}
+}{% microtype failed, check for soul
+  \IfFileExists{soul.sty}{%
+    \RequirePackage{soul}
+    \sodef\allcapsspacing{\upshape}{0.15em}{0.65em}{0.6em}
+    \sodef\smallcapsspacing{\scshape}{0.075em}{0.5em}{0.6em}
+    \renewcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{##1}}}
+    \renewcommand{\smallcaps}[1]{\textsc{\MakeTextLowercase{##1}}}
+  }{}% neither microtype nor soul are installed... giving up.
+}
+
+\DeclareTextFontCommand{\textsmallcaps}{\scshape}
+\renewcommand{\textsc}[1]{\textsmallcaps{\smallcapsspacing{#1}}}
+
+
+%%
 % An environment for paragraph-style section
 
 \providecommand\newthought[1]{\vspace{1.8\baselineskip plus 3pt minus 2pt}%
-                           {\noindent\scshape #1}}
+                           {\noindent\textsc{#1}}}
 
 %%
 % Transform existing \footnotes into \sidenotes
