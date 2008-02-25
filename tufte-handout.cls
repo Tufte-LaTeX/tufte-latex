@@ -241,6 +241,13 @@
   \RequirePackage[format=default,font={rm,scriptsize},justification=raggedright,singlelinecheck=false]{caption}
 \fi
 
+%%
+% If the Palatino typeface (and its math symbol set) are installed, load them.
+
+\IfFileExists{palatino.sty}{%
+  \RequirePackage{palatino}
+  \IfFileExists{mathpazo.sty}{\RequirePackage[osf,sc]{mathpazo}}{}
+}{} % if the Palatino typefaces aren't found, do nothing.
 
 %%
 % Set raggedright and paragraph indentation for document
