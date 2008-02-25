@@ -8,6 +8,12 @@
 \newif\if@tufteh@afourpaper \@tufteh@afourpaperfalse
 \DeclareOption{a4paper}{\@tufteh@afourpapertrue}
 
+%%
+% sfsidenotes option -- typesets sidenotes in sans serif typeface
+
+\newif\if@tufteh@sfsidenotes \@tufteh@sfsidenotesfalse
+\DeclareOption{sfsidenotes}{\@tufteh@sfsidenotestrue}
+
 % FIXME: should probably specify options not supported like Mittelbach's aipproc.cls
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
@@ -32,7 +38,11 @@
 %%
 % Font for margin items
 
-\newcommand{\@tufteh@marginfont}{\normalfont\scriptsize\sffamily}
+\if@tufteh@sfsidenotes
+  \newcommand{\@tufteh@marginfont}{\normalfont\scriptsize\sffamily}
+\else
+  \newcommand{\@tufteh@marginfont}{\normalfont\scriptsize}
+\fi
 
 %%
 % Modify \raggedright from latex.ltx to allow hyphenation per Donald Arseneau
@@ -223,6 +233,17 @@
 \newenvironment{fullwidth}
   {\begin{adjustwidth}{}{-\@tufteh@overhang}}%
   {\end{adjustwidth}}
+
+%%
+% Format the captions in a style similar to the sidenotes
+
+% if 'sfsidenotes' option is specified, set the captions in sf, too.
+\if@tufteh@sfsidenotes
+  \RequirePackage[format=default,font={sf,scriptsize},justification=raggedright,singlelinecheck=false]{caption}
+\else
+  \RequirePackage[format=default,font={rm,scriptsize},justification=raggedright,singlelinecheck=false]{caption}
+\fi
+
 
 %%
 % Set raggedright and paragraph indentation for document
