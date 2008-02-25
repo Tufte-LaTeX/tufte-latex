@@ -176,12 +176,20 @@
 % TODO: Combine sequences of citations so that 2,3,4,6 becomes 2-4,6
 %       but be careful of hypperref interaction
 
+
+%%
+% The placeins package provides the \FloatBarrier command.  This forces
+% LaTeX to place all of the floats before proceeding.  We'll use this to
+% keep the float (figure and table) numbers in sequence.
+\RequirePackage{placeins}
+
 %%
 % Margin figure
 
 \newcommand{\marginfigure}[2]%
   [-1.2ex]%
-  {\marginpar{\@tufteh@marginfont
+  {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
+   \marginpar{\@tufteh@marginfont
               \def\@captype{figure}
               \vspace*{#1}
               \@tufteh@raggedright #2}}
@@ -193,7 +201,8 @@
 
 \newcommand{\margintable}[2]%
   [-1.2ex]%
-  {\marginpar{\@tufteh@marginfont
+  {\FloatBarrier% process all floats before this point so the table numbers stay in order.
+   \marginpar{\@tufteh@marginfont
               \def\@captype{table}
               \vspace*{#1}
               \@tufteh@raggedright #2}}
