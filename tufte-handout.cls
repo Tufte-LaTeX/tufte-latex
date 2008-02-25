@@ -174,7 +174,54 @@
 % TODO: Rewrite \cite so that you can specify multiple bib keys
 %       at once.  For example, \cite{Author01,Author02}
 % TODO: Combine sequences of citations so that 2,3,4,6 becomes 2-4,6
-%       but be careful of hypperref interaction
+%       but be careful of hyperref interaction
+
+%%
+% Make Tuftian-style section headings
+
+% TODO: I'd prefer to use the 'titlesec' package for this formatting, but
+%       I'll do it old-style for now.  --Kevin
+
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {2.3ex \@plus.2ex}%
+                                   {\normalfont\large\it}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\it}}
+
+% Subsubsection and following section headings shouldn't be used.
+% See Bringhurst's _The Elements of Typography_, section 4.2.2.
+\renewcommand\subsubsection{%
+  \PackageError{tufte-handout}{\noexpand\subsubsection is undefined by this class.%
+    \MessageBreak See Robert Bringhurst's _The Elements of 
+    \MessageBreak Typographic Style_, section 4.2.2.
+    \MessageBreak \noexpand\subsubsection was used}
+    {From Bringhurst's _The Elements of Typographic Style_, section 4.2.2: Use as 
+    \MessageBreak many levels of headings as you need, no more and no fewer.  Also see the many 
+    \MessageBreak related threads on Ask E.T. at http://www.edwardtufte.com/.}
+}
+
+\renewcommand\paragraph{%
+  \PackageError{tufte-handout}{\noexpand\paragraph is undefined by this class.%
+    \MessageBreak See Robert Bringhurst's _The Elements of 
+    \MessageBreak Typographic Style_, section 4.2.2.
+    \MessageBreak \noexpand\paragraph was used}
+    {From Bringhurst's _The Elements of Typographic Style_, section 4.2.2: Use as 
+    \MessageBreak many levels of headings as you need, no more and no fewer.  Also see the many 
+    \MessageBreak related threads on Ask E.T. at http://www.edwardtufte.com/.}
+}
+
+\renewcommand\subparagraph{%
+  \PackageError{tufte-handout}{\noexpand\subparagraph is undefined by this class.%
+    \MessageBreak See Robert Bringhurst's _The Elements of 
+    \MessageBreak Typographic Style_, section 4.2.2.
+    \MessageBreak \noexpand\subparagraph was used}
+    {From Bringhurst's _The Elements of Typographic Style_, section 4.2.2: Use as 
+    \MessageBreak many levels of headings as you need, no more and no fewer.  Also see the many 
+    \MessageBreak related threads on Ask E.T. at http://www.edwardtufte.com/.}
+}
 
 
 %%
