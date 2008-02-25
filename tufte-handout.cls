@@ -79,16 +79,11 @@
 
 \renewcommand\maketitle{\par
   \global\let\and\relax
+  \global\let\thanks\footnote
   \begingroup
-    \renewcommand\thefootnote{\@fnsymbol\c@footnote}%
-    \def\@makefnmark{\rlap{\@textsuperscript{\normalfont\@thefnmark}}}%
-    \long\def\@makefntext##1{\parindent 1em\noindent
-            \hb@xt@1.8em{%
-                \hss\@textsuperscript{\normalfont\@thefnmark}}##1}%
     \newpage
     \global\@topnum\z@
     \@maketitle
-    \@thanks
   \endgroup
   \global\let\thanks\relax
   \global\let\maketitle\relax
@@ -103,12 +98,12 @@
 }
 \def\@maketitle{%
   \newpage
-  \let\footnote\sidenote
-  {\noindent\large\bfseries \@title\par}%
-  \vskip 3pt%
-  {\small \@date\par}%
-  \vskip 3pt%
-  {\small \@author\par}
+  \noindent\sffamily\large{\@title}\\
+  \vskip0.5\baselineskip
+  \noindent\normalsize{\@author}\\
+  \vskip0.3\baselineskip
+  \noindent{\@date}
+  \thispagestyle{empty}
 }
 
 %%
