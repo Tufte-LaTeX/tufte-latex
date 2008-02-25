@@ -13,7 +13,7 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions
 
-\LoadClass[11pt]{article}%
+\LoadClass{article}%
 
 %%
 % Set page layout geometry
