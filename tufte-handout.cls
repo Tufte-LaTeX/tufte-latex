@@ -144,15 +144,17 @@
 % Transform existing \footnotes into \sidenotes
 % Sidenote: ``Where God meant footnotes to go.'' ---Tufte
 
-\RequirePackage[side,multiple,marginal]{footmisc}
-\setlength{\footnotemargin}{0.8em}
+\RequirePackage[side,multiple]{footmisc}
 \newcommand{\footnotelayout}{\@tufteh@marginfont\@tufteh@raggedright}
+
+% Override footmisc's definition to set the sidenote marks (numbers) inside the
+% sidenote's text block.
+\long\def\@makefntext#1{\@textsuperscript{\@tufteh@marginfont\tiny\@thefnmark}\,\footnotelayout#1}
+
+% Set the in-text footnote mark in the same typeface as the body text itself.
+\def\@makefnmark{\hbox{\@textsuperscript{\normalfont\scriptsize\@thefnmark}}}
+
 \let\sidenote\footnote
-
-% Set the footnote mark (adjacent to the footnote) in the same typeface as the footenote itself.
-\def\@makefnmark{\hbox{\@textsuperscript{\@tufteh@marginfont\tiny\@thefnmark}}}
-
-% TODO: Automatically determine the \footnotemargin value based on the width of the footnote mark.
 
 %%
 % Sidenote without the footnote mark
