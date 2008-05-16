@@ -263,21 +263,10 @@
 \RequirePackage{placeins}
 
 %%
-% Margin figure
-
-\newcommand{\marginfigure}[2]%
-  [-1.2ex]%
-  {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
-   \marginpar{\@tufteh@marginfont
-              \def\@captype{figure}
-              \vspace*{#1}
-              \@tufteh@raggedright #2}}
-
-%%
 % Margin figure environment
 
 \newsavebox{\@tufteh@marginfigbox}
-\newenvironment{marginfig}[1]
+\newenvironment{marginfigure}[1]
     [-1.2ex]
     {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
     \begin{lrbox}{\@tufteh@marginfigbox}
@@ -293,21 +282,9 @@
 
 
 %%
-% Margin table
-
-\newcommand{\margintable}[2]%
-  [-1.2ex]%
-  {\FloatBarrier% process all floats before this point so the table numbers stay in order.
-   \marginpar{\@tufteh@marginfont
-              \def\@captype{table}
-              \vspace*{#1}
-              \@tufteh@raggedright #2}}
-
-
-%%
 % Margin table environment
 \newsavebox{\@tufteh@margintablebox}
-\newenvironment{margintab}[1]
+\newenvironment{margintable}[1]
    [-1.2ex]
    {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
    \begin{lrbox}{\@tufteh@margintablebox}
