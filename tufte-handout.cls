@@ -273,8 +273,25 @@
               \vspace*{#1}
               \@tufteh@raggedright #2}}
 
-% FIXME: if anyone can make this an environment instead -- patch welcome!
-	
+%%
+% Margin figure environment
+
+\newsavebox{\@tufteh@marginfigbox}
+\newenvironment{marginfig}[1]
+    [-1.2ex]
+    {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
+    \begin{lrbox}{\@tufteh@marginfigbox}
+    \begin{minipage}{\marginparwidth}
+        \@tufteh@marginfont
+        \def\@captype{figure}
+        \vspace*{#1}
+        \@tufteh@raggedright
+    }    
+    {\end{minipage}%
+     \end{lrbox}%
+     \marginpar{\usebox{\@tufteh@marginfigbox}}}
+
+
 %%
 % Margin table
 
@@ -286,7 +303,24 @@
               \vspace*{#1}
               \@tufteh@raggedright #2}}
 
-% FIXME: if anyone can make this an environment instead -- patch welcome!
+
+%%
+% Margin table environment
+\newsavebox{\@tufteh@margintablebox}
+\newenvironment{margintab}[1]
+   [-1.2ex]
+   {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
+   \begin{lrbox}{\@tufteh@margintablebox}
+   \begin{minipage}{\marginparwidth}
+       \@tufteh@marginfont
+       \def\@captype{table}
+       \vspace*{#1}
+       \@tufteh@raggedright
+   }
+   {\end{minipage}%
+    \end{lrbox}%
+    \marginpar{\usebox{\@tufteh@margintablebox}}}
+
 
 %%
 % Full-width figure
