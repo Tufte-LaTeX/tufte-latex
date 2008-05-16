@@ -19,15 +19,21 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions
 
-\LoadClass{article}%
+\LoadClass{article}
+
+%%
+% Detect whether we're in two-side mode or not.  (Used to set up running
+% heads later.)
+
+\newif\if@tufteh@twoside\let\if@tufteh@twoside\if@twoside
 
 %%
 % Set page layout geometry
 
 \if@tufteh@afourpaper
-  \RequirePackage[a4paper,includemp,width=170mm,marginparsep=10mm,marginparwidth=50mm]{geometry}
+  \RequirePackage[a4paper,includemp,width=170mm,marginparsep=10mm,marginparwidth=50mm,asymmetric]{geometry}
 \else
-  \RequirePackage[letterpaper,includemp,width=6.5in,marginparsep=0.375in,marginparwidth=2in]{geometry}
+  \RequirePackage[letterpaper,includemp,width=6.5in,marginparsep=0.375in,marginparwidth=2in,asymmetric]{geometry}
 \fi
 
 %%
@@ -89,9 +95,9 @@
   \global\let\maketitle\relax
   \global\let\@maketitle\relax
   \global\let\@thanks\@empty
-  \global\let\@author\@empty
-  \global\let\@date\@empty
-  \global\let\@title\@empty
+  %\global\let\@author\@empty
+  %\global\let\@date\@empty
+  %\global\let\@title\@empty
   \global\let\title\relax
   \global\let\author\relax
   \global\let\date\relax
@@ -103,7 +109,7 @@
   \noindent\normalsize{\@author}\\
   \vskip0.3\baselineskip
   \noindent{\@date}
-  \thispagestyle{empty}
+  \thispagestyle{plain}
 }
 
 %%
@@ -347,6 +353,47 @@
   \RequirePackage{palatino}
   \IfFileExists{mathpazo.sty}{\RequirePackage[osf,sc]{mathpazo}}{}
 }{} % if the Palatino typefaces aren't found, do nothing.
+
+
+%%
+% Sets up the running heads and folios.
+
+\RequirePackage{fancyhdr}
+
+% Set the header/footer width to be the body text block plus the margin
+% note area.
+\fancyhfoffset[RE,RO]{\@tufteh@overhang}
+
+% The 'fancy' page style is the default style for all pages.
+\fancyhf{} % clear header and footer fields
+\if@tufteh@twoside
+  \fancyhead[LE]{\thepage\quad\smallcaps{\@author}}
+  \fancyhead[RO]{\smallcaps{\@title}\quad\thepage}
+\else
+  \fancyhead[RE,RO]{\smallcaps{\@title}\quad\thepage}
+\fi
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% The 'plain' page style is used on chapter opening pages.
+\fancypagestyle{plain}{
+  \fancyhf{} % clear header and footer fields
+  \if@tufteh@twoside
+    \fancyfoot[LE,RO]{\thepage}
+  \else
+    \fancyfoot[RE,RO]{\thepage}
+  \fi
+}
+
+% The 'empty' page style suppresses all headers and footers.
+% It's used on title pages and `intentionally blank' pages.
+\fancypagestyle{empty}{
+  \fancyhf{} % clear header and footer fields
+}
+
+% Set the default page style to 'fancy'
+\pagestyle{fancy}
+
 
 %%
 % Set raggedright and paragraph indentation for document
