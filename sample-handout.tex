@@ -1,4 +1,4 @@
-\documentclass[twoside]{tufte-handout}
+\documentclass{tufte-handout}
 
 \usepackage{amsmath}
 
@@ -47,6 +47,8 @@
 \noindent This document describes the Tufte handout \LaTeX\ document style.
 It also provides examples and comments on the style's use.
 \end{abstract}
+
+%\printclassoptions
 
 The \Verb|tufte-handout| document class defines a style similar to the
 style Edward Tufte uses in his books and handouts.  Tufte's style is known
@@ -247,18 +249,11 @@ the page.  This is how books are traditionally printed, but is contrary to
 Tufte's book design which sets the sidenotes on the right side of the page.
 This option implicitly sets the \Verb|twoside| option.
 
-\subsection{Text Justification}\label{sec:justification}
+The \Verb|justified| option sets all the text fully justified (flush left
+and right).  The default is to set the text ragged right.  
 The body text of Tufte's books are set ragged right.  This prevents
 needless hyphenation and makes it easier to read the text in the slightly
-narrower column.  If you prefer your text fully justified, put these lines
-in the preamble of your document (i.e., prior to your
-\Verb|\begin{document}| line):
-
-\begin{Verbatim}
-  \makeatletter
-  \def\@tufteh@raggedright{\relax}
-  \makeatother 
-\end{Verbatim}
+narrower column.
 
 \subsection{Defining new sections}\label{sec:defining-sections}
 As mentioned on page~\pageref{sec:headings}, the \Verb|tufte-handout|

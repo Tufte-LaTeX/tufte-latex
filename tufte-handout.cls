@@ -21,9 +21,16 @@
 \newif\if@tufteh@symmetric\@tufteh@symmetricfalse
 \DeclareOption{symmetric}{
   \@tufteh@symmetrictrue
-%  \PassOptionsToClass{twoside}{tufte-handout}
   \PassOptionsToClass{twoside}{article}
 }
+
+%%
+% justified option -- uses fully justified text (flush left and flush
+% right) instead of ragged right.
+
+\newif\if@tufteh@justified\@tufteh@justifiedfalse
+\DeclareOption{justified}{\@tufteh@justifiedtrue}
+
 
 % FIXME: should probably specify options not supported like Mittelbach's aipproc.cls
 
@@ -68,12 +75,21 @@
 \fi
 
 %%
-% Modify \raggedright from latex.ltx to allow hyphenation per Donald Arseneau
+% \RaggedRight allows hyphenation
 
-\def\@tufteh@raggedright{%
-  \let\\\@centercr\@rightskip\z@ plus 0.08\hsize
-  \rightskip\@rightskip
-  \leftskip\z@skip}
+\RequirePackage{ragged2e}
+\setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
+
+%%
+% Set the justification baesed on the `justified' class option
+
+\newcommand{\@tufteh@justification}{%
+  \if@tufteh@justified
+    \justifying
+  \else
+    \RaggedRight
+  \fi
+}
 
 %%
 % Turn off section numbering
@@ -200,7 +216,7 @@
 % Sidenote: ``Where God meant footnotes to go.'' ---Tufte
 
 \RequirePackage[side,multiple]{footmisc}
-\newcommand{\footnotelayout}{\@tufteh@marginfont\@tufteh@raggedright}
+\newcommand{\footnotelayout}{\@tufteh@marginfont\@tufteh@justification}
 
 % Override footmisc's definition to set the sidenote marks (numbers) inside the
 % sidenote's text block.
@@ -215,7 +231,7 @@
 % Sidenote without the footnote mark
 
 \providecommand\marginnote[1]%
-  {\marginpar{\@tufteh@marginfont\raggedright #1}}
+  {\marginpar{\@tufteh@marginfont\@tufteh@justification #1}}
 
 %%
 % Citations should go in the margin as well
@@ -297,7 +313,7 @@
         \@tufteh@marginfont
         \def\@captype{figure}
         \vspace*{#1}
-        \@tufteh@raggedright
+        \@tufteh@justification
     }    
     {\end{minipage}%
      \end{lrbox}%
@@ -315,7 +331,7 @@
        \@tufteh@marginfont
        \def\@captype{table}
        \vspace*{#1}
-       \@tufteh@raggedright
+       \@tufteh@justification
    }
    {\end{minipage}%
     \end{lrbox}%
@@ -369,11 +385,21 @@
 %%
 % Format the captions in a style similar to the sidenotes
 
-% if 'sfsidenotes' option is specified, set the captions in sf, too.
+\RequirePackage[format=default,font={rm,scriptsize},justification=raggedright,singlelinecheck=false]{caption}
+
+% if the `sfsidenotes' option is specified, set the captions in sf, too.
 \if@tufteh@sfsidenotes
-  \RequirePackage[format=default,font={sf,scriptsize},justification=raggedright,singlelinecheck=false]{caption}
+  \captionsetup{font={sf,scriptsize}}
 \else
-  \RequirePackage[format=default,font={rm,scriptsize},justification=raggedright,singlelinecheck=false]{caption}
+  \captionsetup{font={rm,scriptsize}}
+\fi
+
+% if the `justified' option is specified, set the captions in flush left
+% and flush right
+\if@tufteh@justified
+  \captionsetup{justification=justified}
+\else
+  \captionsetup{justification=raggedright}
 \fi
 
 %%
@@ -441,7 +467,7 @@
 %%
 % Set raggedright and paragraph indentation for document
 
-\AtBeginDocument{\@tufteh@raggedright\setlength\parindent{1em}}
+\AtBeginDocument{\@tufteh@justification\setlength\parindent{1em}}
 
 
 %%
@@ -450,7 +476,8 @@
   \texttt{symmetric}---\if@tufteh@symmetric true\else false\fi\\
   \texttt{a4paper}---\if@tufteh@afourpaper true\else false\fi\\
   \texttt{twoside}---\if@tufteh@twoside true\else false\fi\\
-  \texttt{sfsidenotes}---\if@tufteh@sfsidenotes true\else false\fi
+  \texttt{sfsidenotes}---\if@tufteh@sfsidenotes true\else false\fi\\
+  \texttt{justified}---\if@tufteh@justified true\else false\fi
 }
 
 \endinput
