@@ -1,0 +1,72 @@
+% Draw Hilbert curves. 
+% Credits: Based on code by Marc van Dongen
+% See: http://www.fauskes.net/pgftikzexamples/hilbert-curve/
+\title{Hilbert Curves}
+\author{}
+\date{}
+
+\documentclass{tufte-handout}
+
+\usepackage{tikz}
+
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\usetikzlibrary{positioning}
+
+\begin{document}
+
+\newdimen\HilbertLastX
+\newdimen\HilbertLastY
+\newcounter{HilbertOrder}
+
+\def\DrawToNext#1#2{%
+   \advance \HilbertLastX by #1
+   \advance \HilbertLastY by #2
+   \pgfpathlineto{\pgfqpoint{\HilbertLastX}{\HilbertLastY}}
+   % Alternative implementation using plot streams:
+   % \pgfplotstreampoint{\pgfqpoint{\HilbertLastX}{\HilbertLastY}}
+}
+
+% \Hilbert[right_x,right_y,left_x,left_x,up_x,up_y,down_x,down_y]
+\def\Hilbert[#1,#2,#3,#4,#5,#6,#7,#8] {
+  \ifnum\value{HilbertOrder} > 0%
+     \addtocounter{HilbertOrder}{-1}
+     \Hilbert[#5,#6,#7,#8,#1,#2,#3,#4]
+     \DrawToNext {#1} {#2}
+     \Hilbert[#1,#2,#3,#4,#5,#6,#7,#8]
+     \DrawToNext {#5} {#6}
+     \Hilbert[#1,#2,#3,#4,#5,#6,#7,#8]
+     \DrawToNext {#3} {#4}
+     \Hilbert[#7,#8,#5,#6,#3,#4,#1,#2]
+     \addtocounter{HilbertOrder}{1}
+  \fi
+}
+
+
+% \hilbert((x,y),order)
+\def\hilbert((#1,#2),#3){%
+   \advance \HilbertLastX by #1
+   \advance \HilbertLastY by #2
+   \pgfpathmoveto{\pgfqpoint{\HilbertLastX}{\HilbertLastY}}
+   % Alternative implementation using plot streams:
+   % \pgfplothandlerlineto
+   % \pgfplotstreamstart
+   % \pgfplotstreampoint{\pgfqpoint{\HilbertLastX}{\HilbertLastY}}
+   \setcounter{HilbertOrder}{#3}
+   \Hilbert[1mm,0mm,-1mm,0mm,0mm,1mm,0mm,-1mm]
+   \pgfusepath{stroke}%
+}
+
+\def\scalefac{1}
+\maketitle
+
+\begin{figure}[h!]
+\begin{tikzpicture}[node distance=0cm,every path/.style={thin}]
+    \node[label={above:$n=1$}] (n1) {\tikz[scale=\scalefac*18] \hilbert((0mm,0mm),1);};
+    \node[label={above:$n=2$},right=of n1] (n2) {\tikz[scale=\scalefac*6] \hilbert((0mm,0mm),2);};
+    \node[label={above:$n=3$},right=of n2] (n3) {\tikz[scale=\scalefac*2.6] \hilbert((0mm,0mm),3);};
+    \node[label={above:$n=4$},right=of n3] (n4) {\tikz[scale=\scalefac*1.2] \hilbert((0mm,0mm),4);};
+    \node[label={above:$n=5$},right=of n4] (n5) {\tikz[scale=\scalefac*0.58] \hilbert((0mm,0mm),5);};
+\end{tikzpicture}
+\end{figure}
+\end{document}

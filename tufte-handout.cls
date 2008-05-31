@@ -14,6 +14,17 @@
 \newif\if@tufteh@sfsidenotes \@tufteh@sfsidenotesfalse
 \DeclareOption{sfsidenotes}{\@tufteh@sfsidenotestrue}
 
+%%
+% symmetric option -- puts marginpar space to the outside edge of the page
+%   Note: this forces twoside
+
+\newif\if@tufteh@symmetric\@tufteh@symmetricfalse
+\DeclareOption{symmetric}{
+  \@tufteh@symmetrictrue
+%  \PassOptionsToClass{twoside}{tufte-handout}
+  \PassOptionsToClass{twoside}{article}
+}
+
 % FIXME: should probably specify options not supported like Mittelbach's aipproc.cls
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
@@ -30,11 +41,17 @@
 %%
 % Set page layout geometry
 
+\RequirePackage[letterpaper,includemp,width=6.5in,marginparsep=0.375in,marginparwidth=2in]{geometry}
+
 \if@tufteh@afourpaper
-  \RequirePackage[a4paper,includemp,width=170mm,marginparsep=10mm,marginparwidth=50mm,asymmetric]{geometry}
-\else
-  \RequirePackage[letterpaper,includemp,width=6.5in,marginparsep=0.375in,marginparwidth=2in,asymmetric]{geometry}
+  \geometry{a4paper,includemp,width=170mm,marginparsep=10mm,marginparwidth=50mm}
 \fi
+
+\if@tufteh@symmetric
+\else
+  \geometry{asymmetric}
+\fi
+
 
 %%
 % Separation marginpars by a line's worth of space.
@@ -104,11 +121,11 @@
 }
 \def\@maketitle{%
   \newpage
-  \noindent\sffamily\large{\@title}\\
+  \noindent\sffamily\large{\allcaps{\@title}}\\
   \vskip0.5\baselineskip
-  \noindent\normalsize{\@author}\\
+  \noindent\normalsize{\allcaps{\@author}}\\
   \vskip0.3\baselineskip
-  \noindent{\@date}
+  \noindent{\allcaps{\@date}}
   \thispagestyle{plain}
 }
 
@@ -311,7 +328,11 @@
 \renewenvironment{figure*}[1]%
   [htbp]%
   {\@float{figure}[#1]%
-   \begin{adjustwidth}{}{-\@tufteh@overhang}%
+   \if@tufteh@symmetric
+     \begin{adjustwidth}[]{}{-\@tufteh@overhang}%
+   \else
+     \begin{adjustwidth}{}{-\@tufteh@overhang}%
+   \fi
    \begin{minipage}{\linewidth}}%
   {\end{minipage}%
    \end{adjustwidth}%
@@ -323,7 +344,11 @@
 \renewenvironment{table*}[1]
   [htbp]%
   {\@float{table}[#1]%
-   \begin{adjustwidth}{}{-\@tufteh@overhang}%
+   \if@tufteh@symmetric
+     \begin{adjustwidth}[]{}{-\@tufteh@overhang}%
+   \else
+     \begin{adjustwidth}{}{-\@tufteh@overhang}%
+   \fi
    \begin{minipage}{\linewidth}}%
   {\end{minipage}%
    \end{adjustwidth}%
@@ -333,7 +358,12 @@
 % Full-page-width area
 
 \newenvironment{fullwidth}
-  {\begin{adjustwidth}{}{-\@tufteh@overhang}}%
+  {\if@tufteh@symmetric
+     \begin{adjustwidth}[]{}{-\@tufteh@overhang}%
+   \else
+     \begin{adjustwidth}{}{-\@tufteh@overhang}%
+   \fi
+  }
   {\end{adjustwidth}}
 
 %%
@@ -356,13 +386,26 @@
 
 
 %%
+% If the Bera Mono typeface is available, use it.
+
+\IfFileExists{beramono.sty}{%
+  \RequirePackage[T1]{fontenc}
+  \RequirePackage[scaled=0.85]{beramono}
+}{}
+
+
+%%
 % Sets up the running heads and folios.
 
 \RequirePackage{fancyhdr}
 
 % Set the header/footer width to be the body text block plus the margin
 % note area.
-\fancyhfoffset[RE,RO]{\@tufteh@overhang}
+\if@tufteh@symmetric
+  \fancyhfoffset[LE,RO]{\@tufteh@overhang}
+\else
+  \fancyhfoffset[RE,RO]{\@tufteh@overhang}
+\fi
 
 % The 'fancy' page style is the default style for all pages.
 \fancyhf{} % clear header and footer fields
@@ -399,5 +442,15 @@
 % Set raggedright and paragraph indentation for document
 
 \AtBeginDocument{\@tufteh@raggedright\setlength\parindent{1em}}
+
+
+%%
+% Prints the list of class options and their states.
+\newcommand{\printclassoptions}{%
+  \texttt{symmetric}---\if@tufteh@symmetric true\else false\fi\\
+  \texttt{a4paper}---\if@tufteh@afourpaper true\else false\fi\\
+  \texttt{twoside}---\if@tufteh@twoside true\else false\fi\\
+  \texttt{sfsidenotes}---\if@tufteh@sfsidenotes true\else false\fi
+}
 
 \endinput
