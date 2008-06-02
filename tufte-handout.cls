@@ -105,7 +105,7 @@
 %%
 % To implement full-width display environments
 
-\RequirePackage{chngpage}
+\RequirePackage[strict]{chngpage}
 
 % Compute length used for full-width displays
 
