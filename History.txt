@@ -1,3 +1,19 @@
+== 2.0.0 / 2008-06-06
+
+* Added `sfsidenotes' option to set the sidenotes and captions in the sans
+  serif font.
+* Use the Palatino fonts if they're installed.
+* Created `marginfig' and `margintab' environments.
+* Added running heads.
+* Fixed the alignment of sidenote numbers.
+* Added \section and \subsection headings.
+* Uses the Bera Mono fonts if they're installed.
+* Added `symmetric' option to produce outside-margin sidenotes in two-sided
+  spreads.
+* Added `justified' option to set the text fully justified.
+* Rewrote sample-handout to illustrate the tufte-handout usage and serve as an
+  example of its features.
+
 == 1.2.3 / 2008-02-11
 
 * To remove References section from sample-handout.

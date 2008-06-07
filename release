@@ -67,11 +67,36 @@ rm -f sample-handout.{aux,log,out,blg,bbl} refresh-sample.log
 
 cp sample-handout.pdf sample-handout-$version.pdf
 
-# Make bundle
+# Make bundle for Google Code release
 
 mkdir -p pkg/$package-$version
 tar cf - `cat Manifest.txt` | ( cd pkg/$package-$version && tar xf - )
-zip -rq pkg/$package-$version.zip pkg/$package-$version
+( cd pkg && zip -rq $package-$version.zip $package-$version )
+
+# Make bundle for CTAN release
+
+TDS_DIR=pkg/$package/tds/
+TDS_TEX_DIR=$TDS_DIR/tex/latex/$package/
+TDS_DOC_DIR=$TDS_DIR/doc/latex/$package/
+TDS_SRC_DIR=$TDS_DIR/source/latex/$package/
+
+mkdir -p $TDS_DIR $TDS_TEX_DIR $TDS_DOC_DIR $TDS_SRC_DIR
+
+cp tufte-handout.cls $TDS_TEX_DIR/
+
+cp History.txt README.txt sample-handout.{pdf,tex,bib} $TDS_DOC_DIR/
+mkdir $TDS_DOC_DIR/graphics
+cp graphics/* $TDS_DOC_DIR/graphics/
+
+cp tufte-handout.cls sample-handout.{tex,bib} $TDS_SRC_DIR/
+
+( cd $TDS_DIR && zip -rq ../../$package-$version/$package.tds.zip * )
+rm -fr pkg/$package
+mv pkg/$package-$version pkg/$package
+( cd pkg && zip -rq $package.zip $package )
+
+# Remove our temporary files
+rm -fr pkg/$package
 
 # Provide some cut-n-paste material for manual steps:
 

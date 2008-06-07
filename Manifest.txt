@@ -3,6 +3,11 @@ Manifest.txt
 README.txt
 graphics/nasa_vision_sm.png
 graphics/satir_graph.png
+graphics/helix.asy
+graphics/sine.asy
+graphics/hilbertcurves.pdf
+graphics/helix.pdf
+graphics/sine.pdf
 sample-handout.bib
 sample-handout.pdf
 sample-handout.tex
