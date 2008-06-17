@@ -30,7 +30,7 @@
 
 \usepackage{multicol}
 
-\usepackage[savepos]{zref}
+%\usepackage[savepos]{zref}
 
 \usepackage{lipsum}
 
@@ -151,7 +151,7 @@ environment and figure~\ref{fig:textfig} is an example of the normal
   \caption{This graph shows $y = \sin x$ from about $x = [-10, 10]$.
   \emph{Notice that this figure takes up the full page width.}}
   \label{fig:fullfig}
-  \zsavepos{pos:fullfig}
+  %\zsavepos{pos:fullfig}
 \end{figure*}
 
 \begin{figure}
@@ -159,7 +159,7 @@ environment and figure~\ref{fig:textfig} is an example of the normal
   \caption{Hilbert curves of various degrees $n$.
   \emph{Notice that this figure only takes up the main textblock width.}}
   \label{fig:textfig}
-  \zsavepos{pos:textfig}
+  %\zsavepos{pos:textfig}
 \end{figure}
 
 Table~\ref{tab:normaltab} shows table created with the \texttt{booktabs}
@@ -168,6 +168,7 @@ the table's data.
 
 \begin{table}[ht]
   \centering
+  \fontfamily{ppl}\selectfont
   \begin{tabular}{ll}
     \toprule
     Margin & Length \\
@@ -181,7 +182,7 @@ the table's data.
   \end{tabular}
   \caption{Here are the dimensions of the various margins used in the Tufte-handout class.}
   \label{tab:normaltab}
-  \zsavepos{pos:normaltab}
+  %\zsavepos{pos:normaltab}
 \end{table}
 
 \section{Full-width text blocks}
