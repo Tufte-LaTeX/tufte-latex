@@ -284,7 +284,8 @@
 % Sidenote: ``Where God meant footnotes to go.'' ---Tufte
 
 \RequirePackage[side,multiple]{footmisc}
-\newcommand{\footnotelayout}{\@tufteh@marginfont\@tufteh@justification}
+\providecommand*{\footnotelayout}{\@tufteh@marginfont\@tufteh@justification}
+\renewcommand{\footnotelayout}{\@tufteh@marginfont\@tufteh@justification}
 
 % Override footmisc's definition to set the sidenote marks (numbers) inside the
 % sidenote's text block.
