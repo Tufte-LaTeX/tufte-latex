@@ -1,4 +1,4 @@
-\documentclass{tufte-handout}
+\documentclass[nofonts]{tufte-handout}
 
 \usepackage{amsmath}
 
@@ -9,12 +9,26 @@
 
 \usepackage{mcaption} % FIXME move to .cls file
 
-%\title{An Example of the Usage of the Tufte-Handout Style\thanks{Inspired by Edward~R. Tufte!}}
-\title{An Example of the Usage of the Tufte-Handout Style}
-\author{The Tufte-\LaTeX\ Developers}
-%\date{22 February 2008}  % if the \date{} command is left out, the current date will be used
+\title{An Example of the Usage of the Tufte-Handout Style\thanks{Inspired by Edward~R. Tufte!}}
+\author[The Tufte-LaTeX Developers]{The Tufte-\LaTeX\ Developers}
+\date{22 February 2008}  % if the \date{} command is left out, the current date will be used
 
-\usepackage{helvet}
+%%
+% If we have Bergamo and Chantilly fonts (from www.fontsite.com) installed,
+% use them.  Bergamo is a clone of Bembo and Chantilly is similar to Gill Sans.
+\makeatletter
+\ifthenelse{\NOT\boolean{@tufte@xetex}}
+  {%
+    \IfFileExists{bergamo.sty}{\usepackage[osf]{bergamo}}{}% Bembo clone
+    \IfFileExists{chantill.sty}{\usepackage{chantill}}{}% Gill Sans clone
+  }{% We're using XeTeX -- load fontspec, etc.
+    \usepackage{fontspec}
+    \usepackage{xltxtra}
+    \setromanfont{Bergamo}% Bembo clone
+    \setsansfont{Chantilly}% Gill Sans clone
+    \setmonofont{Bitstream Vera Sans Mono}%
+  }
+\makeatother
 
 % The following package makes prettier tables.  We're all about the bling!
 \usepackage{booktabs}
@@ -28,18 +42,17 @@
 \usepackage{fancyvrb}
 \fvset{fontsize=\normalsize}
 
+% Small sections of multiple columns
 \usepackage{multicol}
 
-%\usepackage[savepos]{zref}
-
+% Provides paragraphs of dummy text
 \usepackage{lipsum}
-
-\usepackage{url}
-\urldef{\asyurl}\url{http://asymptote.sf.net/}
 
 \begin{document}
 
 \maketitle % this prints the handout title, author, and date
+
+
 
 \begin{abstract}
 \noindent This document describes the Tufte handout \LaTeX\ document style.
@@ -112,7 +125,7 @@ example.)  If you do not want to print a bibliography at the end of your
 document, use the \Verb|\nobibliography| command in its place.  
 
 To enter multiple citations at one
-location,\cite{Tufte2006}\cite{Tufte1990} you will need to use multiple
+location,\cite{Tufte2006,Tufte1990} you will need to use multiple
 \Verb|\cite| commands: \Verb|\cite{Tufte2006}| \Verb|\cite{Tufte1990}|.  Each
 \Verb|\cite| command will generate its own sidenote and its own sidenote
 number. 
@@ -132,7 +145,7 @@ use the \Verb|marginfigure| or \Verb|margintable| environments as follows
   \includegraphics[width=\marginparwidth]{helix}
   \caption{This is a margin figure.  The helix is defined by 
     $x = \cos(2\pi z)$, $y = \sin(2\pi z)$, and $z = [0, 2.7]$.  The figure was
-    drawn using Asymptote (\asyurl).}
+    drawn using Asymptote (\url{http://asymptote.sf.net/}).}
   \label{fig:marginfig}
 \end{marginfigure}
 \begin{Verbatim}
