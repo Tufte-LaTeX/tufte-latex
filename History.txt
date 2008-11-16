@@ -1,3 +1,6 @@
+== 2.0.1 / 2008-11-16
+* Now works with footmisc version > 5.4.
+
 == 2.0.0 / 2008-06-06
 
 * Added `sfsidenotes' option to set the sidenotes and captions in the sans
