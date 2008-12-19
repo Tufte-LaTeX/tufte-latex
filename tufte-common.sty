@@ -386,8 +386,10 @@
 %%
 % An environment for paragraph-style section
 
-\providecommand\newthought[1]{\vspace{1.8\baselineskip plus 3pt minus 2pt}%
-                           {\noindent\textsc{#1}}}
+\providecommand\newthought[1]{%
+   \addvspace{1.0\baselineskip plus 0.5ex minus 0.2ex}%
+   \noindent\textsc{#1}%
+}
 
 %%
 % Used for doublespacing, and other linespacing
