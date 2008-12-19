@@ -2,6 +2,14 @@
 
 \ProvidesClass{tufte-handout}[2008/11/16 v3.0.0 Tufte-handout class]
 
+%%
+% The symmetric option forces twoside.
+\DeclareOption{symmetric}{%
+  \ExecuteOptions{twoside}
+  \PassOptionsToPackage{twoside}{tufte-common}
+  \PassOptionsToClass{twoside}{article}
+  \PackageInfo{tufte-handout}{Passing twoside to `article' class}
+}
 
 \PassOptionsToPackage{handout}{tufte-common}
 \DeclareOption*{% pass options to tufte-common package and the article class

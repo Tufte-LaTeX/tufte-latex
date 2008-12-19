@@ -68,13 +68,23 @@
 
 %%
 % `symmetric' option -- puts marginpar space to the outside edge of the page
-%   Note: this option forces the twoside option
+%   Note: this option forces the twoside option (see the .cls files)
 
 \newboolean{@tufte@symmetric}
 \DeclareOption{symmetric}{
   \setboolean{@tufte@symmetric}{true}
-  \PassOptionsToClass{twoside}{\@tufte@class}
+  \PackageInfo{\@tufte@pkgname}{The `symmetric' option implies `twoside'.}
+  %\ExecuteOptions{twoside}
 }
+
+%%
+% `twoside' option -- alternates running heads
+
+\newboolean{@tufte@twoside}
+\DeclareOption{twoside}{
+  \setboolean{@tufte@twoside}{true}
+}
+
 
 %%
 % `justified' option -- uses fully justified text (flush left and flush
@@ -89,16 +99,15 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{\@tufte@class}}
 \ProcessOptions
 
-%\LoadClass{\@tufte@class}
-
 %%
 % Detect whether we're in two-side mode or not.  (Used to set up running
 % heads later.)
 
-\newboolean{@tufte@twoside}
 \ifthenelse{\boolean{@twoside}}
   {\setboolean{@tufte@twoside}{true}}
-  {\setboolean{@tufte@twoside}{false}}
+  {}
+
+
 
 %%
 % Detect if we're using pdfLaTeX
@@ -148,7 +157,7 @@
 
 \ifthenelse{\boolean{@tufte@symmetric}}
   {}
-  {\geometry{asymmetric}}
+  {\geometry{asymmetric}}% forces internal LaTeX `twoside'
 
 
 %%
@@ -605,12 +614,19 @@
 
 \newcommand{\typeoutbool}[2]{%
   \ifthenelse{\boolean{#2}}
-    {\typeout{#1: true}}
-    {\typeout{#1: false}}
+    {\typeout{\space\space#1: true}}
+    {\typeout{\space\space#1: false}}
+}
+
+\newcommand{\typeoutstr}[2]{%
+  \typeout{\space\space#1: #2}
 }
 
 \newcommand{\PrintTufteSettings}{%
   \typeout{-------------------- Tufte-LaTeX settings ----------}
+  \typeout{Class: \@tufte@pkgname}
+  \typeout{}
+  \typeout{Class options:}
   \typeoutbool{a4paper}{@tufte@afourpaper}
   \typeoutbool{load fonts}{@tufte@loadfonts}
   \typeoutbool{fully-justified}{@tufte@justified}
@@ -618,6 +634,13 @@
   \typeoutbool{sans-serif sidenotes}{@tufte@sfsidenotes}
   \typeoutbool{symmetric margins}{@tufte@symmetric}
   \typeoutbool{titlepage}{@tufte@titlepage}
+  \typeoutbool{twoside}{@tufte@twoside}
+  \typeoutbool{debug}{@tufte@debug}
+  \typeout{}
+  \typeout{Internal variables:}
+  \typeoutbool{[twoside]}{@twoside}
+  \typeoutbool{pdflatex}{@tufte@pdf}
+  \typeoutbool{xelatex}{@tufte@xetex}
   \typeout{----------------------------------------------------}
 }
 
