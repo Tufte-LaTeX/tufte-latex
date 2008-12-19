@@ -75,7 +75,7 @@
 % If there is a `tufte-book-local.sty' file, load it.
 
 \IfFileExists{tufte-book-local.tex}
-  {\input{tufte-book-local.tex}}
+  {\input{tufte-book-local}}
   {}
 
 %%

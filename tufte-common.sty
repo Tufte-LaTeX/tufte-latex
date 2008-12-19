@@ -73,7 +73,7 @@
 \newboolean{@tufte@symmetric}
 \DeclareOption{symmetric}{
   \setboolean{@tufte@symmetric}{true}
-  \PackageInfo{\@tufte@pkgname}{The `symmetric' option implies `twoside'.}
+  \PackageInfo{\@tufte@pkgname}{The `symmetric' option implies `twoside'}
   %\ExecuteOptions{twoside}
 }
 
@@ -823,10 +823,10 @@
 
 
 %%
-% If there is a `tufte-common-local.sty' file, load it up.
+% If there is a `tufte-common-local.tex' file, load it up.
 
-\IfFileExists{tufte-common-local.sty}
-  {\RequirePackage{tufte-common-local.sty}}
+\IfFileExists{tufte-common-local.tex}
+  {\input{tufte-common-local}}
   {}
 
 

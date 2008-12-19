@@ -44,10 +44,10 @@
 
 
 %%
-% If there is a `tufte-handout-local.sty' file, load it.
+% If there is a `tufte-handout-local.tex' file, load it.
 
 \IfFileExists{tufte-handout-local.tex}
-  {\input{tufte-handout-local.tex}}
+  {\input{tufte-handout-local}}
   {}
 
 
