@@ -559,6 +559,27 @@
 
 
 %%
+% Turns newlines into spaces.  Based on code from the `titlesec' package.
+
+\DeclareRobustCommand{\@tufte@newlinetospace}{%
+  \@ifstar{\@tufte@newlinetospace@i}{\@tufte@newlinetospace@i}%
+}
+
+\def\@tufte@newlinetospace@i{%
+  \ifdim\lastskip>\z@\else\space\fi
+  \ignorespaces%
+}
+
+\DeclareRobustCommand{\newlinetospace}[1]{%
+  \let\@tufte@orig@cr\\% save the original meaning of \\
+  \def\\{\@tufte@newlinetospace}% turn \\ and \\* into \space
+  \let\newline\\% turn \newline into \space
+  #1
+  \let\\\@tufte@orig@cr% revert to original meaning of \\
+}
+
+
+%%
 % Sets up the running heads and folios.
 
 \RequirePackage{fancyhdr}
@@ -579,9 +600,9 @@
 % The 'fancy' page style is the default style for all pages.
 \fancyhf{} % clear header and footer fields
 \ifthenelse{\boolean{@tufte@twoside}}
-  {\fancyhead[LE]{\thepage\quad\smallcaps{\theauthor}}%
-    \fancyhead[RO]{\smallcaps{\thetitle}\quad\thepage}}
-  {\fancyhead[RE,RO]{\smallcaps{\thetitle}\quad\thepage}}
+  {\fancyhead[LE]{\thepage\quad\smallcaps{\newlinetospace{\theauthor}}}%
+    \fancyhead[RO]{\smallcaps{\newlinetospace{\thetitle}}\quad\thepage}}
+  {\fancyhead[RE,RO]{\smallcaps{\newlinetospace{\thetitle}}\quad\thepage}}
 
 
 % The `plain' page style is used on chapter opening pages.
