@@ -143,7 +143,8 @@
   {\RequirePackage{hyperref}}
 
 \hypersetup{%
-  pdfborder = {0 0 0}
+  pdfborder = {0 0 0},
+  hyperfootnotes = false
 }
 
 %%
@@ -398,6 +399,54 @@
 
 
 %%
+% Citations should go in the margin as sidenotes
+
+\RequirePackage{natbib}
+\RequirePackage{bibentry}	% allows bibitems to be typeset outside thebibliography environment
+\nobibliography*		% pre-loads the bibliography keys
+\providecommand{\doi}[1]{\textsc{doi:} #1} % pre-defining this so it may be used before the \bibliography command it issued
+
+\let\sidenote\footnote% This will be redefined shortly
+
+%%
+% Normal \cite behavior
+\newcommand{\@tufte@normal@cite}[1]{%
+  \@for\@temp@bibkey:=#1\do{%
+    \sidenote{\bibentry{\@temp@bibkey}.}%
+  }%
+}
+
+%%
+% Macros for holding the list of cite keys until after the \sidenote
+
+\gdef\@tufte@citations{}% list of cite keys
+\newcommand\@tufte@add@citation[1]{\relax% adds a new bibkey to the list of cite keys
+  \ifx\@tufte@citations\@empty\else
+    \g@addto@macro\@tufte@citations{,}% separate by commas
+  \fi
+  \g@addto@macro\@tufte@citations{#1}
+}
+
+\newcommand{\@tufte@print@citations}{% puts each citation in its own margin note
+  \@for\@temp@bibkey:=\@tufte@citations\do{%
+    \marginpar{\@tufte@marginfont\@tufte@justification\bibentry{\@temp@bibkey}.}%
+  }
+}
+
+%%
+% \cite behavior when executed within a sidenote
+
+\newcommand{\@tufte@sidenote@citations}{}% contains list of \cites in sidenote
+\newcommand{\@tufte@infootnote@cite}[1]{%
+  \@tufte@add@citation{#1}
+}
+
+%%
+% Set the default \cite style.  This is set and reset by the \sidenote command.
+
+\let\cite\@tufte@normal@cite
+
+%%
 % Transform existing \footnotes into \sidenotes
 % Sidenote: ``Where God meant footnotes to go.'' ---Tufte
 
@@ -412,26 +461,31 @@
 % Set the in-text footnote mark in the same typeface as the body text itself.
 \def\@makefnmark{\hbox{\@textsuperscript{\normalfont\scriptsize\@thefnmark}}}
 
-\let\sidenote\footnote
+%
+% Define \sidenote command.  Can handle \cite.
+
+\renewcommand{\sidenote}[1]{%
+  \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
+  \gdef\@tufte@citations{}%           clear out any old citations
+  \footnote{#1}%                      print the actual sidenote
+  \@tufte@print@citations%            print any citations
+  \let\cite\@tufte@normal@cite%       go back to using normal in-text \cite command
+  \unskip\ignorespaces%               remove extra white space
+  \kern-\multiplefootnotemarker%      remove \kern left behind by sidenote
+  \kern\multiplefootnotemarker\relax% add new \kern here to replace the one we yanked (used by footmisc's `multiple' option)
+}
 
 %%
 % Sidenote without the footnote mark
 
-\providecommand\marginnote[1]%
-  {\marginpar{\@tufte@marginfont\@tufte@justification #1}}
-
-%%
-% Citations should go in the margin as well
-
-\RequirePackage{natbib}
-\RequirePackage{bibentry}	% allows bibitems to be typeset outside thebibliography environment
-\nobibliography*		% pre-loads the bibliography keys
-\providecommand{\doi}[1]{\textsc{doi:} #1} % pre-defining this so it may be used before the \bibliography command it issued
-\renewcommand{\cite}[1]{%
-  \@for\@temp@bibkey:=#1\do{%
-    \sidenote{\bibentry{\@temp@bibkey}.}%
-  }
+\providecommand\marginnote[1]{%
+  \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
+  \gdef\@tufte@citations{}%           clear out any old citations
+  \marginpar{\@tufte@marginfont\@tufte@justification #1}%
+  \@tufte@print@citations%            print any citations
+  \let\cite\@tufte@normal@cite%       go back to using normal in-text \cite command
 }
+
 
 % TODO: Combine sequences of citations so that 2,3,4,6 becomes 2--4,6
 %       but be careful of hyperref interaction
