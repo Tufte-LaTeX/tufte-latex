@@ -245,6 +245,7 @@
   \hypersetup{pdftitle={\thetitle}}% set the PDF metadata title
 }
 
+\def\@author{}% default author is empty (suppresses LaTeX's ``no author'' warning)
 \renewcommand*{\author}[2][]{%
   \gdef\@author{#2}%
   \begingroup%
@@ -765,13 +766,13 @@
       % FIXME fails with \thanks
       \sffamily
       \par{\Large\allcaps{\@title}}
-      \par{\large\allcaps{\@author}}
-      \par{\large\allcaps{\@date}}
+      \ifthenelse{\equal{\@author}{}}{}{\par{\large\allcaps{\@author}}}
+      \ifthenelse{\equal{\@date}{}}{}{\par{\large\allcaps{\@date}}}
     \endgroup}
     {\begingroup
       \par{\Large\textit{\@title}}
-      \par{\large\textit{\@author}}
-      \par{\large\textit{\@date}}
+      \ifthenelse{\equal{\@author}{}}{}{\par{\large\textit{\@author}}}
+      \ifthenelse{\equal{\@date}{}}{}{\par{\large\textit{\@date}}}
     \endgroup}
   \par
   \thispagestyle{plain}% suppress the running head
