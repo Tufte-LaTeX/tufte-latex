@@ -85,6 +85,13 @@
   \setboolean{@tufte@twoside}{true}
 }
 
+%%
+% `notoc' option -- suppresses the Tufte-style table of contents
+
+\newboolean{@tufte@toc}
+\setboolean{@tufte@toc}{true}
+\DeclareOption{notoc}{\setboolean{@tufte@toc}{false}}
+\DeclareOption{toc}{\setboolean{@tufte@toc}{true}}
 
 %%
 % `justified' option -- uses fully justified text (flush left and flush
@@ -853,13 +860,16 @@
 
 % Formatting for main TOC (printed in front matter)
 % {section} [left] {above} {before w/label} {before w/o label} {filler + page} [after]
-\titlecontents{chapter}%
-        [0em] % distance from left margin
-        {\begin{fullwidth}\fontsize{13pt}{18pt}\selectfont} % above (global formatting of entry)
-        {\contentslabel{2em}\rm\itshape} % before w/label (label = ``Chapter 1'')
-        {\rm\itshape} % before w/o label
-        {\rm\qquad\thecontentspage} % filler + page (leaders and page num)
-        [\vspace{1.5\baselineskip}\end{fullwidth}] % after
+\ifthenelse{\boolean{@tufte@toc}}
+  {\titlecontents{chapter}%
+    [0em] % distance from left margin
+    {\begin{fullwidth}\fontsize{13pt}{18pt}\selectfont} % above (global formatting of entry)
+    {\contentslabel{2em}\rm\itshape} % before w/label (label = ``Chapter 1'')
+    {\rm\itshape} % before w/o label
+    {\rm\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\vspace{1.5\baselineskip}\end{fullwidth}] % after
+  }
+  {}
 
 %\titlecontents{chapter}%
 %	[0em]% distance from left margin
