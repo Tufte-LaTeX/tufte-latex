@@ -1,4 +1,4 @@
-\documentclass[nofonts]{tufte-handout}
+\documentclass{tufte-handout}
 
 \usepackage{amsmath}
 
@@ -16,19 +16,19 @@
 %%
 % If we have Bergamo and Chantilly fonts (from www.fontsite.com) installed,
 % use them.  Bergamo is a clone of Bembo and Chantilly is similar to Gill Sans.
-\makeatletter
-\ifthenelse{\NOT\boolean{@tufte@xetex}}
-  {%
-    \IfFileExists{bergamo.sty}{\usepackage[osf]{bergamo}}{}% Bembo clone
-    \IfFileExists{chantill.sty}{\usepackage{chantill}}{}% Gill Sans clone
-  }{% We're using XeTeX -- load fontspec, etc.
-    \usepackage{fontspec}
-    \usepackage{xltxtra}
-    \setromanfont{Bergamo}% Bembo clone
-    \setsansfont{Chantilly}% Gill Sans clone
-    \setmonofont{Bitstream Vera Sans Mono}%
-  }
-\makeatother
+%\makeatletter
+%\ifthenelse{\NOT\boolean{@tufte@xetex}}
+%  {%
+%    \IfFileExists{bergamo.sty}{\usepackage[osf]{bergamo}}{}% Bembo clone
+%    \IfFileExists{chantill.sty}{\usepackage{chantill}}{}% Gill Sans clone
+%  }{% We're using XeTeX -- load fontspec, etc.
+%    \usepackage{fontspec}
+%    \usepackage{xltxtra}
+%    \setromanfont{Bergamo}% Bembo clone
+%    \setsansfont{Chantilly}% Gill Sans clone
+%    \setmonofont{Bitstream Vera Sans Mono}%
+%  }
+%\makeatother
 
 % The following package makes prettier tables.  We're all about the bling!
 \usepackage{booktabs}
@@ -74,7 +74,7 @@ This style provides \textsc{a}- and \textsc{b}-heads (that is,
 \Verb|\section| and \Verb|\subsection|) demonstrated above.
 
 If you need more than two levels of section headings, you'll have to define
-them yourself at the moment;\sidenote{See see ``Defining new sections'' on
+them yourself at the moment;\sidenote{See see ``\nameref{sec:defining-sections}'' on
 page~\pageref{sec:defining-sections} for help with defining more heading
 levels.} there are no pre-defined styles for anything below a
 \Verb|\subsection|.  As Bringhurst points out in \textit{The Elements of
@@ -314,7 +314,6 @@ class relies upon.  Packages marked with an asterisk are optional.
   \item chngpage
   \item paralist
   \item textcase
-  \item footmisc
   \item natbib and bibentry
   \item placeins
   \item caption

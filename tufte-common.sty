@@ -146,12 +146,11 @@
 % Load the `hyperref' package.  We will set more options later.
 % TODO Set nice defaults for hyperref options
 \ifthenelse{\boolean{@tufte@xetex}}
-  {\RequirePackage[xetex]{hyperref}}
-  {\RequirePackage{hyperref}}
+  {\RequirePackage[hyperfootnotes=false,xetex]{hyperref}}
+  {\RequirePackage[hyperfootnotes=false]{hyperref}}
 
 \hypersetup{%
   pdfborder = {0 0 0},
-  hyperfootnotes = false
 }
 
 %%
@@ -414,8 +413,6 @@
 \nobibliography*		% pre-loads the bibliography keys
 \providecommand{\doi}[1]{\textsc{doi:} #1} % pre-defining this so it may be used before the \bibliography command it issued
 
-\let\sidenote\footnote% This will be redefined shortly
-
 %%
 % Normal \cite behavior
 \newcommand{\@tufte@normal@cite}[1]{%
@@ -458,7 +455,8 @@
 % Transform existing \footnotes into \sidenotes
 % Sidenote: ``Where God meant footnotes to go.'' ---Tufte
 
-\RequirePackage[side,multiple,stable]{footmisc}
+\RequirePackage{optparams}% for our new sidenote commands -- provides multiple optional arguments for commands
+
 \providecommand*{\footnotelayout}{\@tufte@marginfont\@tufte@justification}
 \renewcommand{\footnotelayout}{\@tufte@marginfont\@tufte@justification}
 
@@ -469,19 +467,78 @@
 % Set the in-text footnote mark in the same typeface as the body text itself.
 \def\@makefnmark{\hbox{\@textsuperscript{\normalfont\scriptsize\@thefnmark}}}
 
+\providecommand*{\multiplefootnotemarker}{3sp}
+\providecommand*{\multfootsep}{,}
+
+\renewcommand*\@footnotemark{%
+  \leavevmode%
+  \ifhmode%
+    \edef\@x@sf{\the\spacefactor}%
+    \@tufte@check@multiple@sidenotes%
+    \nobreak%
+  \fi%
+  \@makefnmark%
+  \ifhmode\spacefactor\@x@sf\fi%
+  \relax%
+}
+
+\newcommand{\@tufte@check@multiple@sidenotes}{%
+  \ifdim\lastkern=\multiplefootnotemarker\relax
+    \edef\@x@sf{\the\spacefactor}%
+    \unkern
+    \textsuperscript{\multfootsep}%
+    \spacefactor\@x@sf\relax
+  \fi
+}
+
+\renewcommand\@footnotetext[2][0pt]{%
+  \marginpar{%
+    \vspace*{#1}%
+    \def\baselinestretch {\setspace@singlespace}%
+    \reset@font\footnotesize%
+    \protected@edef\@currentlabel{%
+       \csname p@footnote\endcsname\@thefnmark%
+    }%
+    \color@begingroup%
+       \@makefntext{%
+         \ignorespaces#2%
+       }%
+    \color@endgroup%
+  }%
+}%
+
 %
 % Define \sidenote command.  Can handle \cite.
 
-\renewcommand{\sidenote}[1]{%
+\newcommand{\@tufte@sidenote@vertical@offset}{0pt}
+
+% #1 = footnote num, #2 = vertical offset, #3 = footnote text
+\def\@tufte@sidenote[#1][#2]#3{%
   \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
   \gdef\@tufte@citations{}%           clear out any old citations
-  \footnote{#1}%                      print the actual sidenote
+  \ifthenelse{\NOT\isempty{#2}}{\renewcommand{\@tufte@sidenote@vertical@offset}{#2}}{}%
+  \ifthenelse{\isempty{#1}}{%
+%   % no footnote number
+    \stepcounter\@mpfn%
+    \protected@xdef\@thefnmark{\thempfn}%
+    \@footnotemark\@footnotetext[\@tufte@sidenote@vertical@offset]{#3}%
+  }{%
+%   % footnote number
+    \begingroup%
+      \csname c@\@mpfn\endcsname #1\relax%
+      \unrestored@protected@xdef\@thefnmark{\thempfn}%
+    \endgroup%
+    \@footnotemark\@footnotetext[\@tufte@sidenote@vertical@offset]{#3}%
+  }%
   \@tufte@print@citations%            print any citations
   \let\cite\@tufte@normal@cite%       go back to using normal in-text \cite command
   \unskip\ignorespaces%               remove extra white space
   \kern-\multiplefootnotemarker%      remove \kern left behind by sidenote
-  \kern\multiplefootnotemarker\relax% add new \kern here to replace the one we yanked (used by footmisc's `multiple' option)
+  \kern\multiplefootnotemarker\relax% add new \kern here to replace the one we yanked
 }
+
+\newcommand*{\sidenote}{\optparams{\@tufte@sidenote}{[][0pt]}}
+\renewcommand*{\footnote}{\optparams{\@tufte@sidenote}{[][0pt]}}
 
 %%
 % Sidenote without the footnote mark
