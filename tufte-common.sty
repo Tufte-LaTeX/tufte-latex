@@ -208,8 +208,14 @@
 %%
 % To implement full-width display environments
 
-\RequirePackage[strict]{chngpage}
-% TODO this package may be obsolete -- see the changepage package for a replacement
+\newboolean{@tufte@changepage}
+\IfFileExists{changepage.sty}{%
+  \RequirePackage[strict]{changepage}
+  \setboolean{@tufte@changepage}{true}
+}{%
+  \RequirePackage[strict]{chngpage}
+  \setboolean{@tufte@changepage}{false}
+}
 
 
 
@@ -401,8 +407,8 @@
 
 %%
 % Used for doublespacing, and other linespacing
-% Note that setspace must be loaded before footmisc or it'll break sidenotes
-\usepackage{setspace}
+
+\RequirePackage{setspace}
 
 
 %%
@@ -543,10 +549,10 @@
 %%
 % Sidenote without the footnote mark
 
-\providecommand\marginnote[1]{%
+\providecommand\marginnote[2][0pt]{%
   \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
   \gdef\@tufte@citations{}%           clear out any old citations
-  \marginpar{\@tufte@marginfont\@tufte@justification #1}%
+  \marginpar{\vspace*{#1}\@tufte@marginfont\@tufte@justification #2}%
   \@tufte@print@citations%            print any citations
   \let\cite\@tufte@normal@cite%       go back to using normal in-text \cite command
 }
@@ -605,7 +611,7 @@
   [htbp]%
   {\@float{figure}[#1]%
    \ifthenelse{\boolean{@tufte@symmetric}}
-     {\begin{adjustwidth}[]{}{-\@tufte@overhang}}
+     {\ifthenelse{\boolean{@tufte@changepage}}{\begin{adjustwidth*}{}{-\@tufte@overhang}}{\begin{adjustwidth}[]{}{-\@tufte@overhang}}}
      {\begin{adjustwidth}{}{-\@tufte@overhang}}
    \begin{minipage}{\linewidth}}%
   {\end{minipage}%
@@ -619,7 +625,7 @@
   [htbp]%
   {\@float{table}[#1]%
    \ifthenelse{\boolean{@tufte@symmetric}}
-     {\begin{adjustwidth}[]{}{-\@tufte@overhang}}
+     {\ifthenelse{\boolean{@tufte@changepage}}{\begin{adjustwidth*}{}{-\@tufte@overhang}}{\begin{adjustwidth}[]{}{-\@tufte@overhang}}}
      {\begin{adjustwidth}{}{-\@tufte@overhang}}
    \begin{minipage}{\linewidth}}%
   {\end{minipage}%
@@ -631,7 +637,7 @@
 
 \newenvironment{fullwidth}
   {\ifthenelse{\boolean{@tufte@symmetric}}
-     {\begin{adjustwidth}[]{}{-\@tufte@overhang}}
+     {\ifthenelse{\boolean{@tufte@changepage}}{\begin{adjustwidth*}{}{-\@tufte@overhang}}{\begin{adjustwidth}[]{}{-\@tufte@overhang}}}
      {\begin{adjustwidth}{}{-\@tufte@overhang}}
   }
   {\end{adjustwidth}}
@@ -658,10 +664,12 @@
 % compiling with XeLaTeX.
 
 \ifthenelse{\boolean{@tufte@loadfonts}\AND\NOT\boolean{@tufte@xetex}}{%
-  \IfFileExists{palatino.sty}{%
-    \RequirePackage{palatino}
-    \IfFileExists{mathpazo.sty}{\RequirePackage[osf,sc]{mathpazo}}{}
+  \IfFileExists{mathpazo.sty}{%
+    \RequirePackage[osf,sc]{mathpazo}
   }{} % if the Palatino typefaces aren't found, do nothing.
+  \IfFileExists{helvet.sty}{%
+    \RequirePackage[scaled=0.95]{helvet}
+  }{}
 }{}
 
 
@@ -823,6 +831,7 @@
 \renewcommand{\maketitle}{%
   \newpage
   \global\@topnum\z@% prevent floats from being placed at the top of the page
+  \begingroup
   \setlength{\parindent}{0pt}
   \setlength{\parskip}{4pt}
   \ifthenelse{\boolean{@tufte@sfsidenotes}}
@@ -839,6 +848,7 @@
       \ifthenelse{\equal{\@date}{}}{}{\par{\large\textit{\@date}}}
     \endgroup}
   \par
+  \endgroup
   \thispagestyle{plain}% suppress the running head
 }
 
