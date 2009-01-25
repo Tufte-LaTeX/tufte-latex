@@ -31,6 +31,36 @@ or search the news:comp.text.tex group via,
 
  http://groups.google.com/group/comp.text.tex
 
+The following packages are required:
+
+ * caption
+ * chngpage or changepage
+ * fancyhdr
+ * fontenc
+ * geometry
+ * hyperref
+ * natbib and bibentry
+ * optparams
+ * paralist
+ * placeins
+ * ragged2e
+ * setspace
+ * textcase
+ * titlesec
+ * titletoc
+ * xcolor
+ * xifthen
+
+The following packages are optional and will be automatically used if installed:
+
+ * beramono
+ * helvet
+ * ifpdf
+ * ifxetex
+ * letterspace (in the microtype package)
+ * mathpazo
+ * soul
+
 == Bugs/Features/Support
 
 For kudos, feature requests, patches, or support requests that you

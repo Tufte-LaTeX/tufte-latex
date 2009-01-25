@@ -11,24 +11,7 @@
 
 \title{An Example of the Usage of the Tufte-Handout Style\thanks{Inspired by Edward~R. Tufte!}}
 \author[The Tufte-LaTeX Developers]{The Tufte-\LaTeX\ Developers}
-\date{22 February 2008}  % if the \date{} command is left out, the current date will be used
-
-%%
-% If we have Bergamo and Chantilly fonts (from www.fontsite.com) installed,
-% use them.  Bergamo is a clone of Bembo and Chantilly is similar to Gill Sans.
-%\makeatletter
-%\ifthenelse{\NOT\boolean{@tufte@xetex}}
-%  {%
-%    \IfFileExists{bergamo.sty}{\usepackage[osf]{bergamo}}{}% Bembo clone
-%    \IfFileExists{chantill.sty}{\usepackage{chantill}}{}% Gill Sans clone
-%  }{% We're using XeTeX -- load fontspec, etc.
-%    \usepackage{fontspec}
-%    \usepackage{xltxtra}
-%    \setromanfont{Bergamo}% Bembo clone
-%    \setsansfont{Chantilly}% Gill Sans clone
-%    \setmonofont{Bitstream Vera Sans Mono}%
-%  }
-%\makeatother
+\date{24 January 2009}  % if the \date{} command is left out, the current date will be used
 
 % The following package makes prettier tables.  We're all about the bling!
 \usepackage{booktabs}
@@ -48,11 +31,19 @@
 % Provides paragraphs of dummy text
 \usepackage{lipsum}
 
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
 \begin{document}
 
-\maketitle % this prints the handout title, author, and date
-
-
+\maketitle% this prints the handout title, author, and date
 
 \begin{abstract}
 \noindent This document describes the Tufte handout \LaTeX\ document style.
@@ -61,12 +52,12 @@ It also provides examples and comments on the style's use.
 
 %\printclassoptions
 
-The \Verb|tufte-handout| document class defines a style similar to the
+The Tufte-\LaTeX\ document classes define a style similar to the
 style Edward Tufte uses in his books and handouts.  Tufte's style is known
 for its extensive use of sidenotes, tight integration of graphics with
 text, and well-set typography.  This document aims to be at once a
-demonstration of the features of the \Verb|tufte-handout| document class
-and a style guide to its use.
+demonstration of the features of the Tufte-\LaTeX document classes
+and a style guide to their use.
 
 \section{Page Layout}\label{sec:page-layout}
 \subsection{Headings}\label{sec:headings}
@@ -81,7 +72,7 @@ levels.} there are no pre-defined styles for anything below a
 Typographic Style},\cite{Bringhurst2005} you should ``use as many levels of
 headings as you need: no more, and no fewer.''
 
-The Tufte-handout class will emit an error if you try to use
+The Tufte-\LaTeX\ classes will emit an error if you try to use
 \Verb|\subsubsection| and smaller headings.
 
 %\medskip
@@ -100,8 +91,9 @@ The Tufte-handout class will emit an error if you try to use
 starts each section with a bit of vertical space, a non-indented paragraph,
 and sets the first few words of the sentence in \textsc{small caps}.  To
 accomplish this using this style, use the \Verb|\newthought| command:  
-
-\Verb|\newthought{In his later books}, Tufte starts|\ldots
+\begin{docspec}
+  \doccmd{newthought\{In his later books\}, Tufte starts\ldots}
+\end{docspec}
 
 \subsection{Sidenotes}\label{sec:sidenotes}
 One of the most prominent and distinctive features of this style is the
@@ -114,32 +106,71 @@ number), you can use the \Verb|\marginnote| command.\marginnote{This is a
 margin note.  Notice that there isn't a number preceding the note, and
 there is no number in the main text where this note was written.}
 
+The specification of the \Verb|\sidenote| command is:
+\begin{docspec}
+  \doccmd{sidenote[\docopt{number}][\docopt{offset}]\{\docarg{Sidenote text.}\}}
+\end{docspec}
+
+Both the \docopt{number} and \docopt{offset} arguments are optional.  If you
+provide a \docopt{number} argument, then that number will be used as the
+sidenote number.  It will change of the number of the current sidenote only and
+will not affect the numbering sequence of subsequent sidenotes.
+
+Sometimes a sidenote may run over the top of other text or graphics in the
+margin space.  If this happens, you can adjust the vertical position of the
+sidenote by providing a dimension in the \docopt{offset} argument.  Some
+examples of valid dimensions are:
+\begin{docspec}
+  \ttfamily 1.0in \qquad 2.54cm \qquad 254mm \qquad 6\Verb|\baselineskip|
+\end{docspec}
+If the dimension is positive it will push the sidenote down the page; if the
+dimension is negative, it will move the sidenote up the page.
+
+While both the \docopt{number} and \docopt{offset} arguments are optional, they
+must be provided in order.  To adjust the vertical position of the sidenote
+while leaving the sidenote number alone, use the following syntax:
+\begin{docspec}
+  \doccmd{sidenote[][\docopt{offset}]\{\docarg{Sidenote text.}\}}
+\end{docspec}
+The empty brackets tell the \Verb|\sidenote| command to use the default
+sidenote number.
+
+If you \emph{only} want to change the sidenote number, however, you may
+completely omit the \docopt{offset} argument:
+\begin{docspec}
+  \doccmd{sidenote[\docopt{number}]\{\docarg{Sidenote text.}\}}
+\end{docspec}
+
+The \Verb|\marginnote| command has a similar \docarg{offset} argument:
+\begin{docspec}
+  \doccmd{marginnote[\docopt{offset}]\{\docarg{Margin note text.}\}}
+\end{docspec}
+
 \subsection{References}
 References are placed alongside their citations as sidenotes,
 as well.  This can be accomplished using the normal \Verb|\cite|
-command.\footnote{The first paragraph of this document includes a citation.}
+command.\sidenote{The first paragraph of this document includes a citation.}
 
 The complete list of references may also be printed automatically by using
 the \Verb|\bibliography| command.  (See the end of this document for an
 example.)  If you do not want to print a bibliography at the end of your
 document, use the \Verb|\nobibliography| command in its place.  
 
-To enter multiple citations at one
-location,\cite{Tufte2006,Tufte1990} you will need to use multiple
-\Verb|\cite| commands: \Verb|\cite{Tufte2006}| \Verb|\cite{Tufte1990}|.  Each
-\Verb|\cite| command will generate its own sidenote and its own sidenote
-number. 
-
+To enter multiple citations at one location,\cite{Tufte2006,Tufte1990} you can
+provide a list of keys separated by commas: \Verb|\cite{Tufte2006,Tufte1990}|.  
+\begin{docspec}
+  \doccmd{cite\{\docarg{bibkey1,bibkey2,\ldots}\}}
+\end{docspec}
 
 \section{Figures and Tables}\label{sec:figures-and-tables}
 Images and graphics play an integral role in Tufte's work.
-In addition to the standard \Verb|figure| and \Verb|tabular| environments,
+In addition to the standard \docenv{figure} and \docenv{tabular} environments,
 this style provides special figure and table environments for full-width
 floats.
 
-Full page width figures and tables may be placed in \texttt{figure*} or
-\texttt{table*} environments.  To place figures or tables in the margin,
-use the \Verb|marginfigure| or \Verb|margintable| environments as follows
+Full page--width figures and tables may be placed in \docenv{figure*} or
+\docenv{table*} environments.  To place figures or tables in the margin,
+use the \docenv{marginfigure} or \docenv{margintable} environments as follows
 (see figure~\ref{fig:marginfig}):
 \begin{marginfigure}
   \includegraphics[width=\marginparwidth]{helix}
@@ -150,10 +181,21 @@ use the \Verb|marginfigure| or \Verb|margintable| environments as follows
 \end{marginfigure}
 \begin{Verbatim}
 \begin{marginfigure}
-  \includegraphics{blah}
-  \caption{This figure is in the margin.}
+  \includegraphics{helix}
+  \caption{This is a margin figure.}
 \end{marginfigure}
 \end{Verbatim}
+
+The \docenv{marginfigure} and \docenv{margintable} environments accept an optional parameter \docopt{offset} that adjusts the vertical position of the figure or table.  See the ``\nameref{sec:sidenotes}'' section above for examples.  The specifications are:
+\begin{docspec}
+  \doccmd{begin\{marginfigure\}[\docopt{offset}]}\\
+  \qquad\ldots\\
+  \doccmd{end\{marginfigure\}}\\
+  \mbox{}\\
+  \doccmd{begin\{margintable\}[\docopt{offset}]}\\
+  \qquad\ldots\\
+  \doccmd{end\{margintable\}}\\
+\end{docspec}
 
 
 Figure~\ref{fig:fullfig} is an example of the \Verb|figure*|
@@ -175,7 +217,7 @@ environment and figure~\ref{fig:textfig} is an example of the normal
   %\zsavepos{pos:textfig}
 \end{figure}
 
-Table~\ref{tab:normaltab} shows table created with the \texttt{booktabs}
+Table~\ref{tab:normaltab} shows table created with the \docpkg{booktabs}
 package.  Notice the lack of vertical rules---they serve only to clutter
 the table's data.
 
@@ -200,7 +242,7 @@ the table's data.
 
 \section{Full-width text blocks}
 
-In addition to the new float types, there is a \texttt{fullwidth}
+In addition to the new float types, there is a \docenv{fullwidth}
 environment that stretches across the main text block and the sidenotes
 area.
 
@@ -217,8 +259,8 @@ Lorem ipsum dolor sit amet...
 \section{Typography}\label{sec:typography}
 
 \subsection{Typefaces}\label{sec:typefaces}
-If the Palatino and Bera Mono typefaces are installed, this style will use
-them automatically.  Otherwise, we'll fall back on the Computer Modern
+If the Palatino, \textsf{Helvetica}, and \texttt{Bera Mono} typefaces are installed, this style
+will use them automatically.  Otherwise, we'll fall back on the Computer Modern
 typefaces.
 
 \subsection{Letterspacing}\label{sec:letterspacing}
@@ -241,63 +283,52 @@ however.  This allows one to use both uppercase and lowercase letters:
 
 \section{Customization}\label{sec:customization}
 \subsection{Document class options}\label{sec:options}
-The \Verb|tufte-handout| class is based on the \LaTeX\ \Verb|article|
+The \doccls{tufte-handout} class is based on the \LaTeX\ \doccls{article}
 document class.  Therefore, you can pass any of the typical article
 options.  There are a few options that are specific to the
-\Verb|tufte-handout| document class, however.
+\doccls{tufte-handout} document class, however.
 
-The \Verb|a4paper| option will set the paper size to \smallcaps{A4} instead of
+The \docclsopt{a4paper} option will set the paper size to \smallcaps{A4} instead of
 the default \smallcaps{US} letter size.
 
-The \Verb|sfsidenotes| option will set the sidenotes in a \textsf{sans
-serif} typeface instead of the default roman.
+The \docclsopt{sfsidenotes} option will set the sidenotes and title block in a 
+\textsf{sans serif} typeface instead of the default roman.
 
-The \Verb|twoside| option will modify the running heads so that the page
+The \docclsopt{twoside} option will modify the running heads so that the page
 number is printed on the outside edge (as opposed to always printing the page
-number on the right-side edge in \Verb|oneside| mode).  
+number on the right-side edge in \docclsopt{oneside} mode).  
 
-The \Verb|symmetric| option typesets the sidenotes on the outside edge of
+The \docclsopt{symmetric} option typesets the sidenotes on the outside edge of
 the page.  This is how books are traditionally printed, but is contrary to
 Tufte's book design which sets the sidenotes on the right side of the page.
-This option implicitly sets the \Verb|twoside| option.
+This option implicitly sets the \docclsopt{twoside} option.
 
-The \Verb|justified| option sets all the text fully justified (flush left
+The \docclsopt{justified} option sets all the text fully justified (flush left
 and right).  The default is to set the text ragged right.  
 The body text of Tufte's books are set ragged right.  This prevents
 needless hyphenation and makes it easier to read the text in the slightly
 narrower column.
 
 \subsection{Defining new sections}\label{sec:defining-sections}
-As mentioned on page~\pageref{sec:headings}, the \Verb|tufte-handout|
-document class only defines \Verb|\section| and \Verb|\subsection|
-headings.  
+As mentioned in the ``\nameref{sec:headings}'' section (see
+page~\pageref{sec:headings}), the \doccls{tufte-handout} document class only
+defines \doccmd{section} and \doccmd{subsection} headings.  
 
-If you wanted to define, say, a \Verb|\paragraph| heading, you could do it
-as follows:
-
-\begin{Verbatim}
-\makeatletter
-\renewcommand\paragraph{\@startsection{paragraph}% the name of the new section
-  {4}% the section level number
-  {0em}% indentation amount
-  {\baselineskip}% amount of space to leave before heading
-  {-1.5em}% amount of space to leave after heading
-  {\normalfont\itshape}% style
-}
-\makeatother
-\end{Verbatim}
-
-Place that code in the preamble of your document and you'll now be able to use
-\Verb|\paragraph|.  
-
-For more details on defining section levels, see \textit{The \LaTeX\
-Companion},\cite{Mittelbach2004} or use the \Verb|titlesec| package.
+We use the \docpkg{titlesec} package to define the appearance of the headings.
+To modify an existing section or to add a new section, see the documentation of
+the \docpkg{titlesec} package.
 
 
 \section{Installation}\label{sec:installation}
-To install the \Verb|tufte-handout| class, simply drop the
-\Verb|tufte-handout.cls| file into the same directory as your \Verb|.tex|
-file.
+To install the Tufte-\LaTeX classes, simply drop the
+following files into the same directory as your \texttt{.tex}
+file:
+\begin{quote}
+  \ttfamily
+  tufte-common.sty\\
+  tufte-handout.cls\\
+  tufte-book.cls
+\end{quote}
 
 % TODO add instructions for installing it globally
 
@@ -305,23 +336,34 @@ file.
 \section{Support}\label{sec:support}
 
 \subsection{Package Dependencies}\label{sec:dependencies}
-The following is a list of packages that the \Verb|tufte-handout| document
-class relies upon.  Packages marked with an asterisk are optional.
+The following is a list of packages that the Tufte-\LaTeX\ document
+classes rely upon.  Packages marked with an asterisk are optional.
 \begin{multicols}{2}
 \begin{itemize}
+  \item xifthen
+  \item ifpdf*
+  \item ifxetex*
+  \item hyperref
   \item geometry
   \item ragged2e
-  \item chngpage
+  \item chngpage \emph{or} changepage
   \item paralist
   \item textcase
-  \item natbib and bibentry
+  \item soul*
+  \item letterspace*
+  \item setspace
+  \item natbib \emph{and} bibentry
+  \item optparams
   \item placeins
   \item caption
-  \item fancyhdr 
-  \item microtype*
-  \item soul*
-  \item palatino*
+  \item mathpazo*
+  \item helvet*
+  \item fontenc
   \item beramono*
+  \item fancyhdr
+  \item xcolor
+  \item titlesec
+  \item titletoc
 \end{itemize}
 \end{multicols}
 
