@@ -659,29 +659,16 @@
   {\captionsetup{justification=raggedright}}
 
 %%
-% If the Palatino typeface (and its math symbol set) are installed, load
-% them unless the `nofonts' class option was provided, or if we're
-% compiling with XeLaTeX.
+% If we're NOT using XeLaTeX and the `nofonts' class option was NOT provided,
+% we should load the Palatino, Helvetica, and Bera Mono fonts (if they are
+% installed.)
 
 \ifthenelse{\boolean{@tufte@loadfonts}\AND\NOT\boolean{@tufte@xetex}}{%
-  \IfFileExists{mathpazo.sty}{%
-    \RequirePackage[osf,sc]{mathpazo}
-  }{} % if the Palatino typefaces aren't found, do nothing.
-  \IfFileExists{helvet.sty}{%
-    \RequirePackage[scaled=0.95]{helvet}
-  }{}
-}{}
-
-
-%%
-% If the Bera Mono typeface is available, use it unless the `nofonts' class
-% option was provided, or if we're compiling with XeLaTeX.
-
-\ifthenelse{\boolean{@tufte@loadfonts}\AND\NOT\boolean{@tufte@xetex}}{%
-  \IfFileExists{beramono.sty}{%
-    \RequirePackage[T1]{fontenc}
-    \RequirePackage[scaled=0.85]{beramono}
-  }{}
+  \IfFileExists{mathpazo.sty}{\RequirePackage[osf,sc]{mathpazo}}{}
+  \IfFileExists{helvet.sty}{\RequirePackage[scaled=0.95]{helvet}}{}
+  \IfFileExists{beramono.sty}{\RequirePackage[scaled=0.85]{beramono}}{}
+  \RequirePackage[T1]{fontenc}
+  \RequirePackage{textcomp}
 }{}
 
 
