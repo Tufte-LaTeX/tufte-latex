@@ -421,11 +421,24 @@
 
 %%
 % Normal \cite behavior
-\newcommand{\@tufte@normal@cite}[1]{%
-  \@for\@temp@bibkey:=#1\do{%
-    \sidenote{\bibentry{\@temp@bibkey}.}%
+\newcounter{@tufte@num@bibkeys}%
+\newcommand{\@tufte@normal@cite}[2][0pt]{%
+  % Snag the last bibentry in the list for later comparison
+  \let\@temp@last@bibkey\@empty%
+  \@for\@temp@bibkey:=#2\do{\let\@temp@last@bibkey\@temp@bibkey}%
+  \sidenote[][#1]{%
+    % Loop through all the bibentries, separating them with semicolons and spaces
+    \setcounter{@tufte@num@bibkeys}{0}%
+    \@for\@temp@bibkeyx:=#2\do{%
+      \ifthenelse{\equal{\@temp@last@bibkey}{\@temp@bibkeyx}}%
+        {\ifthenelse{\equal{\value{@tufte@num@bibkeys}}{0}}{}{and\ }%
+	 \bibentry{\@temp@bibkeyx}}%
+        {\bibentry{\@temp@bibkeyx};\ }%
+      \stepcounter{@tufte@num@bibkeys}%
+    }%
   }%
 }
+
 
 %%
 % Macros for holding the list of cite keys until after the \sidenote
@@ -438,10 +451,24 @@
   \g@addto@macro\@tufte@citations{#1}
 }
 
-\newcommand{\@tufte@print@citations}{% puts each citation in its own margin note
-  \@for\@temp@bibkey:=\@tufte@citations\do{%
-    \marginpar{\@tufte@marginfont\@tufte@justification\bibentry{\@temp@bibkey}.}%
-  }
+\newcommand{\@tufte@print@citations}[1][0pt]{% puts the citations in a margin note
+  % Snag the last bibentry in the list for later comparison
+  \let\@temp@last@bibkey\@empty%
+  \@for\@temp@bibkey:=\@tufte@citations\do{\let\@temp@last@bibkey\@temp@bibkey}%
+  \marginpar{%
+    \vspace*{#1}%
+    \@tufte@marginfont%
+    \@tufte@justification%
+    % Loop through all the bibentries, separating them with semicolons and spaces
+    \setcounter{@tufte@num@bibkeys}{0}%
+    \@for\@temp@bibkeyx:=\@tufte@citations\do{%
+      \ifthenelse{\equal{\@temp@last@bibkey}{\@temp@bibkeyx}}%
+        {\ifthenelse{\equal{\value{@tufte@num@bibkeys}}{0}}{}{and\ }%
+         \bibentry{\@temp@bibkeyx}}%
+        {\bibentry{\@temp@bibkeyx};\ }%
+      \stepcounter{@tufte@num@bibkeys}%
+    }%
+  }%
 }
 
 %%
@@ -549,7 +576,7 @@
 %%
 % Sidenote without the footnote mark
 
-\providecommand\marginnote[2][0pt]{%
+\newcommand\marginnote[2][0pt]{%
   \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
   \gdef\@tufte@citations{}%           clear out any old citations
   \marginpar{\vspace*{#1}\@tufte@marginfont\@tufte@justification #2}%

@@ -156,10 +156,11 @@ the \Verb|\bibliography| command.  (See the end of this document for an
 example.)  If you do not want to print a bibliography at the end of your
 document, use the \Verb|\nobibliography| command in its place.  
 
-To enter multiple citations at one location,\cite{Tufte2006,Tufte1990} you can
-provide a list of keys separated by commas: \Verb|\cite{Tufte2006,Tufte1990}|.  
+To enter multiple citations at one location,\cite[-3\baselineskip]{Tufte2006,Tufte1990} you can
+provide a list of keys separated by commas and the same optional vertical
+offset argument: \Verb|\cite{Tufte2006,Tufte1990}|.  
 \begin{docspec}
-  \doccmd{cite\{\docarg{bibkey1,bibkey2,\ldots}\}}
+  \doccmd{cite[\docopt{offset}]\{\docarg{bibkey1,bibkey2,\ldots}\}}
 \end{docspec}
 
 \section{Figures and Tables}\label{sec:figures-and-tables}
