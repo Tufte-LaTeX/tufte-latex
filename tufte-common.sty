@@ -81,9 +81,7 @@
 % `twoside' option -- alternates running heads
 
 \newboolean{@tufte@twoside}
-\DeclareOption{twoside}{
-  \setboolean{@tufte@twoside}{true}
-}
+\DeclareOption{twoside}{\setboolean{@tufte@twoside}{true}}
 
 %%
 % `notoc' option -- suppresses the Tufte-style table of contents
@@ -100,6 +98,12 @@
 \newboolean{@tufte@justified}
 \DeclareOption{justified}{\setboolean{@tufte@justified}{true}}
 
+%%
+% `bidi' option -- loads the bidi package for bi-directional text
+
+\newboolean{@tufte@loadbidi}
+\DeclareOption{bidi}{\setboolean{@tufte@loadbidi}{true}}
+\DeclareOption{nobidi}{\setboolean{@tufte@loadbibi}{false}}
 
 % FIXME: should probably specify options not supported like Mittelbach's aipproc.cls
 
@@ -410,6 +414,12 @@
 
 \RequirePackage{setspace}
 
+%%
+% Load the bidi package if instructed to do so.  This package must be loaded
+% prior to our redefining the \footnote and \cite commands.
+
+\ifthenelse{\boolean{@tufte@loadbidi}}{\RequirePackage{bidi}}{}
+
 
 %%
 % Citations should go in the margin as sidenotes
@@ -528,6 +538,7 @@
   \marginpar{%
     \vspace*{#1}%
     \def\baselinestretch {\setspace@singlespace}%
+    \ifthenelse{\boolean{@tufte@loadbidi}}{\if@rl@footnote\@rltrue\else\@rlfalse\fi}{}%
     \reset@font\footnotesize%
     \protected@edef\@currentlabel{%
        \csname p@footnote\endcsname\@thefnmark%
