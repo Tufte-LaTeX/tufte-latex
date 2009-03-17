@@ -510,6 +510,13 @@
 
 \RequirePackage{natbib}
 \RequirePackage{bibentry}	% allows bibitems to be typeset outside thebibliography environment
+% Redefine the \BR@b@bibitem command to fix a bug with bibentry+chicago style
+\renewcommand\BR@b@bibitem[2][]{%
+  \ifthenelse{\isempty{#1}}%
+    {\BR@bibitem{#2}}%
+    {\BR@bibitem[#1]{#2}}%
+  \BR@c@bibitem{#2}%
+}
 \nobibliography*		% pre-loads the bibliography keys
 \providecommand{\doi}[1]{\textsc{doi:} #1} % pre-defining this so it may be used before the \bibliography command it issued
 
