@@ -1,13 +1,13 @@
 \documentclass{tufte-handout}
 
+%\geometry{showframe}% for debugging purposes -- displays the margins
+
 \usepackage{amsmath}
 
 % Set up the images/graphics package
 \usepackage{graphicx}
 \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 \graphicspath{{graphics/}}
-
-\usepackage{mcaption} % FIXME move to .cls file
 
 \title{An Example of the Usage of the Tufte-Handout Style\thanks{Inspired by Edward~R. Tufte!}}
 \author[The Tufte-LaTeX Developers]{The Tufte-\LaTeX\ Developers}
@@ -56,7 +56,7 @@ The Tufte-\LaTeX\ document classes define a style similar to the
 style Edward Tufte uses in his books and handouts.  Tufte's style is known
 for its extensive use of sidenotes, tight integration of graphics with
 text, and well-set typography.  This document aims to be at once a
-demonstration of the features of the Tufte-\LaTeX document classes
+demonstration of the features of the Tufte-\LaTeX\ document classes
 and a style guide to their use.
 
 \section{Page Layout}\label{sec:page-layout}
@@ -174,7 +174,7 @@ Full page--width figures and tables may be placed in \docenv{figure*} or
 use the \docenv{marginfigure} or \docenv{margintable} environments as follows
 (see figure~\ref{fig:marginfig}):
 \begin{marginfigure}
-  \includegraphics[width=\marginparwidth]{helix}
+  \includegraphics[width=\linewidth]{helix}
   \caption{This is a margin figure.  The helix is defined by 
     $x = \cos(2\pi z)$, $y = \sin(2\pi z)$, and $z = [0, 2.7]$.  The figure was
     drawn using Asymptote (\url{http://asymptote.sf.net/}).}
@@ -321,7 +321,7 @@ the \docpkg{titlesec} package.
 
 
 \section{Installation}\label{sec:installation}
-To install the Tufte-\LaTeX classes, simply drop the
+To install the Tufte-\LaTeX\ classes, simply drop the
 following files into the same directory as your \texttt{.tex}
 file:
 \begin{quote}
@@ -377,9 +377,6 @@ links to our \smallcaps{svn} repository, mailing lists, bug tracker, and documen
 \bibliography{sample-handout}
 \bibliographystyle{plainnat}
 
-%\section{Float Positions---DEBUG}
-%Full figure: $x=\zposx{pos:fullfig}$, $y=\zposy{pos:fullfig}$
-%Text figure: $x=\zposx{pos:textfig}$, $y=\zposy{pos:textfig}$
-%Normal table: $x=\zposx{pos:normaltab}$, $y=\zposy{pos:normaltab}$
+
 
 \end{document}

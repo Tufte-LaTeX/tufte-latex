@@ -158,12 +158,68 @@
 }
 
 %%
+% Set the font sizes and baselines to match Tufte's books
+\renewcommand\normalsize{%
+   \@setfontsize\normalsize\@xpt{14}%
+   \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+   \belowdisplayskip \abovedisplayskip
+   \let\@listi\@listI}
+\normalbaselineskip=14pt
+\normalsize
+\renewcommand\small{%
+   \@setfontsize\small\@ixpt{12}%
+   \abovedisplayskip 8.5\p@ \@plus3\p@ \@minus4\p@
+   \abovedisplayshortskip \z@ \@plus2\p@
+   \belowdisplayshortskip 4\p@ \@plus2\p@ \@minus2\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 4\p@ \@plus2\p@ \@minus2\p@
+               \parsep 2\p@ \@plus\p@ \@minus\p@
+               \itemsep \parsep}%
+   \belowdisplayskip \abovedisplayskip
+}
+\renewcommand\footnotesize{%
+   \@setfontsize\footnotesize\@viiipt{10}%
+   \abovedisplayskip 6\p@ \@plus2\p@ \@minus4\p@
+   \abovedisplayshortskip \z@ \@plus\p@
+   \belowdisplayshortskip 3\p@ \@plus\p@ \@minus2\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 3\p@ \@plus\p@ \@minus\p@
+               \parsep 2\p@ \@plus\p@ \@minus\p@
+               \itemsep \parsep}%
+   \belowdisplayskip \abovedisplayskip
+}
+\renewcommand\scriptsize{\@setfontsize\scriptsize\@viipt\@viiipt}
+\renewcommand\tiny{\@setfontsize\tiny\@vpt\@vipt}
+\renewcommand\large{\@setfontsize\large\@xiipt{14}}
+\renewcommand\Large{\@setfontsize\Large\@xivpt{18}}
+\renewcommand\LARGE{\@setfontsize\LARGE\@xviipt{22}}
+\renewcommand\huge{\@setfontsize\huge\@xxpt{25}}
+\renewcommand\Huge{\@setfontsize\Huge\@xxvpt{30}}
+
+\setlength\leftmargini   {1pc}
+\setlength\leftmarginii  {1pc}
+\setlength\leftmarginiii {1pc}
+\setlength\leftmarginiv  {1pc}
+\setlength\leftmarginv   {1pc}
+\setlength\leftmarginvi  {1pc}
+\setlength\labelsep      {.5pc}
+\setlength\labelwidth    {\leftmargini}
+\addtolength\labelwidth{-\labelsep}
+
+\setlength{\parindent}{1pc}
+\setlength{\parskip}{0pt}
+
+
+%%
 % Set page layout geometry
 
-\RequirePackage[letterpaper,includemp,width=6.5in,marginparsep=0.375in,marginparwidth=2in]{geometry}
+\RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,textheight=44\baselineskip,headheight=\baselineskip]{geometry}
 
+% FIXME adjust A4 geometry to match letter paper geometry (except for outside margins)
 \ifthenelse{\boolean{@tufte@afourpaper}}
-  {\geometry{a4paper,includemp,width=170mm,marginparsep=10mm,marginparwidth=50mm}}
+  {\geometry{a4paper,includemp,width=170mm,marginparsep=10mm,marginparwidth=50mm,headheight=\baselineskip}}
   {}
 
 \ifthenelse{\boolean{@tufte@symmetric}}
@@ -174,14 +230,14 @@
 %%
 % Separation marginpars by a line's worth of space.
 
-\setlength\marginparpush{\baselineskip}
+\setlength\marginparpush{10pt}
 
 %%
 % Font for margin items
 
 \ifthenelse{\boolean{@tufte@sfsidenotes}}
-  {\newcommand{\@tufte@marginfont}{\normalfont\scriptsize\sffamily}}
-  {\newcommand{\@tufte@marginfont}{\normalfont\scriptsize}}
+  {\newcommand{\@tufte@marginfont}{\normalfont\footnotesize\sffamily}}
+  {\newcommand{\@tufte@marginfont}{\normalfont\footnotesize}}
 
 %%
 % \RaggedRight allows hyphenation
@@ -410,6 +466,34 @@
 }
 
 %%
+% Redefine the display environments (quote, quotation, etc.)
+
+\renewenvironment{verse}
+               {\let\\\@centercr
+                \list{}{\itemsep      \z@
+                        \itemindent   -1pc%
+                        \listparindent\itemindent
+                        \rightmargin  \leftmargin
+                        \advance\leftmargin 1pc}%
+                \small%
+                \item\relax}
+               {\endlist}
+\renewenvironment{quotation}
+               {\list{}{\listparindent 1pc%
+                        \itemindent    \listparindent
+                        \rightmargin   \leftmargin
+                        \parsep        \z@ \@plus\p@}%
+                \small%
+                \item\relax\noindent\ignorespaces}
+               {\endlist}
+\renewenvironment{quote}
+               {\list{}{\rightmargin\leftmargin}%
+                \small%
+                \item\relax}
+               {\endlist}
+
+
+%%
 % Used for doublespacing, and other linespacing
 
 \RequirePackage{setspace}
@@ -508,7 +592,7 @@
 \long\def\@makefntext#1{\@textsuperscript{\@tufte@marginfont\tiny\@thefnmark}\,\footnotelayout#1}
 
 % Set the in-text footnote mark in the same typeface as the body text itself.
-\def\@makefnmark{\hbox{\@textsuperscript{\normalfont\scriptsize\@thefnmark}}}
+\def\@makefnmark{\hbox{\@textsuperscript{\normalfont\footnotesize\@thefnmark}}}
 
 \providecommand*{\multiplefootnotemarker}{3sp}
 \providecommand*{\multfootsep}{,}
@@ -557,7 +641,7 @@
 \newcommand{\@tufte@sidenote@vertical@offset}{0pt}
 
 % #1 = footnote num, #2 = vertical offset, #3 = footnote text
-\def\@tufte@sidenote[#1][#2]#3{%
+\long\def\@tufte@sidenote[#1][#2]#3{%
   \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
   \gdef\@tufte@citations{}%           clear out any old citations
   \ifthenelse{\NOT\isempty{#2}}{\renewcommand{\@tufte@sidenote@vertical@offset}{#2}}{}%
@@ -595,9 +679,6 @@
   \let\cite\@tufte@normal@cite%       go back to using normal in-text \cite command
 }
 
-
-% TODO: Combine sequences of citations so that 2,3,4,6 becomes 2--4,6
-%       but be careful of hyperref interaction
 
 %%
 % The placeins package provides the \FloatBarrier command.  This forces
@@ -651,7 +732,8 @@
    \ifthenelse{\boolean{@tufte@symmetric}}
      {\ifthenelse{\boolean{@tufte@changepage}}{\begin{adjustwidth*}{}{-\@tufte@overhang}}{\begin{adjustwidth}[]{}{-\@tufte@overhang}}}
      {\begin{adjustwidth}{}{-\@tufte@overhang}}
-   \begin{minipage}{\linewidth}}%
+   \begin{minipage}{\linewidth}%
+  }%
   {\end{minipage}%
    \end{adjustwidth}%
    \end@float}
@@ -665,7 +747,8 @@
    \ifthenelse{\boolean{@tufte@symmetric}}
      {\ifthenelse{\boolean{@tufte@changepage}}{\begin{adjustwidth*}{}{-\@tufte@overhang}}{\begin{adjustwidth}[]{}{-\@tufte@overhang}}}
      {\begin{adjustwidth}{}{-\@tufte@overhang}}
-   \begin{minipage}{\linewidth}}%
+   \begin{minipage}{\linewidth}%
+  }%
   {\end{minipage}%
    \end{adjustwidth}%
    \end@float}
@@ -683,12 +766,12 @@
 %%
 % Format the captions in a style similar to the sidenotes
 
-\RequirePackage[format=default,font={rm,scriptsize},justification=raggedright,singlelinecheck=false]{caption}
+\RequirePackage[format=default,font={rm,footnotesize},justification=raggedright,singlelinecheck=false]{caption}
 
 % if the `sfsidenotes' option is specified, set the captions in sf, too.
 \ifthenelse{\boolean{@tufte@sfsidenotes}}
-  {\captionsetup{font={sf,scriptsize}}}
-  {\captionsetup{font={rm,scriptsize}}}
+  {\captionsetup{font={sf,footnotesize}}}
+  {\captionsetup{font={rm,footnotesize}}}
 
 % if the `justified' option is specified, set the captions in flush left
 % and flush right
@@ -703,7 +786,7 @@
 
 \ifthenelse{\boolean{@tufte@loadfonts}\AND\NOT\boolean{@tufte@xetex}}{%
   \IfFileExists{mathpazo.sty}{\RequirePackage[osf,sc]{mathpazo}}{}
-  \IfFileExists{helvet.sty}{\RequirePackage[scaled=0.95]{helvet}}{}
+  \IfFileExists{helvet.sty}{\RequirePackage[scaled=0.90]{helvet}}{}
   \IfFileExists{beramono.sty}{\RequirePackage[scaled=0.85]{beramono}}{}
   \RequirePackage[T1]{fontenc}
   \RequirePackage{textcomp}
@@ -726,7 +809,7 @@
   \let\@tufte@orig@cr\\% save the original meaning of \\
   \def\\{\@tufte@newlinetospace}% turn \\ and \\* into \space
   \let\newline\\% turn \newline into \space
-  #1
+  #1%
   \let\\\@tufte@orig@cr% revert to original meaning of \\
 }
 
@@ -781,7 +864,7 @@
 %%
 % Set raggedright and paragraph indentation for document
 
-\AtBeginDocument{\@tufte@justification\setlength\parindent{1em}}
+\AtBeginDocument{\@tufte@justification}
 
 
 %%
@@ -874,6 +957,8 @@
     \endgroup}
   \par
   \endgroup
+  \setlength{\parindent}{1pc}
+  \setlength{\parskip}{0pt}
   \thispagestyle{plain}% suppress the running head
 }
 
