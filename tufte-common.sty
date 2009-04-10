@@ -218,9 +218,8 @@
 
 \RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,textheight=44\baselineskip,headheight=\baselineskip]{geometry}
 
-% FIXME adjust A4 geometry to match letter paper geometry (except for outside margins)
 \ifthenelse{\boolean{@tufte@afourpaper}}
-  {\geometry{a4paper,includemp,width=170mm,marginparsep=10mm,marginparwidth=50mm,headheight=\baselineskip}}
+  {\geometry{a4paper,left=24.8mm,top=27.4mm,headsep=2\baselineskip,textwidth=107mm,marginparsep=8.2mm,marginparwidth=49.4mm,textheight=49\baselineskip,headheight=\baselineskip}}
   {}
 
 \ifthenelse{\boolean{@tufte@symmetric}}
