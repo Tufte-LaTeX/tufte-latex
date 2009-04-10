@@ -698,37 +698,37 @@
 % Margin figure environment
 
 \newsavebox{\@tufte@marginfigbox}
-\newenvironment{marginfigure}[1]
-    [-1.2ex]
-    {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
-    \begin{lrbox}{\@tufte@marginfigbox}
-    \begin{minipage}{\marginparwidth}
-        \@tufte@marginfont
-        \def\@captype{figure}
-        \vspace*{#1}
-        \@tufte@justification
-    }    
-    {\end{minipage}%
-     \end{lrbox}%
-     \marginpar{\usebox{\@tufte@marginfigbox}}}
+\newenvironment{marginfigure}[1][-1.2ex]
+  {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
+  \begin{lrbox}{\@tufte@marginfigbox}%
+  \begin{minipage}{\marginparwidth}%
+    \captionsetup{type=figure}%
+    \@tufte@marginfont%
+    \def\@captype{figure}%
+    \vspace*{#1}%
+    \@tufte@justification%
+  }    
+  {\end{minipage}%
+  \end{lrbox}%
+  \marginpar{\usebox{\@tufte@marginfigbox}}}
 
 
 %%
 % Margin table environment
 \newsavebox{\@tufte@margintablebox}
-\newenvironment{margintable}[1]
-   [-1.2ex]
-   {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
-   \begin{lrbox}{\@tufte@margintablebox}
-   \begin{minipage}{\marginparwidth}
-       \@tufte@marginfont
-       \def\@captype{table}
-       \vspace*{#1}
-       \@tufte@justification
-   }
-   {\end{minipage}%
-    \end{lrbox}%
-    \marginpar{\usebox{\@tufte@margintablebox}}}
+\newenvironment{margintable}[1][-1.2ex]
+  {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
+   \begin{lrbox}{\@tufte@margintablebox}%
+   \begin{minipage}{\marginparwidth}%
+     \captionsetup{type=table}%
+     \@tufte@marginfont%
+     \def\@captype{table}%
+     \vspace*{#1}%
+     \@tufte@justification%
+  }
+  {\end{minipage}%
+   \end{lrbox}%
+   \marginpar{\usebox{\@tufte@margintablebox}}}
 
 
 %%
@@ -767,7 +767,7 @@
 \newenvironment{fullwidth}
   {\ifthenelse{\boolean{@tufte@symmetric}}
      {\ifthenelse{\boolean{@tufte@changepage}}{\begin{adjustwidth*}{}{-\@tufte@overhang}}{\begin{adjustwidth}[]{}{-\@tufte@overhang}}}
-     {\begin{adjustwidth}{}{-\@tufte@overhang}}
+     {\begin{adjustwidth}{}{-\@tufte@overhang}}%
   }
   {\end{adjustwidth}}
 
@@ -920,25 +920,19 @@
 % Produces a full title page
 
 \newcommand{\maketitlepage}[0]{%
-  \cleardoublepage
-  {
-  \sffamily
-  \begin{fullwidth}
-  \par\noindent\fontsize{18}{18}\selectfont\textcolor{darkgray}{\allcaps{\thanklessauthor}}
-  \end{fullwidth}
-
-  \vspace{11.5pc}
-  \begin{fullwidth}
-  \par\noindent\fontsize{36}{36}\selectfont\textcolor{darkgray}{\allcaps{\thanklesstitle}}
-  \end{fullwidth}
-
-  \vfill
-  \begin{fullwidth}
-  \par\noindent\fontsize{14}{14}\selectfont\allcaps{\thanklesspublisher}
-  \end{fullwidth}
+  \cleardoublepage%
+  {%
+  \sffamily%
+  \begin{fullwidth}%
+  \fontsize{18}{20}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{\thanklessauthor}}%
+  \vspace{11.5pc}%
+  \fontsize{36}{40}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{\thanklesstitle}}%
+  \vfill%
+  \fontsize{14}{16}\selectfont\par\noindent\allcaps{\thanklesspublisher}%
+  \end{fullwidth}%
   }
-  \thispagestyle{empty}
-  \clearpage
+  \thispagestyle{empty}%
+  \clearpage%
 }
 
 %%
