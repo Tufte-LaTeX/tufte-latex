@@ -209,8 +209,27 @@
 \setlength\labelwidth    {\leftmargini}
 \addtolength\labelwidth{-\labelsep}
 
-\setlength{\parindent}{1pc}
-\setlength{\parskip}{0pt}
+%%
+% \RaggedRight allows hyphenation
+
+\RequirePackage{ragged2e}
+\setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
+\setlength{\RaggedRightParindent}{1pc}
+
+% Paragraph indentation and separation for normal text
+\newcommand{\@tufte@reset@par}{%
+  \setlength{\RaggedRightParindent}{1.0pc}
+  \setlength{\parindent}{1pc}%
+  \setlength{\parskip}{0pt}%
+}
+\@tufte@reset@par
+
+% Paragraph indentation and separation for marginal text
+\newcommand{\@tufte@margin@par}{%
+  \setlength{\RaggedRightParindent}{0.5pc}
+  \setlength{\parindent}{0.5pc}%
+  \setlength{\parskip}{0pt}%
+}
 
 
 %%
@@ -239,11 +258,6 @@
   {\newcommand{\@tufte@marginfont}{\normalfont\footnotesize\sffamily}}
   {\newcommand{\@tufte@marginfont}{\normalfont\footnotesize}}
 
-%%
-% \RaggedRight allows hyphenation
-
-\RequirePackage{ragged2e}
-\setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
 
 %%
 % Set the justification baesed on the `justified' class option
@@ -560,6 +574,7 @@
     \vspace*{#1}%
     \@tufte@marginfont%
     \@tufte@justification%
+    \@tufte@margin@par% use parindent and parskip settings for marginal text
     % Loop through all the bibentries, separating them with semicolons and spaces
     \setcounter{@tufte@num@bibkeys}{0}%
     \@for\@temp@bibkeyx:=\@tufte@citations\do{%
@@ -569,6 +584,7 @@
         {\bibentry{\@temp@bibkeyx};\ }%
       \stepcounter{@tufte@num@bibkeys}%
     }%
+    \@tufte@reset@par% use parindent and parskip settings for body text
   }%
 }
 
@@ -631,6 +647,8 @@
     \def\baselinestretch {\setspace@singlespace}%
     \ifthenelse{\boolean{@tufte@loadbidi}}{\if@rl@footnote\@rltrue\else\@rlfalse\fi}{}%
     \reset@font\footnotesize%
+    \@tufte@margin@par% use parindent and parskip settings for marginal text
+    \noindent%
     \protected@edef\@currentlabel{%
        \csname p@footnote\endcsname\@thefnmark%
     }%
@@ -640,6 +658,7 @@
        }%
     \color@endgroup%
   }%
+  \@tufte@reset@par% use parindent and parskip settings for body text
 }%
 
 %
@@ -681,7 +700,9 @@
 \newcommand\marginnote[2][0pt]{%
   \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
   \gdef\@tufte@citations{}%           clear out any old citations
-  \marginpar{\vspace*{#1}\@tufte@marginfont\@tufte@justification #2}%
+  \@tufte@margin@par%                 use parindent and parskip settings for marginal text
+  \marginpar{\vspace*{#1}\@tufte@marginfont\@tufte@justification\noindent #2}%
+  \@tufte@reset@par%                  use parindent and parskip settings for body text
   \@tufte@print@citations%            print any citations
   \let\cite\@tufte@normal@cite%       go back to using normal in-text \cite command
 }
@@ -706,10 +727,13 @@
     \def\@captype{figure}%
     \vspace*{#1}%
     \@tufte@justification%
+    \@tufte@margin@par%
   }    
   {\end{minipage}%
   \end{lrbox}%
-  \marginpar{\usebox{\@tufte@marginfigbox}}}
+  \marginpar{\usebox{\@tufte@marginfigbox}}%
+  \@tufte@reset@par%
+  }
 
 
 %%
@@ -724,10 +748,13 @@
      \def\@captype{table}%
      \vspace*{#1}%
      \@tufte@justification%
+     \@tufte@margin@par%
   }
   {\end{minipage}%
    \end{lrbox}%
-   \marginpar{\usebox{\@tufte@margintablebox}}}
+   \marginpar{\usebox{\@tufte@margintablebox}}
+   \@tufte@reset@par%
+  }
 
 
 %%
