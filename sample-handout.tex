@@ -1,4 +1,4 @@
-\documentclass{tufte-handout}
+\documentclass[draft]{tufte-handout}
 
 %\geometry{showframe}% for debugging purposes -- displays the margins
 
@@ -62,7 +62,7 @@ and a style guide to their use.
 \section{Page Layout}\label{sec:page-layout}
 \subsection{Headings}\label{sec:headings}
 This style provides \textsc{a}- and \textsc{b}-heads (that is,
-\Verb|\section| and \Verb|\subsection|) demonstrated above.
+\Verb|\section| and \Verb|\subsection|), demonstrated above.
 
 If you need more than two levels of section headings, you'll have to define
 them yourself at the moment;\sidenote{See see ``\nameref{sec:defining-sections}'' on
@@ -173,7 +173,7 @@ Full page--width figures and tables may be placed in \docenv{figure*} or
 \docenv{table*} environments.  To place figures or tables in the margin,
 use the \docenv{marginfigure} or \docenv{margintable} environments as follows
 (see figure~\ref{fig:marginfig}):
-\begin{marginfigure}
+\begin{marginfigure}%
   \includegraphics[width=\linewidth]{helix}
   \caption{This is a margin figure.  The helix is defined by 
     $x = \cos(2\pi z)$, $y = \sin(2\pi z)$, and $z = [0, 2.7]$.  The figure was
@@ -269,7 +269,7 @@ This document class includes two new commands and some improvements on
 existing commands for letterspacing.
 
 When setting strings of \allcaps{ALL CAPS} or \smallcaps{small caps}, the
-letterspacing---that is, the spacing between the letters---should be
+letter\-spacing---that is, the spacing between the letters---should be
 increased slightly.\cite{Bringhurst2005}  The \Verb|\allcaps| command has proper letterspacing for
 strings of \allcaps{FULL CAPITAL LETTERS}, and the \Verb|\smallcaps| command
 has letterspacing for \smallcaps{small capital letters}.  These commands
@@ -284,10 +284,10 @@ however.  This allows one to use both uppercase and lowercase letters:
 
 \section{Customization}\label{sec:customization}
 \subsection{Document class options}\label{sec:options}
-The \doccls{tufte-handout} class is based on the \LaTeX\ \doccls{article}
+The \doccls{tufte\-handout} class is based on the \LaTeX\ \doccls{article}
 document class.  Therefore, you can pass any of the typical article
 options.  There are a few options that are specific to the
-\doccls{tufte-handout} document class, however.
+\doccls{tufte\-handout} document class, however.
 
 The \docclsopt{a4paper} option will set the paper size to \smallcaps{A4} instead of
 the default \smallcaps{US} letter size.
@@ -312,7 +312,7 @@ narrower column.
 
 \subsection{Defining new sections}\label{sec:defining-sections}
 As mentioned in the ``\nameref{sec:headings}'' section (see
-page~\pageref{sec:headings}), the \doccls{tufte-handout} document class only
+page~\pageref{sec:headings}), the \doccls{tufte\-handout} document class only
 defines \doccmd{section} and \doccmd{subsection} headings.  
 
 We use the \docpkg{titlesec} package to define the appearance of the headings.

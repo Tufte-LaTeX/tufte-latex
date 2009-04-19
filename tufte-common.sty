@@ -226,7 +226,7 @@
 
 % Paragraph indentation and separation for marginal text
 \newcommand{\@tufte@margin@par}{%
-  \setlength{\RaggedRightParindent}{0.5pc}
+  \setlength{\RaggedRightParindent}{0.5pc}%
   \setlength{\parindent}{0.5pc}%
   \setlength{\parskip}{0pt}%
 }
@@ -263,9 +263,9 @@
 % Set the justification baesed on the `justified' class option
 
 \newcommand{\@tufte@justification}{%
-  \ifthenelse{\boolean{@tufte@justified}}
-    {\justifying}
-    {\RaggedRight}
+  \ifthenelse{\boolean{@tufte@justified}}%
+    {\justifying}%
+    {\RaggedRight}%
 }
 
 %%
@@ -726,44 +726,40 @@
 \RequirePackage{placeins}
 
 %%
-% Margin figure environment
+% Margin float environment
 
-\newsavebox{\@tufte@marginfigbox}
-\newenvironment{marginfigure}[1][-1.2ex]
-  {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
-  \begin{lrbox}{\@tufte@marginfigbox}%
+\newsavebox{\@tufte@margin@floatbox}
+\newenvironment{@tufte@margin@float}[2][-1.2ex]%
+  {\FloatBarrier% process all floats before this point so the figure/table numbers stay in order.
+  \begin{lrbox}{\@tufte@margin@floatbox}%
   \begin{minipage}{\marginparwidth}%
     \@tufte@marginfont%
-    \def\@captype{figure}%
+    \def\@captype{#2}%
     \hbox{}\vspace*{#1}%
     \@tufte@justification%
     \@tufte@margin@par%
-  }    
+    \noindent%
+  }
   {\end{minipage}%
   \end{lrbox}%
-  \marginpar{\usebox{\@tufte@marginfigbox}}%
+  \marginpar{\usebox{\@tufte@margin@floatbox}}%
   \@tufte@reset@par%
   }
 
 
 %%
+% Margin figure environment
+
+\newenvironment{marginfigure}[1][-1.2ex]%
+  {\begin{@tufte@margin@float}[#1]{figure}}
+  {\end{@tufte@margin@float}}
+
+
+%%
 % Margin table environment
-\newsavebox{\@tufte@margintablebox}
-\newenvironment{margintable}[1][-1.2ex]
-  {\FloatBarrier% process all floats before this point so the figure numbers stay in order.
-   \begin{lrbox}{\@tufte@margintablebox}%
-   \begin{minipage}{\marginparwidth}%
-     \@tufte@marginfont%
-     \def\@captype{table}%
-     \hbox{}\vspace*{#1}%
-     \@tufte@justification%
-     \@tufte@margin@par%
-  }
-  {\end{minipage}%
-   \end{lrbox}%
-   \marginpar{\usebox{\@tufte@margintablebox}}
-   \@tufte@reset@par%
-  }
+\newenvironment{margintable}[1][-1.2ex]%
+  {\begin{@tufte@margin@float}[#1]{table}}
+  {\end{@tufte@margin@float}}
 
 
 %%
@@ -808,9 +804,9 @@
 % TODO handle the symmetric class option (move caption to other side of verso pages)
 
 %%
-% Redefine the figure environment to place the captions in the margin space
+% Define a float environment to place the captions in the margin space
 
-\renewenvironment{figure}[1][htbp]
+\newenvironment{@tufte@float}[2][htbp]
   {% If the float placement specifier is 'b' and only 'b', then bottom-align the mini-pages, otherwise top-align them.
     \renewcommand{\@tufte@fps}{#1}%
     \ifthenelse{\equal{#1}{b}\OR\equal{#1}{B}}%
@@ -818,11 +814,11 @@
       {\renewcommand{\floatalignment}{t}}%
     \renewcommand{\caption}[2][]{\@tufte@caption[##1]{##2}}%
     \renewcommand{\label}[1]{\@tufte@label{##1}}%
-    \@tufte@orig@float{figure}[#1]%
+    \@tufte@orig@float{#2}[#1]%
     \begin{lrbox}{\@tufte@figure@box}%
       \begin{minipage}[\floatalignment]{\textwidth}\hbox{}%
   }
-  {% end tfigure
+  {% end @tufte@float
         \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
       \end{minipage}%
     \end{lrbox}%
@@ -851,60 +847,28 @@
     \gdef\@tufte@stored@shortcaption{}
     \gdef\@tufte@stored@caption{}
   }
+
+%%
+% Redefine the figure environment to place the captions in the margin space
+
+\renewenvironment{figure}[1][htbp]
+  {\begin{@tufte@float}[#1]{figure}}
+  {\end{@tufte@float}}
 
 
 %%
 % Redefine the table environment to place the captions in the margin space
 
 \renewenvironment{table}[1][htbp]
-  {% If the float placement specifier is 'b' and only 'b', then bottom-align the mini-pages, otherwise top-align them.
-    \renewcommand{\@tufte@fps}{#1}%
-    \ifthenelse{\equal{#1}{b}\OR\equal{#1}{B}}%
-      {\renewcommand{\floatalignment}{b}}%
-      {\renewcommand{\floatalignment}{t}}%
-    \renewcommand{\caption}[2][]{\@tufte@caption[##1]{##2}}%
-    \renewcommand{\label}[1]{\@tufte@label{##1}}%
-    \@tufte@orig@float{table}[#1]%
-    \begin{lrbox}{\@tufte@figure@box}%
-      \begin{minipage}[\floatalignment]{\textwidth}\hbox{}%
-  }
-  {% end table
-        \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
-      \end{minipage}%
-    \end{lrbox}%
-    % build the caption box
-    \begin{lrbox}{\@tufte@caption@box}%
-      \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
-        \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}%
-        \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{\@tufte@orig@label{\@tufte@stored@label}}{}%
-        \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
-      \end{minipage}%
-    \end{lrbox}%
-    % now typeset the stored boxes
-    \begin{fullwidth}%
-      \begin{minipage}[\floatalignment]{\paperwidth}%
-        \usebox{\@tufte@figure@box}%
-        \hspace{\marginparsep}%
-        \smash{\usebox{\@tufte@caption@box}}%
-      \end{minipage}%
-    \end{fullwidth}%
-    \@tufte@orig@endfloat%
-    % reset commands and temp boxes and captions
-    \let\caption\@tufte@orig@caption%
-    \let\label\@tufte@orig@label%
-    \begin{lrbox}{\@tufte@figure@box}\hbox{}\end{lrbox}
-    \begin{lrbox}{\@tufte@caption@box}\hbox{}\end{lrbox}
-    \gdef\@tufte@stored@shortcaption{}
-    \gdef\@tufte@stored@caption{}
-  }
+  {\begin{@tufte@float}[#1]{table}}
+  {\end{@tufte@float}}
 
 
 %%
-% Full-width figure
+% Full-width figures and tables
 
-\renewenvironment{figure*}[1]%
-  [htbp]%
-  {% begin figure*
+\newenvironment{@tufte@float@star}[2][htbp]%
+  {% begin
     % If the float placement specifier is 'b' and only 'b', then place the caption above the figure, else place the caption below the figure.
     \renewcommand{\@tufte@fps}{#1}%
     \ifthenelse{\equal{#1}{b}\OR\equal{#1}{B}}%
@@ -912,7 +876,7 @@
       {\renewcommand{\floatalignment}{t}}%
     \renewcommand{\caption}[2][]{\@tufte@caption[##1]{##2}}%
     \renewcommand{\label}[1]{\@tufte@label{##1}}%
-    \@tufte@orig@float{figure}[#1]%
+    \@tufte@orig@float{#2}[#1]%
     \begin{lrbox}{\@tufte@figure@box}%
       \begin{minipage}[\floatalignment]{\linewidth}\hbox{}%
         \begin{fullwidth}
@@ -956,62 +920,22 @@
     \gdef\@tufte@stored@caption{}
   }
 
+
+%%
+% Full-width figure
+
+\renewenvironment{figure*}[1][htbp]%
+  {\begin{@tufte@float@star}[#1]{figure}}
+  {\end{@tufte@float@star}}
+
+
 %%
 % Full-width table
 
-\renewenvironment{table*}[1]%
-  [htbp]%
-  {% begin table*
-    % If the float placement specifier is 'b' and only 'b', then place the caption above the table, else place the caption below the table.
-    \renewcommand{\@tufte@fps}{#1}%
-    \ifthenelse{\equal{#1}{b}\OR\equal{#1}{B}}%
-      {\renewcommand{\floatalignment}{b}}%
-      {\renewcommand{\floatalignment}{t}}%
-    \renewcommand{\caption}[2][]{\@tufte@caption[##1]{##2}}%
-    \renewcommand{\label}[1]{\@tufte@label{##1}}%
-    \@tufte@orig@float{table}[#1]%
-    \begin{lrbox}{\@tufte@table@box}%
-      \begin{minipage}[\floatalignment]{\linewidth}\hbox{}%
-        \begin{fullwidth}
-  }%
-  {% end table*
-          \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
-        \end{fullwidth}%
-      \end{minipage}%
-    \end{lrbox}%
-    % build the caption box
-    % TODO use \captionaboveskip and \captionbelowskip for spacing between caption and figure boxes
-    \begin{lrbox}{\@tufte@caption@box}%
-      \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
-        \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}%
-        \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{\@tufte@orig@label{\@tufte@stored@label}}{}%
-        \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
-      \end{minipage}%
-    \end{lrbox}%
-    % now typeset the stored boxes
-    \begin{fullwidth}%
-      \begin{minipage}[\floatalignment]{\paperwidth}%
-        \hbox{}%
-        \ifthenelse{\equal{\floatalignment}{b}}
-          {% place caption above table
-            \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}\\
-            \usebox{\@tufte@table@box}%
-          }
-          {% place caption below table
-            \usebox{\@tufte@table@box}\\
-            \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}%
-          }
-      \end{minipage}%
-    \end{fullwidth}%
-    \@tufte@orig@endfloat%
-    % reset commands and temp boxes and captions
-    \let\caption\@tufte@orig@caption%
-    \let\label\@tufte@orig@label%
-    \begin{lrbox}{\@tufte@table@box}\hbox{}\end{lrbox}
-    \begin{lrbox}{\@tufte@caption@box}\hbox{}\end{lrbox}
-    \gdef\@tufte@stored@shortcaption{}
-    \gdef\@tufte@stored@caption{}
-  }
+\renewenvironment{table*}[1][htbp]%
+  {\begin{@tufte@float@star}[#1]{table}}
+  {\end{@tufte@float@star}}
+
 
 %%
 % Full-page-width area
