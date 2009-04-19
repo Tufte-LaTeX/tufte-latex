@@ -193,11 +193,11 @@
 }
 \renewcommand\scriptsize{\@setfontsize\scriptsize\@viipt\@viiipt}
 \renewcommand\tiny{\@setfontsize\tiny\@vpt\@vipt}
-\renewcommand\large{\@setfontsize\large\@xiipt{14}}
-\renewcommand\Large{\@setfontsize\Large\@xivpt{18}}
-\renewcommand\LARGE{\@setfontsize\LARGE\@xviipt{22}}
-\renewcommand\huge{\@setfontsize\huge\@xxpt{25}}
-\renewcommand\Huge{\@setfontsize\Huge\@xxvpt{30}}
+\renewcommand\large{\@setfontsize\large\@xipt{15}}
+\renewcommand\Large{\@setfontsize\Large\@xiipt{16}}
+\renewcommand\LARGE{\@setfontsize\LARGE\@xivpt{18}}
+\renewcommand\huge{\@setfontsize\huge\@xxpt{30}}
+\renewcommand\Huge{\@setfontsize\Huge\@xxivpt{36}}
 
 \setlength\leftmargini   {1pc}
 \setlength\leftmarginii  {1pc}
@@ -218,7 +218,7 @@
 
 % Paragraph indentation and separation for normal text
 \newcommand{\@tufte@reset@par}{%
-  \setlength{\RaggedRightParindent}{1.0pc}
+  \setlength{\RaggedRightParindent}{1.0pc}%
   \setlength{\parindent}{1pc}%
   \setlength{\parskip}{0pt}%
 }
@@ -530,6 +530,37 @@
 
 
 %%
+% A function that removes leading and trailling spaces from the supplied macro.
+% Based on code written by Michael Downes (See ``Around the Bend'', #15.)
+% Executing \@tufte@trim@spaces\xyzzy will result in the contents of \xyzzy
+% being trimmed of leading and trailing white space.
+
+\def\@tufte@trim@spaces#1{%
+  % Use grouping to emulate a multi-token afterassignment queue
+  \begingroup%
+  % Put `\toks 0 {' into the afterassignment queue
+  \aftergroup\toks\aftergroup0\aftergroup{% 
+  % Apply \trimb to the replacement text of #1, adding a leading
+  % \noexpand to prevent brace stripping and to serve another purpose
+  % later.
+  \expandafter\@tufte@trim@b\expandafter\noexpand#1Q Q}%
+  % Transfer the trimmed text back into #1.
+  \edef#1{\the\toks0}%
+}
+
+% \trimb removes a trailing space if present, then calls \@tufte@trim@c to
+% clean up any leftover bizarre Qs, and trim a leading space. In
+% order for \trimc to work properly we need to put back a Q first.
+\def\@tufte@trim@b#1 Q{\@tufte@trim@c#1Q}
+
+% Execute \vfuzz assignment to remove leading space; the \noexpand
+% will now prevent unwanted expansion of a macro or other expandable
+% token at the beginning of the trimmed text. The \endgroup will feed
+% in the \aftergroup tokens after the \vfuzz assignment is completed.
+\def\@tufte@trim@c#1Q#2{\afterassignment\endgroup \vfuzz\the\vfuzz#1}
+
+
+%%
 % Citations should go in the margin as sidenotes
 
 \RequirePackage[numbers]{natbib}
@@ -542,7 +573,7 @@
   \BR@c@bibitem{#2}%
 }
 \nobibliography*                % pre-loads the bibliography keys
-\providecommand{\doi}[1]{\textsc{doi:} #1} % pre-defining this so it may be used before the \bibliography command it issued
+\providecommand{\doi}[1]{\textsc{doi:} #1}% pre-defining this so it may be used before the \bibliography command it issued
 
 %%
 % Normal \cite behavior
@@ -557,8 +588,10 @@
     \@for\@temp@bibkeyx:=#2\do{%
       \ifthenelse{\equal{\@temp@last@bibkey}{\@temp@bibkeyx}}%
         {\ifthenelse{\equal{\value{@tufte@num@bibkeys}}{0}}{}{and\ }%
+         \@tufte@trim@spaces\@temp@bibkeyx% trim spaces around bibkey
          \bibentry{\@temp@bibkeyx}}%
-        {\bibentry{\@temp@bibkeyx};\ }%
+        {\@tufte@trim@spaces\@temp@bibkeyx% trim spaces around bibkey
+         \bibentry{\@temp@bibkeyx};\ }%
       \stepcounter{@tufte@num@bibkeys}%
     }%
   }%
@@ -591,8 +624,10 @@
     \@for\@temp@bibkeyx:=\@tufte@citations\do{%
       \ifthenelse{\equal{\@temp@last@bibkey}{\@temp@bibkeyx}}%
         {\ifthenelse{\equal{\value{@tufte@num@bibkeys}}{0}}{}{and\ }%
+         \@tufte@trim@spaces\@temp@bibkeyx% trim spaces around bibkey
          \bibentry{\@temp@bibkeyx}}%
-        {\bibentry{\@temp@bibkeyx};\ }%
+        {\@tufte@trim@spaces\@temp@bibkeyx% trim spaces around bibkey
+         \bibentry{\@temp@bibkeyx};\ }%
       \stepcounter{@tufte@num@bibkeys}%
     }%
     \@tufte@reset@par% use parindent and parskip settings for body text
@@ -644,11 +679,11 @@
 }
 
 \newcommand{\@tufte@check@multiple@sidenotes}{%
-  \ifdim\lastkern=\multiplefootnotemarker\relax
+  \ifdim\lastkern=\multiplefootnotemarker\relax%
     \edef\@x@sf{\the\spacefactor}%
-    \unkern
+    \unkern%
     \textsuperscript{\multfootsep}%
-    \spacefactor\@x@sf\relax
+    \spacefactor\@x@sf\relax%
   \fi
 }
 
@@ -683,12 +718,12 @@
   \gdef\@tufte@citations{}%           clear out any old citations
   \ifthenelse{\NOT\isempty{#2}}{\renewcommand{\@tufte@sidenote@vertical@offset}{#2}}{}%
   \ifthenelse{\isempty{#1}}{%
-%   % no footnote number
+    % no specific footnote number provided
     \stepcounter\@mpfn%
     \protected@xdef\@thefnmark{\thempfn}%
     \@footnotemark\@footnotetext[\@tufte@sidenote@vertical@offset]{#3}%
   }{%
-%   % footnote number
+    % specific footnote number provided
     \begingroup%
       \csname c@\@mpfn\endcsname #1\relax%
       \unrestored@protected@xdef\@thefnmark{\thempfn}%
@@ -1125,19 +1160,17 @@
     {\begingroup
       % FIXME fails with \thanks
       \sffamily
-      \par{\Large\allcaps{\@title}}
-      \ifthenelse{\equal{\@author}{}}{}{\par{\large\allcaps{\@author}}}
-      \ifthenelse{\equal{\@date}{}}{}{\par{\large\allcaps{\@date}}}
+      \par{\LARGE\allcaps{\@title}}
+      \ifthenelse{\equal{\@author}{}}{}{\par{\Large\allcaps{\@author}}}
+      \ifthenelse{\equal{\@date}{}}{}{\par{\Large\allcaps{\@date}}}
     \endgroup}
     {\begingroup
-      \par{\Large\textit{\@title}}
-      \ifthenelse{\equal{\@author}{}}{}{\par{\large\textit{\@author}}}
-      \ifthenelse{\equal{\@date}{}}{}{\par{\large\textit{\@date}}}
+      \par{\LARGE\textit{\@title}}
+      \ifthenelse{\equal{\@author}{}}{}{\par{\Large\textit{\@author}}}
+      \ifthenelse{\equal{\@date}{}}{}{\par{\Large\textit{\@date}}}
     \endgroup}
   \par
   \endgroup
-  \setlength{\parindent}{1pc}
-  \setlength{\parskip}{0pt}
   \thispagestyle{plain}% suppress the running head
 }
 
@@ -1169,18 +1202,34 @@
 
 \RequirePackage{titlesec,titletoc}
 
-% TODO: I'd prefer to use the 'titlesec' package for this formatting, but
-%       I'll do it old-style for now.  --Kevin
+\titleformat{\chapter}%
+  [display]% shape
+  {\relax\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\begin{fullwidth}}{}}% format applied to label+text
+  {\itshape\huge\thechapter}% label
+  {0pt}% horizontal separation between label and title body
+  {\huge\rm\itshape}% before the title body
+  [\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\end{fullwidth}}{}]% after the title body
 
-\renewcommand\section{\@startsection {section}{1}{\z@}%
-                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
-                                   {2.3ex \@plus.2ex}%
-                                   {\normalfont\large\it}}
-\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
-                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
-                                     {1.5ex \@plus .2ex}%
-                                     {\normalfont\normalsize\it}}
+\titleformat{\section}%
+  [hang]% shape
+  {\normalfont\Large\itshape}% format applied to label+text
+  {\thesection}% label
+  {1em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
 
+\titleformat{\subsection}%
+  [hang]% shape
+  {\normalfont\large\itshape}% format applied to label+text
+  {\thesubsection}% label
+  {1em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+
+\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
+  
 % Subsubsection and following section headings shouldn't be used.
 % See Bringhurst's _The Elements of Typography_, section 4.2.2.
 \renewcommand\subsubsection{%
@@ -1234,15 +1283,6 @@
 %        {\textit}% before w/o label
 %        {\qquad\thecontentspage}% filler and page (leaders and page num)
 %        [\vspace{1.5\baselineskip}]% after
-
-\titleformat{\chapter}%
-        [display]% shape
-        {\relax\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\begin{fullwidth}}{}}% format applied to label+text
-        {\itshape\fontsize{22}{24}\selectfont\thechapter}% label
-        {0pt}% horizontal separation between label and title body
-        {\fontsize{22}{24}\rm\itshape}% before the title body
-        [\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\end{fullwidth}}{}]% after the title body
-
 
 
 

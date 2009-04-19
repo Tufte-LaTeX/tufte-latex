@@ -53,6 +53,8 @@
 \newcommand{\VE}{\textit{Visual Explanations}\xspace}
 \newcommand{\BE}{\textit{Beautiful Evidence}\xspace}
 
+\newcommand{\TL}{Tufte-\LaTeX\xspace}
+
 % Prints the month name (e.g., January) and the year (e.g., 2008)
 \newcommand{\monthyear}{%
   \ifcase\month\or January\or February\or March\or April\or May\or June\or
@@ -74,10 +76,12 @@
 }
 
 % Inserts a blank page
-\newcommand{\blankpage}{%
-  \newpage~\\\thispagestyle{empty}\newpage
-}
+\newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
 
+\usepackage{units}
+
+% Typesets the font size, leading, and measure in the form of 10/12x26 pc.
+\newcommand{\measure}[3]{#1/#2$\times$\unit[#3]{pc}}
 
 \begin{document}
 
@@ -164,11 +168,9 @@ and \mbox{Donald E.~Knuth}.
 \chapter*{Introduction}
 
 This sample book discusses the design of Edward Tufte's
-%books\cite{Tufte2001}\cite{Tufte1990}\cite{Tufte1997}\cite{Tufte2006}
 books\cite{Tufte2001,Tufte1990,Tufte1997,Tufte2006}
-and the use of the \texttt{tufte-book} document class.
+and the use of the \texttt{tufte-book} and \texttt{sample-handout} document classes.
 
-\lipsum[1-20]
 
 %%
 % Start the main matter (normal chapters)
@@ -284,32 +286,118 @@ Publisher & & & & \\
 \end{tabular}
 \end{center}
 
-%\begin{figure*}[p]
-%\fbox{\includegraphics[width=0.45\textwidth]{graphics/vdqi-title.pdf}}
-%\hfill
-%\fbox{\includegraphics[width=0.45\textwidth]{graphics/ei-title.pdf}}
-%\\\vspace{\baselineskip}
-%\fbox{\includegraphics[width=0.45\textwidth]{graphics/ve-title.pdf}}
-%\hfill
-%\fbox{\includegraphics[width=0.45\textwidth]{graphics/be-title.pdf}}
-%\end{figure*}
+\begin{figure*}[p]
+\fbox{\includegraphics[width=0.45\linewidth]{graphics/vdqi-title.pdf}}
+\hfill
+\fbox{\includegraphics[width=0.45\linewidth]{graphics/ei-title.pdf}}
+\\\vspace{\baselineskip}
+\fbox{\includegraphics[width=0.45\linewidth]{graphics/ve-title.pdf}}
+\hfill
+\fbox{\includegraphics[width=0.45\linewidth]{graphics/be-title.pdf}}
+\end{figure*}
 
 \newthought{The tables of contents} in Tufte's books give us our first
 glimpse of the structure of the main matter.  \VDQI is split into two
 parts, each containing some number of chapters.  His other three books only
 contain chapters---they're not broken into parts.
 
-%\begin{figure*}[p]
-%\fbox{\includegraphics[width=0.45\textwidth]{graphics/vdqi-contents.pdf}}
-%\hfill
-%\fbox{\includegraphics[width=0.45\textwidth]{graphics/ei-contents.pdf}}
-%\\\vspace{\baselineskip}
-%\fbox{\includegraphics[width=0.45\textwidth]{graphics/ve-contents.pdf}}
-%\hfill
-%\fbox{\includegraphics[width=0.45\textwidth]{graphics/be-contents.pdf}}
-%\end{figure*}
+\begin{figure*}[p]
+\fbox{\includegraphics[width=0.45\linewidth]{graphics/vdqi-contents.pdf}}
+\hfill
+\fbox{\includegraphics[width=0.45\linewidth]{graphics/ei-contents.pdf}}
+\\\vspace{\baselineskip}
+\fbox{\includegraphics[width=0.45\linewidth]{graphics/ve-contents.pdf}}
+\hfill
+\fbox{\includegraphics[width=0.45\linewidth]{graphics/be-contents.pdf}}
+\end{figure*}
 
-\lipsum[21-50]
+
+\section{Typefaces}
+
+Tufte's books primarily use two typefaces: Bembo and Gill Sans.  Bembo is used
+for the headings and body text, while Gill Sans is used for the title page and
+opening epigraphs in \BE.
+
+Since neither Bembo nor Gill Sans are available in default \LaTeX{}
+installations, the \TL document classes default to using Palatino and
+Helvetica, respectively.  In addition, the Bera Mono typeface is used for
+\texttt{monospaced} type.
+
+The following font sizes are defined by the \TL classes:
+
+\begin{table}[h]
+  \footnotesize%
+  \begin{center}
+    \begin{tabular}{lccl}
+      \toprule
+      \LaTeX{} size & Font size & Leading & Used for \\
+      \midrule
+      \verb+\tiny+         &  5 &  6 & sidenote numbers \\
+      \verb+\scriptsize+   &  7 &  8 & --- \\
+      \verb+\footnotesize+ &  8 & 10 & sidenotes, captions \\
+      \verb+\small+        &  9 & 12 & quote, quotation, and verse environments \\
+      \verb+\normalsize+   & 10 & 14 & body text \\
+      \verb+\large+        & 11 & 15 & \textsc{b}-heads \\
+      \verb+\Large+        & 12 & 16 & \textsc{a}-heads, \textsc{toc} entries, author, date \\
+      \verb+\LARGE+        & 14 & 18 & handout title \\
+      \verb+\huge+         & 20 & 30 & chapter heads \\
+      \verb+\Huge+         & 24 & 36 & part titles \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \caption{A list of \LaTeX{} font sizes as defined by the \TL document classes.}
+  \label{tab:font-sizes}
+\end{table}
+
+\section{Headings}
+
+Tufte's books include the following heading levels: parts,
+chapters,\sidenote{Parts and chapters are defined for the \texttt{tufte\-book}
+class only.}  sections, subsections, and paragraphs.  Not defined by default
+are: sub-subsections and subparagraphs.
+
+\begin{table}[h]
+  \begin{center}
+    \footnotesize%
+    \begin{tabular}{lcr}
+      \toprule
+      Heading & Style & Size \\
+      \midrule
+      Part & roman & \measure{24}{36}{40} \\
+      Chapter & italic & \measure{20}{30}{40} \\
+      Section & italic & \measure{12}{16}{26} \\
+      Subsection & italic & \measure{11}{15}{26} \\
+      Paragraph & italic & 10/14 \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \caption{Heading styles used in \BE.}
+  \label{tab:heading-styles}
+\end{table}
+
+\section{Environments}
+
+The following characteristics define the various environments:
+
+
+\begin{table}[h]
+  \begin{center}
+    \footnotesize%
+    \begin{tabular}{lcl}
+      \toprule
+      Environment & Font size & Notes \\
+      \midrule
+      Body text & \measure{10}{14}{26} & \\
+      Block quote & \measure{9}{12}{24} & Block indent (left and right) by \unit[1]{pc} \\
+      Sidenotes & \measure{8}{10}{12} & Sidenote number is set inline, followed by word space \\
+      Captions & \measure{8}{10}{12} &  \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \caption{Environment styles used in \BE.}
+  \label{tab:environment-styles}
+\end{table}
+
 
 \chapter{On the Use of the \texttt{tufte-book} Document Class}
 \label{ch:tufte-book}
@@ -325,7 +413,7 @@ title page and epigraphs); and
 \item \emph{something else---yyy}.
 \end{inparaenum}
 
-\lipsum[1-25]
+%\lipsum[1-25]
 
 
 %%
