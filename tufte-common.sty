@@ -533,7 +533,7 @@
 % Citations should go in the margin as sidenotes
 
 \RequirePackage[numbers]{natbib}
-\RequirePackage{bibentry}	% allows bibitems to be typeset outside thebibliography environment
+\RequirePackage{bibentry}        % allows bibitems to be typeset outside thebibliography environment
 % Redefine the \BR@b@bibitem command to fix a bug with bibentry+chicago style
 \renewcommand\BR@b@bibitem[2][]{%
   \ifthenelse{\isempty{#1}}%
@@ -541,7 +541,7 @@
     {\BR@bibitem[#1]{#2}}%
   \BR@c@bibitem{#2}%
 }
-\nobibliography*		% pre-loads the bibliography keys
+\nobibliography*                % pre-loads the bibliography keys
 \providecommand{\doi}[1]{\textsc{doi:} #1} % pre-defining this so it may be used before the \bibliography command it issued
 
 %%
@@ -557,7 +557,7 @@
     \@for\@temp@bibkeyx:=#2\do{%
       \ifthenelse{\equal{\@temp@last@bibkey}{\@temp@bibkeyx}}%
         {\ifthenelse{\equal{\value{@tufte@num@bibkeys}}{0}}{}{and\ }%
-	 \bibentry{\@temp@bibkeyx}}%
+         \bibentry{\@temp@bibkeyx}}%
         {\bibentry{\@temp@bibkeyx};\ }%
       \stepcounter{@tufte@num@bibkeys}%
     }%
@@ -787,9 +787,9 @@
 }
 
 % Store the caption and label contents
-\newcommand{\@tufte@stored@shortcaption}{SHORT CAPTION}
-\newcommand{\@tufte@stored@caption}{LONG CAPTION}
-\newcommand{\@tufte@stored@label}{LABEL}
+\newcommand{\@tufte@stored@shortcaption}{}
+\newcommand{\@tufte@stored@caption}{}
+\newcommand{\@tufte@stored@label}{}
 
 \newcommand{\@tufte@caption}[2][]{%
   \ifthenelse{\isempty{#1}}
@@ -823,23 +823,23 @@
       \begin{minipage}[\floatalignment]{\textwidth}\hbox{}%
   }
   {% end tfigure
-        \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
+        \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
       \end{minipage}%
     \end{lrbox}%
     % build the caption box
     \begin{lrbox}{\@tufte@caption@box}%
       \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
-        \@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}%
-        \@tufte@orig@label{\@tufte@stored@label}%
+        \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}%
+        \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{\@tufte@orig@label{\@tufte@stored@label}}{}%
         \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
       \end{minipage}%
     \end{lrbox}%
     % now typeset the stored boxes
     \begin{fullwidth}%
       \begin{minipage}[\floatalignment]{\paperwidth}%
-	\usebox{\@tufte@figure@box}%
+        \usebox{\@tufte@figure@box}%
         \hspace{\marginparsep}%
-	\smash{\usebox{\@tufte@caption@box}}%
+        \smash{\usebox{\@tufte@caption@box}}%
       \end{minipage}%
     \end{fullwidth}%
     \@tufte@orig@endfloat%
@@ -869,23 +869,23 @@
       \begin{minipage}[\floatalignment]{\textwidth}\hbox{}%
   }
   {% end table
-        \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
+        \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
       \end{minipage}%
     \end{lrbox}%
     % build the caption box
     \begin{lrbox}{\@tufte@caption@box}%
       \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
-        \@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}%
-        \@tufte@orig@label{\@tufte@stored@label}%
+        \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}%
+        \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{\@tufte@orig@label{\@tufte@stored@label}}{}%
         \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
       \end{minipage}%
     \end{lrbox}%
     % now typeset the stored boxes
     \begin{fullwidth}%
       \begin{minipage}[\floatalignment]{\paperwidth}%
-	\usebox{\@tufte@figure@box}%
+        \usebox{\@tufte@figure@box}%
         \hspace{\marginparsep}%
-	\smash{\usebox{\@tufte@caption@box}}%
+        \smash{\usebox{\@tufte@caption@box}}%
       \end{minipage}%
     \end{fullwidth}%
     \@tufte@orig@endfloat%
@@ -918,7 +918,7 @@
         \begin{fullwidth}
   }%
   {% end figure*
-          \hbox{}\par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
+          \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
         \end{fullwidth}%
       \end{minipage}%
     \end{lrbox}%
@@ -926,24 +926,24 @@
     % TODO use \captionaboveskip and \captionbelowskip for spacing between caption and figure boxes
     \begin{lrbox}{\@tufte@caption@box}%
       \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
-        \@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}%
-        \@tufte@orig@label{\@tufte@stored@label}%
+        \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}%
+        \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{\@tufte@orig@label{\@tufte@stored@label}}{}%
         \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
       \end{minipage}%
     \end{lrbox}%
     % now typeset the stored boxes
     \begin{fullwidth}%
       \begin{minipage}[\floatalignment]{\paperwidth}%
-	\hbox{}%
-	\ifthenelse{\equal{\floatalignment}{b}}
-	  {% place caption above figure
-	  \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}\\
-	  \usebox{\@tufte@figure@box}%
-	  }
-	  {% place caption below figure
-	  \usebox{\@tufte@figure@box}\\
-	  \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}%
-	  }
+        \hbox{}%
+        \ifthenelse{\equal{\floatalignment}{b}}
+          {% place caption above figure
+            \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}\\
+            \usebox{\@tufte@figure@box}%
+          }
+          {% place caption below figure
+            \usebox{\@tufte@figure@box}\\
+            \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}%
+          }
       \end{minipage}%
     \end{fullwidth}%
     \@tufte@orig@endfloat%
@@ -975,7 +975,7 @@
         \begin{fullwidth}
   }%
   {% end table*
-          \hbox{}\par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
+          \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
         \end{fullwidth}%
       \end{minipage}%
     \end{lrbox}%
@@ -983,24 +983,24 @@
     % TODO use \captionaboveskip and \captionbelowskip for spacing between caption and figure boxes
     \begin{lrbox}{\@tufte@caption@box}%
       \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
-        \@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}%
-        \@tufte@orig@label{\@tufte@stored@label}%
+        \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}%
+        \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{\@tufte@orig@label{\@tufte@stored@label}}{}%
         \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
       \end{minipage}%
     \end{lrbox}%
     % now typeset the stored boxes
     \begin{fullwidth}%
       \begin{minipage}[\floatalignment]{\paperwidth}%
-	\hbox{}%
-	\ifthenelse{\equal{\floatalignment}{b}}
-	  {% place caption above table
-	  \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}\\
-	  \usebox{\@tufte@table@box}%
-	  }
-	  {% place caption below table
-	  \usebox{\@tufte@table@box}\\
-	  \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}%
-	  }
+        \hbox{}%
+        \ifthenelse{\equal{\floatalignment}{b}}
+          {% place caption above table
+            \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}\\
+            \usebox{\@tufte@table@box}%
+          }
+          {% place caption below table
+            \usebox{\@tufte@table@box}\\
+            \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}%
+          }
       \end{minipage}%
     \end{fullwidth}%
     \@tufte@orig@endfloat%
@@ -1304,15 +1304,15 @@
   {}
 
 %\titlecontents{chapter}%
-%	[0em]% distance from left margin
-%	{\fontsize{12pt}{18pt}\selectfont}% above (global formatting of entry)
-%	{\textit}% before w/ label (label = ``Chapter 1'')
-%	{\textit}% before w/o label
-%	{\qquad\thecontentspage}% filler and page (leaders and page num)
-%	[\vspace{1.5\baselineskip}]% after
+%        [0em]% distance from left margin
+%        {\fontsize{12pt}{18pt}\selectfont}% above (global formatting of entry)
+%        {\textit}% before w/ label (label = ``Chapter 1'')
+%        {\textit}% before w/o label
+%        {\qquad\thecontentspage}% filler and page (leaders and page num)
+%        [\vspace{1.5\baselineskip}]% after
 
 \titleformat{\chapter}%
-	[display]% shape
+        [display]% shape
         {\relax\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\begin{fullwidth}}{}}% format applied to label+text
         {\itshape\fontsize{22}{24}\selectfont\thechapter}% label
         {0pt}% horizontal separation between label and title body
