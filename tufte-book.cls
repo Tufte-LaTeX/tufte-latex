@@ -25,16 +25,14 @@
 % contain only the (arabic) page number in the outside corner.
 %\newif\if@mainmatter \@mainmattertrue
 \renewcommand\frontmatter{%
-  \cleardoublepage
-  \@mainmatterfalse
-  \pagenumbering{arabic}
-  %\pagestyle{plain}
-  \fancyhf{}
-  \if@tufte@twoside
-    \fancyhead[LE,RO]{\thepage}
-  \else
-    \fancyhead[RE,RO]{\thepage}
-  \fi
+  \cleardoublepage%
+  \@mainmatterfalse%
+  \pagenumbering{arabic}%
+  %\pagestyle{plain}%
+  \fancyhf{}%
+  \ifthenelse{\boolean{@tufte@twoside}}%
+    {\fancyhead[LE,RO]{\thepage}}%
+    {\fancyhead[RE,RO]{\thepage}}%
 }
 
 
@@ -42,19 +40,18 @@
 % The main matter in Tufte's /Beautiful Evidence/ doesn't restart the page
 % numbering---it continues where it left off in the front matter.
 \renewcommand\mainmatter{%
-  \cleardoublepage
-  \@mainmattertrue
-  
-  % TODO The book should have the book title on the left and the chapter
-  %      title on the right.
-  \fancyhf{}
-  \if@tufte@twoside
-    \renewcommand{\chaptermark}[1]{\markboth{##1}{}}
-    \fancyhead[LE]{\thepage\quad\smallcaps{\thetitle}}% book title
-    \fancyhead[RO]{\smallcaps{\leftmark}\quad\thepage}% chapter title
-  \else
-    \fancyhead[RE,RO]{\smallcaps{\thetitle}\quad\thepage}% book title
-  \fi
+  \cleardoublepage%
+  \@mainmattertrue%
+  \fancyhf{}%
+  \ifthenelse{\boolean{@tufte@twoside}}%
+    {% two-side
+      \renewcommand{\chaptermark}[1]{\markboth{##1}{}}%
+      \fancyhead[LE]{\thepage\quad\smallcaps{\plaintitle}}% book title
+      \fancyhead[RO]{\smallcaps{\leftmark}\quad\thepage}% chapter title
+    }%
+    {% one-side
+      \fancyhead[RE,RO]{\smallcaps{\plaintitle}\quad\thepage}% book title
+    }%
 }
 
 
@@ -62,12 +59,12 @@
 % The back matter contains appendices, indices, glossaries, endnotes,
 % biliographies, list of contributors, illustration credits, etc.
 \renewcommand\backmatter{%
-  \if@openright
-    \cleardoublepage
-  \else
-    \clearpage
-  \fi
-  \@mainmatterfalse
+  \if@openright%
+    \cleardoublepage%
+  \else%
+    \clearpage%
+  \fi%
+  \@mainmatterfalse%
 }
 
 %%

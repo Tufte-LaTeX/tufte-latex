@@ -311,11 +311,11 @@
 
 %%
 % Modified \title, \author, and \date commands.  These store the
-% (footnote-less) values in \thetitle, \theauthor, and \thedate, respectively.
+% (footnote-less) values in \plaintitle, \plainauthor, and \thedate, respectively.
 
-\newcommand{\thetitle}{}%     plain-text-only title
-\newcommand{\theauthor}{}%    plain-text-only author
-\newcommand{\thepublisher}{}% plain-text-only publisher
+\newcommand{\plaintitle}{}%     plain-text-only title
+\newcommand{\plainauthor}{}%    plain-text-only author
+\newcommand{\plainpublisher}{}% plain-text-only publisher
 
 \newcommand{\thanklesstitle}{}%     full title text minus \thanks{}
 \newcommand{\thanklessauthor}{}%    full author text minus \thanks{}
@@ -336,9 +336,9 @@
     \protected@xdef\thanklesstitle{#2}%
   \endgroup%
   \ifthenelse{\isempty{#1}}%
-    {\renewcommand{\thetitle}{\thanklesstitle}}% use thankless title
-    {\renewcommand{\thetitle}{#1}}% use provided plain-text title
-  \hypersetup{pdftitle={\thetitle}}% set the PDF metadata title
+    {\renewcommand{\plaintitle}{\thanklesstitle}}% use thankless title
+    {\renewcommand{\plaintitle}{#1}}% use provided plain-text title
+  \hypersetup{pdftitle={\plaintitle}}% set the PDF metadata title
 }
 
 \def\@author{}% default author is empty (suppresses LaTeX's ``no author'' warning)
@@ -350,9 +350,9 @@
     \protected@xdef\thanklessauthor{#2}%
   \endgroup%
   \ifthenelse{\isempty{#1}}
-    {\renewcommand{\theauthor}{\thanklessauthor}}% use thankless author
-    {\renewcommand{\theauthor}{#1}}% use provided plain-text author
-  \hypersetup{pdfauthor={\theauthor}}% set the PDF metadata author
+    {\renewcommand{\plainauthor}{\thanklessauthor}}% use thankless author
+    {\renewcommand{\plainauthor}{#1}}% use provided plain-text author
+  \hypersetup{pdfauthor={\plainauthor}}% set the PDF metadata author
 }
 
 \renewcommand*{\date}[1]{%
@@ -374,8 +374,8 @@
     \protected@xdef\thanklesspublisher{#2}%
   \endgroup%
   \ifthenelse{\isempty{#1}}
-    {\renewcommand{\thepublisher}{\thanklesspublisher}}% use thankless publisher
-    {\renewcommand{\thepublisher}{#1}}% use provided plain-text publisher
+    {\renewcommand{\plainpublisher}{\thanklesspublisher}}% use thankless publisher
+    {\renewcommand{\plainpublisher}{#1}}% use provided plain-text publisher
 }
 
 % TODO: Test \hypersetup{pdfauthor,pdftitle} with DVI and XeTeX
@@ -1055,9 +1055,9 @@
 % The 'fancy' page style is the default style for all pages.
 \fancyhf{} % clear header and footer fields
 \ifthenelse{\boolean{@tufte@twoside}}
-  {\fancyhead[LE]{\thepage\quad\smallcaps{\newlinetospace{\theauthor}}}%
-    \fancyhead[RO]{\smallcaps{\newlinetospace{\thetitle}}\quad\thepage}}
-  {\fancyhead[RE,RO]{\smallcaps{\newlinetospace{\thetitle}}\quad\thepage}}
+  {\fancyhead[LE]{\thepage\quad\smallcaps{\newlinetospace{\plainauthor}}}%
+    \fancyhead[RO]{\smallcaps{\newlinetospace{\plaintitle}}\quad\thepage}}
+  {\fancyhead[RE,RO]{\smallcaps{\newlinetospace{\plaintitle}}\quad\thepage}}
 
 
 % The `plain' page style is used on chapter opening pages.
@@ -1077,8 +1077,6 @@
 \fancypagestyle{empty}{
   \fancyhf{} % clear header and footer fields
 }
-
-
 
 
 %%
