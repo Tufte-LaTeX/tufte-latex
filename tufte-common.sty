@@ -535,6 +535,7 @@
 % Executing \@tufte@trim@spaces\xyzzy will result in the contents of \xyzzy
 % being trimmed of leading and trailing white space.
 
+\catcode`\Q=3
 \def\@tufte@trim@spaces#1{%
   % Use grouping to emulate a multi-token afterassignment queue
   \begingroup%
@@ -558,7 +559,7 @@
 % token at the beginning of the trimmed text. The \endgroup will feed
 % in the \aftergroup tokens after the \vfuzz assignment is completed.
 \def\@tufte@trim@c#1Q#2{\afterassignment\endgroup \vfuzz\the\vfuzz#1}
-
+\catcode`\Q=11
 
 %%
 % Citations should go in the margin as sidenotes
