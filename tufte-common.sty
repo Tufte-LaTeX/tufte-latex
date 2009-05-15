@@ -284,13 +284,34 @@
 
 \newboolean{@tufte@changepage}
 \IfFileExists{changepage.sty}{%
+  \PackageInfo{\@tufte@pkgname}{Found changepage.sty}
   \RequirePackage[strict]{changepage}
   \setboolean{@tufte@changepage}{true}
 }{%
+  \PackageInfo{\@tufte@pkgname}{Found chngpage.sty}
   \RequirePackage[strict]{chngpage}
   \setboolean{@tufte@changepage}{false}
 }
 
+% Write our own aliases for the \checkoddpage and \ifoddpage or \ifcpoddpage commands
+\newboolean{@tufte@odd@page}
+\setboolean{@tufte@odd@page}{true}
+\newcommand*{\@tufte@checkoddpage}{%
+  \checkoddpage%
+  \ifthenelse{\boolean{@tufte@changepage}}{%
+    \ifoddpage%
+      \setboolean{@tufte@odd@page}{true}%
+    \else%
+      \setboolean{@tufte@odd@page}{false}%
+    \fi%
+  }{%
+    \ifcpoddpage%
+      \setboolean{@tufte@odd@page}{true}%
+    \else%
+      \setboolean{@tufte@odd@page}{false}%
+    \fi
+  }%
+}
 
 
 % Compute lengths used for full-width displays
@@ -868,20 +889,29 @@
     \end{lrbox}%
     % now typeset the stored boxes
     \begin{fullwidth}%
-      \begin{minipage}[\floatalignment]{\paperwidth}%
-        \usebox{\@tufte@figure@box}%
-        \hspace{\marginparsep}%
-        \smash{\usebox{\@tufte@caption@box}}%
+      \begin{minipage}[\floatalignment]{\linewidth}%
+        \@tufte@checkoddpage%
+        \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@odd@page}}{%
+          % asymmetric or page is odd, so caption is on the right
+          \usebox{\@tufte@figure@box}%
+          \hspace{\marginparsep}%
+          \smash{\usebox{\@tufte@caption@box}}%
+        }{%
+          % symmetric pages and page is even, so caption is on the left
+	  \strut\smash{\usebox{\@tufte@caption@box}}%
+          \hspace{\marginparsep}%
+	  \usebox{\@tufte@figure@box}%
+        }%
       \end{minipage}%
     \end{fullwidth}%
     \@tufte@orig@endfloat%
     % reset commands and temp boxes and captions
     \let\caption\@tufte@orig@caption%
     \let\label\@tufte@orig@label%
-    \begin{lrbox}{\@tufte@figure@box}\hbox{}\end{lrbox}
-    \begin{lrbox}{\@tufte@caption@box}\hbox{}\end{lrbox}
-    \gdef\@tufte@stored@shortcaption{}
-    \gdef\@tufte@stored@caption{}
+    \begin{lrbox}{\@tufte@figure@box}\hbox{}\end{lrbox}%
+    \begin{lrbox}{\@tufte@caption@box}\hbox{}\end{lrbox}%
+    \gdef\@tufte@stored@shortcaption{}%
+    \gdef\@tufte@stored@caption{}%
   }
 
 %%
@@ -914,7 +944,7 @@
     \renewcommand{\label}[1]{\@tufte@label{##1}}%
     \@tufte@orig@float{#2}[#1]%
     \begin{lrbox}{\@tufte@figure@box}%
-      \begin{minipage}[\floatalignment]{\linewidth}\hbox{}%
+      \begin{minipage}[\floatalignment]{\textwidth}\hbox{}%
         \begin{fullwidth}
   }%
   {% end figure*
@@ -932,17 +962,29 @@
       \end{minipage}%
     \end{lrbox}%
     % now typeset the stored boxes
+    \@tufte@checkoddpage%
     \begin{fullwidth}%
-      \begin{minipage}[\floatalignment]{\paperwidth}%
-        \hbox{}%
+      \begin{minipage}[\floatalignment]{\linewidth}%
         \ifthenelse{\equal{\floatalignment}{b}}
           {% place caption above figure
-            \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}\\
-            \usebox{\@tufte@figure@box}%
+            \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@odd@page}}
+              {% caption on the right
+                \hfill\smash{\usebox{\@tufte@caption@box}}%
+		\par\usebox{\@tufte@figure@box}%
+              }{% caption on the left
+                \smash{\usebox{\@tufte@caption@box}}\hfill\null%
+		\par\hspace{\@tufte@overhang}\usebox{\@tufte@figure@box}%
+              }%
           }
           {% place caption below figure
-            \usebox{\@tufte@figure@box}\\
-            \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}%
+            \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@odd@page}}
+              {% caption on the right
+                \usebox{\@tufte@figure@box}\par%
+                \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}%
+              }{% caption on the left
+                \null\hspace{\@tufte@overhang}\usebox{\@tufte@figure@box}\par%
+                \smash{\usebox{\@tufte@caption@box}}\hfill%
+              }%
           }
       \end{minipage}%
     \end{fullwidth}%
@@ -981,7 +1023,10 @@
      {\ifthenelse{\boolean{@tufte@changepage}}{\begin{adjustwidth*}{}{-\@tufte@overhang}}{\begin{adjustwidth}[]{}{-\@tufte@overhang}}}
      {\begin{adjustwidth}{}{-\@tufte@overhang}}%
   }
-  {\end{adjustwidth}}
+  {\ifthenelse{\boolean{@tufte@symmetric}}
+    {\ifthenelse{\boolean{@tufte@changepage}}{\end{adjustwidth*}}{\end{adjustwidth}}}
+    {\end{adjustwidth}}
+  }
 
 %%
 % Format the captions in a style similar to the sidenotes

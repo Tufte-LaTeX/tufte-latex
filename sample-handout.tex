@@ -73,7 +73,7 @@ Typographic Style},\cite{Bringhurst2005} you should ``use as many levels of
 headings as you need: no more, and no fewer.''
 
 The Tufte-\LaTeX\ classes will emit an error if you try to use
-\Verb|\subsubsection| and smaller headings.
+\linebreak\Verb|\subsubsection| and smaller headings.
 
 %\medskip
 %\begin{fullwidth}
@@ -173,6 +173,7 @@ Full page--width figures and tables may be placed in \docenv{figure*} or
 \docenv{table*} environments.  To place figures or tables in the margin,
 use the \docenv{marginfigure} or \docenv{margintable} environments as follows
 (see figure~\ref{fig:marginfig}):
+
 \begin{marginfigure}%
   \includegraphics[width=\linewidth]{helix}
   \caption{This is a margin figure.  The helix is defined by 
@@ -198,20 +199,20 @@ The \docenv{marginfigure} and \docenv{margintable} environments accept an option
   \doccmd{end\{margintable\}}\\
 \end{docspec}
 
-
 Figure~\ref{fig:fullfig} is an example of the \Verb|figure*|
 environment and figure~\ref{fig:textfig} is an example of the normal
 \Verb|figure| environment.
-\begin{figure*}
-  \includegraphics[width=\linewidth]{sine.pdf}
+
+\begin{figure*}[h]
+  \includegraphics[width=\linewidth]{sine.pdf}%
   \caption{This graph shows $y = \sin x$ from about $x = [-10, 10]$.
-  \emph{Notice that this figure takes up the full page width.}}
-  \label{fig:fullfig}
-  %\zsavepos{pos:fullfig}
+  \emph{Notice that this figure takes up the full page width.}}%
+  \label{fig:fullfig}%
 \end{figure*}
 
 \begin{figure}
   \includegraphics{hilbertcurves.pdf}
+%  \checkparity This is an \pageparity\ page.%
   \caption{Hilbert curves of various degrees $n$.
   \emph{Notice that this figure only takes up the main textblock width.}}
   \label{fig:textfig}
@@ -356,13 +357,13 @@ classes rely upon.  Packages marked with an asterisk are optional.
   \item natbib \emph{and} bibentry
   \item optparams
   \item placeins
-  \item caption
   \item mathpazo*
   \item helvet*
   \item fontenc
   \item beramono*
   \item fancyhdr
   \item xcolor
+  \item textcomp
   \item titlesec
   \item titletoc
 \end{itemize}

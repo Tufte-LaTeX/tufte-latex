@@ -1,7 +1,7 @@
 Hi,
 
 Welcome to the beginnings of Tufte LaTeX package to help you
-produce Tufte style handouts, reports, and notes.
+produce Tufte-style handouts, reports, and notes.
 
 == Quick Start
 
@@ -33,7 +33,6 @@ or search the news:comp.text.tex group via,
 
 The following packages are required:
 
- * caption
  * chngpage or changepage
  * fancyhdr
  * fontenc
@@ -46,6 +45,7 @@ The following packages are required:
  * ragged2e
  * setspace
  * textcase
+ * textcomp
  * titlesec
  * titletoc
  * xcolor
