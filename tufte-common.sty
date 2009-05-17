@@ -1170,7 +1170,7 @@
 
 %%
 % Color
-\RequirePackage{xcolor}
+\RequirePackage[usenames,dvipsnames,svgnames]{xcolor}
 
 %%
 % Produces a full title page
@@ -1270,6 +1270,15 @@
   {}% before the title body
   []% after the title body
 
+\titleformat{\paragraph}%
+  [runin]% shape
+  {\normalfont\itshape}% format applied to label+text
+  {\theparagraph}% label
+  {1em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+
+
 \titlespacing*{\chapter}{0pt}{50pt}{40pt}
 \titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 \titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
@@ -1286,15 +1295,15 @@
     \MessageBreak related threads on Ask E.T. at http://www.edwardtufte.com/.}
 }
 
-\renewcommand\paragraph{%
-  \PackageError{\@tufte@pkgname}{\noexpand\paragraph is undefined by this class.%
-    \MessageBreak See Robert Bringhurst's _The Elements of 
-    \MessageBreak Typographic Style_, section 4.2.2.
-    \MessageBreak \noexpand\paragraph was used}
-    {From Bringhurst's _The Elements of Typographic Style_, section 4.2.2: Use as 
-    \MessageBreak many levels of headings as you need, no more and no fewer.  Also see the many 
-    \MessageBreak related threads on Ask E.T. at http://www.edwardtufte.com/.}
-}
+%\renewcommand\paragraph{%
+%  \PackageError{\@tufte@pkgname}{\noexpand\paragraph is undefined by this class.%
+%    \MessageBreak See Robert Bringhurst's _The Elements of 
+%    \MessageBreak Typographic Style_, section 4.2.2.
+%    \MessageBreak \noexpand\paragraph was used}
+%    {From Bringhurst's _The Elements of Typographic Style_, section 4.2.2: Use as 
+%    \MessageBreak many levels of headings as you need, no more and no fewer.  Also see the many 
+%    \MessageBreak related threads on Ask E.T. at http://www.edwardtufte.com/.}
+%}
 
 \renewcommand\subparagraph{%
   \PackageError{\@tufte@pkgname}{\noexpand\subparagraph is undefined by this class.%
@@ -1337,6 +1346,62 @@
 \newlanguage\langwohyphens% define a language without hyphenation rules
 \newcommand{\nohyphens}[1]{{\language\langwohyphens #1}}% used for short bits of text
 \newcommand{\nohyphenation}{\language\langwohyphens}% can be used inside environments for longer text
+
+%%
+% The bibliography environment
+
+\setlength\bibindent{1.5em}
+\renewenvironment{thebibliography}[1]
+  {%
+    \ifthenelse{\equal{\@tufte@class}{book}}%
+      {\chapter{\bibname}}%
+      {\section*{\refname}}%
+%   \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
+    \list{\@biblabel{\@arabic\c@enumiv}}%
+         {\settowidth\labelwidth{\@biblabel{#1}}%
+          \leftmargin\labelwidth
+          \advance\leftmargin\labelsep
+          \@openbib@code
+          \usecounter{enumiv}%
+          \let\p@enumiv\@empty
+          \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+    \sloppy
+    \clubpenalty4000
+    \@clubpenalty \clubpenalty
+    \widowpenalty4000%
+    \sfcode`\.\@m%
+  }
+  {%
+    \def\@noitemerr
+    {\@latex@warning{Empty `thebibliography' environment}}%
+    \endlist%
+  }
+\renewcommand\newblock{\hskip .11em\@plus.33em\@minus.07em}
+
+
+%%
+% An index environment to mimic Tufte's indexes
+
+\RequirePackage{multicol}
+\renewenvironment{theindex}
+  {\begin{fullwidth}%
+    \small%
+    \ifthenelse{\equal{\@tufte@class}{book}}%
+      {\chapter{\indexname}}%
+      {\section*{\indexname}}%
+    \parskip0pt%
+    \parindent0pt%
+    \let\item\@idxitem%
+    \begin{multicols}{3}%
+  }
+  {\end{multicols}%
+    \end{fullwidth}%
+  }
+\renewcommand\@idxitem{\par\hangindent 2em}
+\renewcommand\subitem{\par\hangindent 3em\hspace*{1em}}
+\renewcommand\subsubitem{\par\hangindent 4em\hspace*{2em}}
+\renewcommand\indexspace{\par\addvspace{1.0\baselineskip plus 0.5ex minus 0.2ex}\relax}%
+\newcommand{\lettergroup}[1]{}% swallow the letter heading in the index
 
 
 %%

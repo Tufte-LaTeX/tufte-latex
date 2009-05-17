@@ -25,6 +25,13 @@
 %%
 % For graphics / images
 \usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
 
 %%
 % Prints argument within hanging parentheses (i.e., parentheses that take
@@ -82,6 +89,34 @@
 
 % Typesets the font size, leading, and measure in the form of 10/12x26 pc.
 \newcommand{\measure}[3]{#1/#2$\times$\unit[#3]{pc}}
+
+% Macros for typesetting the documentation
+\newcommand{\hl}[1]{\textcolor{Maroon}{#1}}% prints in red
+\newcommand{\hangleft}[1]{\makebox[0pt][r]{#1}}
+\newcommand{\hairsp}{\hspace{1pt}}% hair space
+\newcommand{\hquad}{\hskip0.5em\relax}% half quad space
+\newcommand{\TODO}{\textcolor{red}{\bf TODO!}\xspace}
+\newcommand{\ie}{\textit{i.\hairsp{}e.}\xspace}
+\newcommand{\eg}{\textit{e.\hairsp{}g.}\xspace}
+\providecommand{\XeLaTeX}{X\lower.5ex\hbox{\kern-0.15em\reflectbox{E}}\kern-0.1em\LaTeX}
+\newcommand{\tXeLaTeX}{\XeLaTeX\index{XeLaTeX@\protect\XeLaTeX}}
+% \index{\texttt{\textbackslash xyz}@\hangleft{\texttt{\textbackslash}}\texttt{xyz}}
+\newcommand{\tuftebs}{\symbol{'134}}% a backslash in tt type in OT1/T1
+\newcommand{\doccmd}[1]{%
+  \texttt{\tuftebs#1}%
+  \index{#1@\protect\hangleft{\texttt{\tuftebs}}\texttt{#1}}%
+}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quotation}\ttfamily\parskip0pt\parindent0pt\ignorespaces}{\end{quotation}}% command specification environment
+\newcommand{\docenv}[1]{\texttt{#1}\index{#1@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}\index{#1@\texttt{#1} package}\index{packages!#1@\texttt{#1}}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}\index{#1@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}% document class option name
+
+% Generates the index
+\usepackage{makeidx}
+\makeindex
 
 \begin{document}
 
@@ -141,7 +176,7 @@ required by applicable law or agreed to in writing, software distributed
 under the License is distributed on an \smallcaps{``AS IS'' BASIS, WITHOUT
 WARRANTIES OR CONDITIONS OF ANY KIND}, either express or implied. See the
 License for the specific language governing permissions and limitations
-under the License.
+under the License.\index{license}
 
 \par\textit{First printing, \monthyear}
 \end{fullwidth}
@@ -225,7 +260,7 @@ Introduction & \hangp{7} & \hangp{9} & \hangp{9} & 9 \\
 \bigskip
 The design of the front matter in Tufte's books varies slightly from the
 traditional design of front matter.  First, the pages in front matter are
-traditionally numbered with lowercase roman numerals (e.g., i, ii, iii,
+traditionally numbered with lowercase roman numerals (\eg, i, ii, iii,
 iv,~\ldots).  Second, the front matter page numbering sequence is usually
 separate from the main matter page numbering.  That is, the page numbers
 restart at 1 when the main matter begins.  In contrast, Tufte has
@@ -301,7 +336,7 @@ glimpse of the structure of the main matter.  \VDQI is split into two
 parts, each containing some number of chapters.  His other three books only
 contain chapters---they're not broken into parts.
 
-\begin{figure*}[p]
+\begin{figure*}[p]\index{table of contents}
 \fbox{\includegraphics[width=0.45\linewidth]{graphics/vdqi-contents.pdf}}
 \hfill
 \fbox{\includegraphics[width=0.45\linewidth]{graphics/ei-contents.pdf}}
@@ -312,7 +347,8 @@ contain chapters---they're not broken into parts.
 \end{figure*}
 
 
-\section{Typefaces}
+\section{Typefaces}\label{sec:typefaces}\index{typefaces}
+\index{fonts|see{typefaces}}
 
 Tufte's books primarily use two typefaces: Bembo and Gill Sans.  Bembo is used
 for the headings and body text, while Gill Sans is used for the title page and
@@ -325,7 +361,7 @@ Helvetica, respectively.  In addition, the Bera Mono typeface is used for
 
 The following font sizes are defined by the \TL classes:
 
-\begin{table}[h]
+\begin{table}[h]\index{typefaces!sizes}
   \footnotesize%
   \begin{center}
     \begin{tabular}{lccl}
@@ -349,7 +385,7 @@ The following font sizes are defined by the \TL classes:
   \label{tab:font-sizes}
 \end{table}
 
-\section{Headings}
+\section{Headings}\label{sec:headings}\index{headings}
 
 Tufte's books include the following heading levels: parts,
 chapters,\sidenote{Parts and chapters are defined for the \texttt{tufte\-book}
@@ -374,6 +410,9 @@ are: sub-subsections and subparagraphs.
   \caption{Heading styles used in \BE.}
   \label{tab:heading-styles}
 \end{table}
+
+\paragraph{Paragraph} Paragraph headings (as shown here) are introduced by
+italicized text and separated from the main paragraph by a bit of space.
 
 \section{Environments}
 
@@ -402,22 +441,299 @@ The following characteristics define the various environments:
 \chapter{On the Use of the \texttt{tufte-book} Document Class}
 \label{ch:tufte-book}
 
-The \texttt{tufte-book} document class is modeled primarily on \BE, since
-it's the most recent of Tufte's books and the design is (presumably) more
-refined.
+The Tufte-\LaTeX\ document classes define a style similar to the
+style Edward Tufte uses in his books and handouts.  Tufte's style is known
+for its extensive use of sidenotes, tight integration of graphics with
+text, and well-set typography.  This document aims to be at once a
+demonstration of the features of the Tufte-\LaTeX\ document classes
+and a style guide to their use.
 
-%This choice of book design has a few important implications:
-%\begin{inparaenum}
-%\item there are no parts---the highest heading level is the chapter;
-%\item the use of a sans serif font for many design elements (especially the
-%title page and epigraphs); and
-%\item \emph{something else---yyy}.
-%\end{inparaenum}
+\section{Page Layout}\label{sec:page-layout}
+\subsection{Headings}\label{sec:headings}
+This style provides \textsc{a}- and \textsc{b}-heads (that is,
+\Verb|\section| and \Verb|\subsection|), demonstrated above.
 
+If you need more than two levels of section headings, you'll have to define
+them yourself at the moment;\sidenote{See see ``\nameref{sec:defining-sections}'' on
+page~\pageref{sec:defining-sections} for help with defining more heading
+levels.} there are no pre-defined styles for anything below a
+\Verb|\subsection|.  As Bringhurst points out in \textit{The Elements of
+Typographic Style},\cite{Bringhurst2005} you should ``use as many levels of
+headings as you need: no more, and no fewer.''
+
+The Tufte-\LaTeX\ classes will emit an error if you try to use
+\linebreak\Verb|\subsubsection| and smaller headings.
+
+% let's start a new thought -- a new section
+\newthought{In his later books},\cite{Tufte2006} Tufte
+starts each section with a bit of vertical space, a non-indented paragraph,
+and sets the first few words of the sentence in \textsc{small caps}.  To
+accomplish this using this style, use the \hl{\doccmd{newthought}} command:
+\begin{docspec}
+  \doccmd{newthought}\{In his later books\}, Tufte starts\ldots
+\end{docspec}
+
+
+\section{Sidenotes}\label{sec:sidenotes}
+One of the most prominent and distinctive features of this style is the
+extensive use of sidenotes.  There is a wide margin to provide ample room
+for sidenotes and small figures.  Any \doccmd{footnote}s will automatically
+be converted to sidenotes.\footnote{This is a sidenote that was entered
+using the \texttt{\textbackslash footnote} command.}  If you'd like to place ancillary
+information in the margin without the sidenote mark (the superscript
+number), you can use the \hl{\doccmd{marginnote}} command.\marginnote{This is a
+margin note.  Notice that there isn't a number preceding the note, and
+there is no number in the main text where this note was written.}
+
+The specification of the \hl{\doccmd{sidenote}} command is:
+\begin{docspec}
+  \doccmd{sidenote}[\docopt{number}][\docopt{offset}]\{\docarg{Sidenote text.}\}
+\end{docspec}
+
+Both the \docopt{number} and \docopt{offset} arguments are optional.  If you
+provide a \docopt{number} argument, then that number will be used as the
+sidenote number.  It will change of the number of the current sidenote only and
+will not affect the numbering sequence of subsequent sidenotes.
+
+Sometimes a sidenote may run over the top of other text or graphics in the
+margin space.  If this happens, you can adjust the vertical position of the
+sidenote by providing a dimension in the \docopt{offset} argument.  Some
+examples of valid dimensions are:
+\begin{docspec}
+  \ttfamily 1.0in \qquad 2.54cm \qquad 254mm \qquad 6\Verb|\baselineskip|
+\end{docspec}
+If the dimension is positive it will push the sidenote down the page; if the
+dimension is negative, it will move the sidenote up the page.
+
+While both the \docopt{number} and \docopt{offset} arguments are optional, they
+must be provided in order.  To adjust the vertical position of the sidenote
+while leaving the sidenote number alone, use the following syntax:
+\begin{docspec}
+  \doccmd{sidenote}[][\docopt{offset}]\{\docarg{Sidenote text.}\}
+\end{docspec}
+The empty brackets tell the \Verb|\sidenote| command to use the default
+sidenote number.
+
+If you \emph{only} want to change the sidenote number, however, you may
+completely omit the \docopt{offset} argument:
+\begin{docspec}
+  \doccmd{sidenote}[\docopt{number}]\{\docarg{Sidenote text.}\}
+\end{docspec}
+
+The \doccmd{marginnote} command has a similar \docarg{offset} argument:
+\begin{docspec}
+  \doccmd{marginnote}[\docopt{offset}]\{\docarg{Margin note text.}\}
+\end{docspec}
+
+\section{References}
+References are placed alongside their citations as sidenotes,
+as well.  This can be accomplished using the normal \hl{\doccmd{cite}}
+command.\sidenote{The first paragraph of this document includes a citation.}
+
+The complete list of references may also be printed automatically by using
+the \hl{\doccmd{bibliography}} command.  (See the end of this document for an
+example.)  If you do not want to print a bibliography at the end of your
+document, use the \hl{\doccmd{nobibliography}} command in its place.  
+
+To enter multiple citations at one location,\cite[-3\baselineskip]{Tufte2006,Tufte1990} you can
+provide a list of keys separated by commas and the same optional vertical
+offset argument: \Verb|\cite{Tufte2006,Tufte1990}|.  
+\begin{docspec}
+  \doccmd{cite}[\docopt{offset}]\{\docarg{bibkey1,bibkey2,\ldots}\}
+\end{docspec}
+
+\section{Figures and Tables}\label{sec:figures-and-tables}
+Images and graphics play an integral role in Tufte's work.
+In addition to the standard \hl{\docenv{figure}} and \hl{\docenv{tabular}} environments,
+this style provides special figure and table environments for full-width
+floats.
+
+Full page--width figures and tables may be placed in \hl{\docenv{figure*}} or
+\hl{\docenv{table*}} environments.  To place figures or tables in the margin,
+use the \hl{\docenv{marginfigure}} or \hl{\docenv{margintable}} environments as follows
+(see figure~\ref{fig:marginfig}):
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{helix}
+  \caption{This is a margin figure.  The helix is defined by 
+    $x = \cos(2\pi z)$, $y = \sin(2\pi z)$, and $z = [0, 2.7]$.  The figure was
+    drawn using Asymptote (\url{http://asymptote.sf.net/}).}
+  \label{fig:marginfig}
+\end{marginfigure}
+
+\begin{docspec}
+\textbackslash begin\{marginfigure\}\\
+  \qquad\textbackslash includegraphics\{helix\}\\
+  \qquad\textbackslash caption\{This is a margin figure.\}\\
+  \qquad\textbackslash label\{fig:marginfig\}\\
+\textbackslash end\{marginfigure\}\\
+\end{docspec}
+
+The \docenv{marginfigure} and \docenv{margintable} environments accept an optional parameter \docopt{offset} that adjusts the vertical position of the figure or table.  See the ``\nameref{sec:sidenotes}'' section above for examples.  The specifications are:
+\begin{docspec}
+  \textbackslash{begin\{marginfigure\}[\docopt{offset}]}\\
+  \qquad\ldots\\
+  \textbackslash{end\{marginfigure\}}\\
+  \mbox{}\\
+  \textbackslash{begin\{margintable\}[\docopt{offset}]}\\
+  \qquad\ldots\\
+  \textbackslash{end\{margintable\}}\\
+\end{docspec}
+
+Figure~\ref{fig:fullfig} is an example of the \docenv{figure*}
+environment and figure~\ref{fig:textfig} is an example of the normal
+\docenv{figure} environment.
+
+\begin{figure*}[h]
+  \includegraphics[width=\linewidth]{sine.pdf}%
+  \caption{This graph shows $y = \sin x$ from about $x = [-10, 10]$.
+  \emph{Notice that this figure takes up the full page width.}}%
+  \label{fig:fullfig}%
+\end{figure*}
+
+\begin{figure}
+  \includegraphics{hilbertcurves.pdf}
+%  \checkparity This is an \pageparity\ page.%
+  \caption{Hilbert curves of various degrees $n$.
+  \emph{Notice that this figure only takes up the main textblock width.}}
+  \label{fig:textfig}
+  %\zsavepos{pos:textfig}
+\end{figure}
+
+Table~\ref{tab:normaltab} shows table created with the \docpkg{booktabs}
+package.  Notice the lack of vertical rules---they serve only to clutter
+the table's data.
+
+\begin{table}[ht]
+  \centering
+  \fontfamily{ppl}\selectfont
+  \begin{tabular}{ll}
+    \toprule
+    Margin & Length \\
+    \midrule
+    Paper width & \unit[8\nicefrac{1}{2}]{inches} \\
+    Paper height & \unit[11]{inches} \\
+    Textblock width & \unit[6\nicefrac{1}{2}]{inches} \\
+    Textblock/sidenote gutter & \unit[\nicefrac{3}{8}]{inches} \\
+    Sidenote width & \unit[2]{inches} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Here are the dimensions of the various margins used in the Tufte-handout class.}
+  \label{tab:normaltab}
+  %\zsavepos{pos:normaltab}
+\end{table}
+
+\section{Full-width text blocks}
+
+In addition to the new float types, there is a \hl{\docenv{fullwidth}}
+environment that stretches across the main text block and the sidenotes
+area.
+
+\begin{Verbatim}
+\begin{fullwidth}
+Lorem ipsum dolor sit amet...
+\end{fullwidth}
+\end{Verbatim}
+
+\begin{fullwidth}
+\small\itshape\lipsum[1]
+\end{fullwidth}
+
+\section{Typography}\label{sec:typography}
+
+\subsection{Typefaces}\label{sec:typefaces}
+If the Palatino, \textsf{Helvetica}, and \texttt{Bera Mono} typefaces are installed, this style
+will use them automatically.  Otherwise, we'll fall back on the Computer Modern
+typefaces.
+
+\subsection{Letterspacing}\label{sec:letterspacing}
+This document class includes two new commands and some improvements on
+existing commands for letterspacing.
+
+When setting strings of \allcaps{ALL CAPS} or \smallcaps{small caps}, the
+letter\-spacing---that is, the spacing between the letters---should be
+increased slightly.\cite{Bringhurst2005}  The \hl{\doccmd{allcaps}} command has proper letterspacing for
+strings of \allcaps{FULL CAPITAL LETTERS}, and the \hl{\doccmd{smallcaps}} command
+has letterspacing for \smallcaps{small capital letters}.  These commands
+will also automatically convert the case of the text to upper- or
+lowercase, respectively.
+
+The \hl{\doccmd{textsc}} command has also been redefined to include
+letterspacing.  The case of the \doccmd{textsc} argument is left as is,
+however.  This allows one to use both uppercase and lowercase letters:
+\textsc{The Initial Letters Of The Words In This Sentence Are Capitalized.}
+
+
+
+\section{Document Class Options}\label{sec:options}
+
+\index{class options|(}
+The \doccls{tufte-book} class is based on the \LaTeX\ \doccls{book}
+document class.  Therefore, you can pass any of the typical book
+options.  There are a few options that are specific to the
+\doccls{tufte-book} document class, however.
+
+The \hl{\docclsopt{a4paper}} option will set the paper size to \smallcaps{A4} instead of
+the default \smallcaps{US} letter size.
+
+The \hl{\docclsopt{sfsidenotes}} option will set the sidenotes and title block in a 
+\textsf{sans serif} typeface instead of the default roman.
+
+The \hl{\docclsopt{twoside}} option will modify the running heads so that the page
+number is printed on the outside edge (as opposed to always printing the page
+number on the right-side edge in \hl{\docclsopt{oneside}} mode).  
+
+The \hl{\docclsopt{symmetric}} option typesets the sidenotes on the outside edge of
+the page.  This is how books are traditionally printed, but is contrary to
+Tufte's book design which sets the sidenotes on the right side of the page.
+This option implicitly sets the \docclsopt{twoside} option.
+
+The \hl{\docclsopt{justified}} option sets all the text fully justified (flush left
+and right).  The default is to set the text ragged right.  
+The body text of Tufte's books are set ragged right.  This prevents
+needless hyphenation and makes it easier to read the text in the slightly
+narrower column.
+
+The \hl{\docclsopt{bidi}} option loads the \docpkg{bidi} package which is used with
+\tXeLaTeX\ to typeset bi-directional text.  Since the \docpkg{bidi}
+package needs to be loaded before the sidenotes and cite commands are defined,
+it can't be loaded in the document preamble.
+
+The \hl{\docclsopt{debug}} option causes the Tufte-\LaTeX\ classes to output debug
+information to the log file which is useful in troubleshooting bugs.  It will
+also cause the graphics to be replaced by outlines.
+
+The \hl{\docclsopt{nofonts}} option prevents the Tufte-\LaTeX\ classes from
+automatically loading the Palatino and Helvetica typefaces.  You should use
+this option if you wish to load your own fonts.  If you're using \tXeLaTeX, this
+option is implied (\ie, the Palatino and Helvetica fonts aren't loaded if you
+use \tXeLaTeX).  
+
+The \hl{\docclsopt{nols}} option inhibits the letterspacing code.  The Tufte-\LaTeX\
+classes try to load the appropriate letterspacing package (either pdf\TeX's
+\docpkg{letterspace} package or the \docpkg{soul} package).  If you're using
+\tXeLaTeX\ with \docpkg{fontenc}, however, you should configure your own
+letterspacing.  
+
+The \hl{\docclsopt{notitlepage}} option causes \verb|\maketitle| to generate a title
+block instead of a title page.  The \doccls{book} class defaults to a title
+page and the \doccls{handout} class defaults to the title block.  There is an
+analogous \hl{\docclsopt{titlepage}} option that forces \verb|\maketitle| to
+generate a full title page instead of the title block.
+
+The \hl{\docclsopt{notoc}} option suppresses Tufte-\LaTeX's custom table of contents
+(\textsc{toc}) design.  The current \textsc{toc} design only shows unnumbered
+chapter titles; it doesn't show sections or subsections.  The \docclsopt{notoc}
+option will revert to \LaTeX's \textsc{toc} design.
+
+\index{class options|)}
+
+
+\chapter{Debug Stuff}
 
 
 %%
-% The back matter contains appendices, indices, glossaries, etc.
+% The back matter contains appendices, bibliographies, indices, glossaries, etc.
 
 \backmatter
 
@@ -425,6 +741,9 @@ refined.
 
 \bibliography{sample-handout}
 \bibliographystyle{plainnat}
+
+
+\printindex
 
 \end{document}
 
