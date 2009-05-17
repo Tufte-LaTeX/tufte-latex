@@ -1,3 +1,12 @@
+== 3.0.0 / 2009-05-17
+* Created a Tufte-book document class.
+* Added optional offset parameter to sienotes, cite, etc. so their vertical
+  position can be adjusted manually.
+* Added support for the `bidi' package with XeLateX.
+* Adjusted font sizes and spacing to more closely reflect those used in 
+  Tufte's books.
+* Captions are now typeset in the margin as in Tufte's books.
+
 == 2.0.1 / 2008-11-16
 * Now works with footmisc version > 5.4.
 

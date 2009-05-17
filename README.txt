@@ -76,7 +76,7 @@ high quality patches, and you'll find yourself a developer on this project.
 
 == License
 
-Copyright 2007-2008 Bil Kleb, Bill Wood, and Kevin Godby
+Copyright 2007-2009 Bil Kleb, Bill Wood, and Kevin Godby
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

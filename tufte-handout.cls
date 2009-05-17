@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 
-\ProvidesClass{tufte-handout}[2008/11/16 v3.0.0 Tufte-handout class]
+\ProvidesClass{tufte-handout}[2009/05/17 v3.0.0 Tufte-handout class]
 
 %%
 % The symmetric option forces twoside.
