@@ -105,6 +105,14 @@
 \DeclareOption{bidi}{\setboolean{@tufte@loadbidi}{true}}
 \DeclareOption{nobidi}{\setboolean{@tufte@loadbibi}{false}}
 
+%%
+% `nohyper' option -- loads the bidi package for bi-directional text
+
+\newboolean{@tufte@loadhyper}
+\setboolean{@tufte@loadhyper}{true}
+\DeclareOption{hyper}{\setboolean{@tufte@loadhyper}{true}}
+\DeclareOption{nohyper}{\setboolean{@tufte@loadhyper}{false}}
+
 % FIXME: should probably specify options not supported like Mittelbach's aipproc.cls
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{\@tufte@class}}
@@ -149,13 +157,16 @@
 %%
 % Load the `hyperref' package.  We will set more options later.
 % TODO Set nice defaults for hyperref options
-\ifthenelse{\boolean{@tufte@xetex}}
-  {\RequirePackage[hyperfootnotes=false,xetex]{hyperref}}
-  {\RequirePackage[hyperfootnotes=false]{hyperref}}
-
-\hypersetup{%
-  pdfborder = {0 0 0},
-  bookmarksdepth = section,
+\ifthenelse{\boolean{@tufte@loadhyper}}{%
+  \ifthenelse{\boolean{@tufte@xetex}}
+    {\RequirePackage[xetex]{hyperref}}
+    {\RequirePackage{hyperref}}
+  \hypersetup{%
+    pdfborder = {0 0 0},
+    bookmarksdepth = section,
+    hyperfootnotes=false,
+  }%
+}{%
 }
 
 %%
@@ -359,7 +370,7 @@
   \ifthenelse{\isempty{#1}}%
     {\renewcommand{\plaintitle}{\thanklesstitle}}% use thankless title
     {\renewcommand{\plaintitle}{#1}}% use provided plain-text title
-  \hypersetup{pdftitle={\plaintitle}}% set the PDF metadata title
+  \ifthenelse{\boolean{@tufte@loadhyper}}{\hypersetup{pdftitle={\plaintitle}}}{}% set the PDF metadata title
 }
 
 \def\@author{}% default author is empty (suppresses LaTeX's ``no author'' warning)
@@ -373,7 +384,7 @@
   \ifthenelse{\isempty{#1}}
     {\renewcommand{\plainauthor}{\thanklessauthor}}% use thankless author
     {\renewcommand{\plainauthor}{#1}}% use provided plain-text author
-  \hypersetup{pdfauthor={\plainauthor}}% set the PDF metadata author
+  \ifthenelse{\boolean{@tufte@loadhyper}}{\hypersetup{pdfauthor={\plainauthor}}}{}% set the PDF metadata author
 }
 
 \renewcommand*{\date}[1]{%
