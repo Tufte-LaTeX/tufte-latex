@@ -91,7 +91,7 @@
 \newcommand{\measure}[3]{#1/#2$\times$\unit[#3]{pc}}
 
 % Macros for typesetting the documentation
-\newcommand{\hl}[1]{\textcolor{Maroon}{#1}}% prints in red
+\newcommand{\hlred}[1]{\textcolor{Maroon}{#1}}% prints in red
 \newcommand{\hangleft}[1]{\makebox[0pt][r]{#1}}
 \newcommand{\hairsp}{\hspace{1pt}}% hair space
 \newcommand{\hquad}{\hskip0.5em\relax}% half quad space
@@ -466,7 +466,7 @@ The Tufte-\LaTeX\ classes will emit an error if you try to use
 \newthought{In his later books},\cite{Tufte2006} Tufte
 starts each section with a bit of vertical space, a non-indented paragraph,
 and sets the first few words of the sentence in \textsc{small caps}.  To
-accomplish this using this style, use the \hl{\doccmd{newthought}} command:
+accomplish this using this style, use the \hlred{\doccmd{newthought}} command:
 \begin{docspec}
   \doccmd{newthought}\{In his later books\}, Tufte starts\ldots
 \end{docspec}
@@ -479,11 +479,11 @@ for sidenotes and small figures.  Any \doccmd{footnote}s will automatically
 be converted to sidenotes.\footnote{This is a sidenote that was entered
 using the \texttt{\textbackslash footnote} command.}  If you'd like to place ancillary
 information in the margin without the sidenote mark (the superscript
-number), you can use the \hl{\doccmd{marginnote}} command.\marginnote{This is a
+number), you can use the \hlred{\doccmd{marginnote}} command.\marginnote{This is a
 margin note.  Notice that there isn't a number preceding the note, and
 there is no number in the main text where this note was written.}
 
-The specification of the \hl{\doccmd{sidenote}} command is:
+The specification of the \hlred{\doccmd{sidenote}} command is:
 \begin{docspec}
   \doccmd{sidenote}[\docopt{number}][\docopt{offset}]\{\docarg{Sidenote text.}\}
 \end{docspec}
@@ -525,13 +525,13 @@ The \doccmd{marginnote} command has a similar \docarg{offset} argument:
 
 \section{References}
 References are placed alongside their citations as sidenotes,
-as well.  This can be accomplished using the normal \hl{\doccmd{cite}}
+as well.  This can be accomplished using the normal \hlred{\doccmd{cite}}
 command.\sidenote{The first paragraph of this document includes a citation.}
 
 The complete list of references may also be printed automatically by using
-the \hl{\doccmd{bibliography}} command.  (See the end of this document for an
+the \hlred{\doccmd{bibliography}} command.  (See the end of this document for an
 example.)  If you do not want to print a bibliography at the end of your
-document, use the \hl{\doccmd{nobibliography}} command in its place.  
+document, use the \hlred{\doccmd{nobibliography}} command in its place.  
 
 To enter multiple citations at one location,\cite[-3\baselineskip]{Tufte2006,Tufte1990} you can
 provide a list of keys separated by commas and the same optional vertical
@@ -542,13 +542,13 @@ offset argument: \Verb|\cite{Tufte2006,Tufte1990}|.
 
 \section{Figures and Tables}\label{sec:figures-and-tables}
 Images and graphics play an integral role in Tufte's work.
-In addition to the standard \hl{\docenv{figure}} and \hl{\docenv{tabular}} environments,
+In addition to the standard \hlred{\docenv{figure}} and \hlred{\docenv{tabular}} environments,
 this style provides special figure and table environments for full-width
 floats.
 
-Full page--width figures and tables may be placed in \hl{\docenv{figure*}} or
-\hl{\docenv{table*}} environments.  To place figures or tables in the margin,
-use the \hl{\docenv{marginfigure}} or \hl{\docenv{margintable}} environments as follows
+Full page--width figures and tables may be placed in \hlred{\docenv{figure*}} or
+\hlred{\docenv{table*}} environments.  To place figures or tables in the margin,
+use the \hlred{\docenv{marginfigure}} or \hlred{\docenv{margintable}} environments as follows
 (see figure~\ref{fig:marginfig}):
 
 \begin{marginfigure}%
@@ -623,7 +623,7 @@ the table's data.
 
 \section{Full-width text blocks}
 
-In addition to the new float types, there is a \hl{\docenv{fullwidth}}
+In addition to the new float types, there is a \hlred{\docenv{fullwidth}}
 environment that stretches across the main text block and the sidenotes
 area.
 
@@ -650,13 +650,13 @@ existing commands for letterspacing.
 
 When setting strings of \allcaps{ALL CAPS} or \smallcaps{small caps}, the
 letter\-spacing---that is, the spacing between the letters---should be
-increased slightly.\cite{Bringhurst2005}  The \hl{\doccmd{allcaps}} command has proper letterspacing for
-strings of \allcaps{FULL CAPITAL LETTERS}, and the \hl{\doccmd{smallcaps}} command
+increased slightly.\cite{Bringhurst2005}  The \hlred{\doccmd{allcaps}} command has proper letterspacing for
+strings of \allcaps{FULL CAPITAL LETTERS}, and the \hlred{\doccmd{smallcaps}} command
 has letterspacing for \smallcaps{small capital letters}.  These commands
 will also automatically convert the case of the text to upper- or
 lowercase, respectively.
 
-The \hl{\doccmd{textsc}} command has also been redefined to include
+The \hlred{\doccmd{textsc}} command has also been redefined to include
 letterspacing.  The case of the \doccmd{textsc} argument is left as is,
 however.  This allows one to use both uppercase and lowercase letters:
 \textsc{The Initial Letters Of The Words In This Sentence Are Capitalized.}
@@ -671,60 +671,60 @@ document class.  Therefore, you can pass any of the typical book
 options.  There are a few options that are specific to the
 \doccls{tufte-book} document class, however.
 
-The \hl{\docclsopt{a4paper}} option will set the paper size to \smallcaps{A4} instead of
+The \hlred{\docclsopt{a4paper}} option will set the paper size to \smallcaps{A4} instead of
 the default \smallcaps{US} letter size.
 
-The \hl{\docclsopt{sfsidenotes}} option will set the sidenotes and title block in a 
+The \hlred{\docclsopt{sfsidenotes}} option will set the sidenotes and title block in a 
 \textsf{sans serif} typeface instead of the default roman.
 
-The \hl{\docclsopt{twoside}} option will modify the running heads so that the page
+The \hlred{\docclsopt{twoside}} option will modify the running heads so that the page
 number is printed on the outside edge (as opposed to always printing the page
-number on the right-side edge in \hl{\docclsopt{oneside}} mode).  
+number on the right-side edge in \hlred{\docclsopt{oneside}} mode).  
 
-The \hl{\docclsopt{symmetric}} option typesets the sidenotes on the outside edge of
+The \hlred{\docclsopt{symmetric}} option typesets the sidenotes on the outside edge of
 the page.  This is how books are traditionally printed, but is contrary to
 Tufte's book design which sets the sidenotes on the right side of the page.
 This option implicitly sets the \docclsopt{twoside} option.
 
-The \hl{\docclsopt{justified}} option sets all the text fully justified (flush left
+The \hlred{\docclsopt{justified}} option sets all the text fully justified (flush left
 and right).  The default is to set the text ragged right.  
 The body text of Tufte's books are set ragged right.  This prevents
 needless hyphenation and makes it easier to read the text in the slightly
 narrower column.
 
-The \hl{\docclsopt{bidi}} option loads the \docpkg{bidi} package which is used with
+The \hlred{\docclsopt{bidi}} option loads the \docpkg{bidi} package which is used with
 \tXeLaTeX\ to typeset bi-directional text.  Since the \docpkg{bidi}
 package needs to be loaded before the sidenotes and cite commands are defined,
 it can't be loaded in the document preamble.
 
-The \hl{\docclsopt{debug}} option causes the Tufte-\LaTeX\ classes to output debug
+The \hlred{\docclsopt{debug}} option causes the Tufte-\LaTeX\ classes to output debug
 information to the log file which is useful in troubleshooting bugs.  It will
 also cause the graphics to be replaced by outlines.
 
-The \hl{\docclsopt{nofonts}} option prevents the Tufte-\LaTeX\ classes from
+The \hlred{\docclsopt{nofonts}} option prevents the Tufte-\LaTeX\ classes from
 automatically loading the Palatino and Helvetica typefaces.  You should use
 this option if you wish to load your own fonts.  If you're using \tXeLaTeX, this
 option is implied (\ie, the Palatino and Helvetica fonts aren't loaded if you
 use \tXeLaTeX).  
 
-The \hl{\docclsopt{nols}} option inhibits the letterspacing code.  The Tufte-\LaTeX\
+The \hlred{\docclsopt{nols}} option inhibits the letterspacing code.  The Tufte-\LaTeX\
 classes try to load the appropriate letterspacing package (either pdf\TeX's
 \docpkg{letterspace} package or the \docpkg{soul} package).  If you're using
 \tXeLaTeX\ with \docpkg{fontenc}, however, you should configure your own
 letterspacing.  
 
-The \hl{\docclsopt{notitlepage}} option causes \verb|\maketitle| to generate a title
+The \hlred{\docclsopt{notitlepage}} option causes \verb|\maketitle| to generate a title
 block instead of a title page.  The \doccls{book} class defaults to a title
 page and the \doccls{handout} class defaults to the title block.  There is an
-analogous \hl{\docclsopt{titlepage}} option that forces \verb|\maketitle| to
+analogous \hlred{\docclsopt{titlepage}} option that forces \verb|\maketitle| to
 generate a full title page instead of the title block.
 
-The \hl{\docclsopt{notoc}} option suppresses Tufte-\LaTeX's custom table of contents
+The \hlred{\docclsopt{notoc}} option suppresses Tufte-\LaTeX's custom table of contents
 (\textsc{toc}) design.  The current \textsc{toc} design only shows unnumbered
 chapter titles; it doesn't show sections or subsections.  The \docclsopt{notoc}
 option will revert to \LaTeX's \textsc{toc} design.
 
-The \hl{\docclsopt{nohyper}} option prevents the \docpkg{hyperref} package from
+The \hlred{\docclsopt{nohyper}} option prevents the \docpkg{hyperref} package from
 being loaded.  The default is to load the \docpkg{hyperref} package and use the
 \doccmd{title} and \doccmd{author} contents as metadata for the generated
 \textsc{pdf}.

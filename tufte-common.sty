@@ -320,7 +320,7 @@
       \setboolean{@tufte@odd@page}{true}%
     \else%
       \setboolean{@tufte@odd@page}{false}%
-    \fi
+    \fi%
   }%
 }
 
@@ -831,10 +831,16 @@
 
 
 %%
-% A collection of macros to be used with the new Tufte-style float environments
+% A collection of macros to be used with the new Tufte-style float environments.
+% \setfloatalignment forces the caption placement to be treated as top, bottom, etc.
+% \forcerectofloat forces the float to be treated as if it were appearing on a recto page.
+% \forceversofloat does the same, but for verso pages.
 
 \newcommand{\floatalignment}{x}% holds the current float alignment (t, b, h, p)
-\newcommand{\setfloatalignment}[1]{\renewcommand{\floatalignment}{#1}}% manually sets the float alignment
+\newcommand{\setfloatalignment}[1]{\global\def\floatalignment{#1}}% manually sets the float alignment
+\newboolean{@tufte@float@recto}
+\newcommand{\forcerectofloat}{\global\@tufte@float@rectotrue}
+\newcommand{\forceversofloat}{\global\@tufte@float@rectofalse}
 
 % Boxes to temporarily store our float and caption
 \newsavebox{\@tufte@figure@box}
@@ -856,7 +862,7 @@
 \newcommand{\@tufte@stored@label}{}
 
 \newcommand{\@tufte@caption}[2][]{%
-  \ifthenelse{\isempty{#1}}
+  \ifthenelse{\isempty{#1}}%
     {\gdef\@tufte@stored@shortcaption{#2}}%
     {\gdef\@tufte@stored@shortcaption{#1}}%
   \gdef\@tufte@stored@caption{#2}%
@@ -868,26 +874,40 @@
 
 \newcommand{\@tufte@fps}{}
 
-% TODO make sure new caption and figure code can handle [p] and [h] placements well
-% TODO handle the symmetric class option (move caption to other side of verso pages)
+\newboolean{@tufte@float@star}
+\newlength{\@tufte@float@contents@width}
 
 %%
 % Define a float environment to place the captions in the margin space
 
-\newenvironment{@tufte@float}[2][htbp]
-  {% If the float placement specifier is 'b' and only 'b', then bottom-align the mini-pages, otherwise top-align them.
+\newenvironment{@tufte@float}[3][htbp]%
+  {% begin @tufte@float
+    % Should this float be full-width or just text-width?
+    \ifthenelse{\equal{#3}{star}}%
+      {\setboolean{@tufte@float@star}{true}}%
+      {\setboolean{@tufte@float@star}{false}}%
+    % Check page side (recto/verso) and store detected value -- can be overriden in environment contents
+    \@tufte@checkoddpage%
+    \ifthenelse{\boolean{@tufte@odd@page}}%
+      {\global\@tufte@float@rectotrue}%
+      {\global\@tufte@float@rectofalse}%
+
+    % If the float placement specifier is 'b' and only 'b', then bottom-align the mini-pages, otherwise top-align them.
     \renewcommand{\@tufte@fps}{#1}%
     \ifthenelse{\equal{#1}{b}\OR\equal{#1}{B}}%
       {\renewcommand{\floatalignment}{b}}%
       {\renewcommand{\floatalignment}{t}}%
+    % Caption the contents of the \caption and \label commands to use later
     \renewcommand{\caption}[2][]{\@tufte@caption[##1]{##2}}%
     \renewcommand{\label}[1]{\@tufte@label{##1}}%
     \@tufte@orig@float{#2}[#1]%
+    \ifthenelse{\boolean{@tufte@float@star}}%
+      {\setlength{\@tufte@float@contents@width}{\@tufte@fullwidth}}%
+      {\setlength{\@tufte@float@contents@width}{\textwidth}}%
     \begin{lrbox}{\@tufte@figure@box}%
-      \begin{minipage}[\floatalignment]{\textwidth}\hbox{}%
-  }
-  {% end @tufte@float
-        \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
+      \begin{minipage}[\floatalignment]{\@tufte@float@contents@width}\hbox{}%
+  }{% end @tufte@float
+      \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
       \end{minipage}%
     \end{lrbox}%
     % build the caption box
@@ -901,18 +921,9 @@
     % now typeset the stored boxes
     \begin{fullwidth}%
       \begin{minipage}[\floatalignment]{\linewidth}%
-        \@tufte@checkoddpage%
-        \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@odd@page}}{%
-          % asymmetric or page is odd, so caption is on the right
-          \usebox{\@tufte@figure@box}%
-          \hspace{\marginparsep}%
-          \smash{\usebox{\@tufte@caption@box}}%
-        }{%
-          % symmetric pages and page is even, so caption is on the left
-	  \strut\smash{\usebox{\@tufte@caption@box}}%
-          \hspace{\marginparsep}%
-	  \usebox{\@tufte@figure@box}%
-        }%
+        \ifthenelse{\boolean{@tufte@float@star}}%
+	  {\@tufte@float@fullwidth{\@tufte@figure@box}{\@tufte@caption@box}}%
+	  {\@tufte@float@textwidth{\@tufte@figure@box}{\@tufte@caption@box}}%
       \end{minipage}%
     \end{fullwidth}%
     \@tufte@orig@endfloat%
@@ -925,11 +936,40 @@
     \gdef\@tufte@stored@caption{}%
   }
 
+\newcommand{\@tufte@float@textwidth}[2]{%
+  \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}{%
+    % asymmetric or page is odd, so caption is on the right
+    \usebox{#1}%
+    \hspace{\marginparsep}%
+    \smash{\usebox{#2}}%
+  }{%
+    % symmetric pages and page is even, so caption is on the left
+    \strut\smash{\usebox{#2}}%
+    \hspace{\marginparsep}%
+    \usebox{#1}%
+  }%
+}
+
+\newcommand{\@tufte@float@fullwidth}[2]{%
+  \ifthenelse{\equal{\floatalignment}{b}}%
+    {% place caption above figure
+      \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
+        {\hfill\smash{\usebox{#2}}\par\usebox{#1}}% caption on the right
+	{\smash{\usebox{#2}\hfill}\par\usebox{#1}}% caption on the left
+    }%
+    {% place caption below figure
+      \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
+        {\usebox{#1}\par\hfill\smash{\usebox{#2}}}% caption on the right
+        {\usebox{#1}\par\smash{\usebox{#2}\hfill}}% caption on the left
+    }%
+}
+
+
 %%
 % Redefine the figure environment to place the captions in the margin space
 
 \renewenvironment{figure}[1][htbp]
-  {\begin{@tufte@float}[#1]{figure}}
+  {\begin{@tufte@float}[#1]{figure}{}}
   {\end{@tufte@float}}
 
 
@@ -937,106 +977,37 @@
 % Redefine the table environment to place the captions in the margin space
 
 \renewenvironment{table}[1][htbp]
-  {\begin{@tufte@float}[#1]{table}}
+  {\begin{@tufte@float}[#1]{table}{}}
   {\end{@tufte@float}}
-
-
-%%
-% Full-width figures and tables
-
-\newenvironment{@tufte@float@star}[2][htbp]%
-  {% begin
-    % If the float placement specifier is 'b' and only 'b', then place the caption above the figure, else place the caption below the figure.
-    \renewcommand{\@tufte@fps}{#1}%
-    \ifthenelse{\equal{#1}{b}\OR\equal{#1}{B}}%
-      {\renewcommand{\floatalignment}{b}}%
-      {\renewcommand{\floatalignment}{t}}%
-    \renewcommand{\caption}[2][]{\@tufte@caption[##1]{##2}}%
-    \renewcommand{\label}[1]{\@tufte@label{##1}}%
-    \@tufte@orig@float{#2}[#1]%
-    \begin{lrbox}{\@tufte@figure@box}%
-      \begin{minipage}[\floatalignment]{\textwidth}\hbox{}%
-        \begin{fullwidth}
-  }%
-  {% end figure*
-          \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
-        \end{fullwidth}%
-      \end{minipage}%
-    \end{lrbox}%
-    % build the caption box
-    % TODO use \captionaboveskip and \captionbelowskip for spacing between caption and figure boxes
-    \begin{lrbox}{\@tufte@caption@box}%
-      \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
-        \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}%
-        \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{\@tufte@orig@label{\@tufte@stored@label}}{}%
-        \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
-      \end{minipage}%
-    \end{lrbox}%
-    % now typeset the stored boxes
-    \@tufte@checkoddpage%
-    \begin{fullwidth}%
-      \begin{minipage}[\floatalignment]{\linewidth}%
-        \ifthenelse{\equal{\floatalignment}{b}}
-          {% place caption above figure
-            \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@odd@page}}
-              {% caption on the right
-                \hfill\smash{\usebox{\@tufte@caption@box}}%
-		\par\usebox{\@tufte@figure@box}%
-              }{% caption on the left
-                \smash{\usebox{\@tufte@caption@box}}\hfill\null%
-		\par\hspace{\@tufte@overhang}\usebox{\@tufte@figure@box}%
-              }%
-          }
-          {% place caption below figure
-            \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@odd@page}}
-              {% caption on the right
-                \usebox{\@tufte@figure@box}\par%
-                \hspace{\@tufte@caption@fill}\smash{\usebox{\@tufte@caption@box}}%
-              }{% caption on the left
-                \null\hspace{\@tufte@overhang}\usebox{\@tufte@figure@box}\par%
-                \smash{\usebox{\@tufte@caption@box}}\hfill%
-              }%
-          }
-      \end{minipage}%
-    \end{fullwidth}%
-    \@tufte@orig@endfloat%
-    % reset commands and temp boxes and captions
-    \let\caption\@tufte@orig@caption%
-    \let\label\@tufte@orig@label%
-    \begin{lrbox}{\@tufte@figure@box}\hbox{}\end{lrbox}
-    \begin{lrbox}{\@tufte@caption@box}\hbox{}\end{lrbox}
-    \gdef\@tufte@stored@shortcaption{}
-    \gdef\@tufte@stored@caption{}
-  }
 
 
 %%
 % Full-width figure
 
 \renewenvironment{figure*}[1][htbp]%
-  {\begin{@tufte@float@star}[#1]{figure}}
-  {\end{@tufte@float@star}}
+  {\begin{@tufte@float}[#1]{figure}{star}}
+  {\end{@tufte@float}}
 
 
 %%
 % Full-width table
 
 \renewenvironment{table*}[1][htbp]%
-  {\begin{@tufte@float@star}[#1]{table}}
-  {\end{@tufte@float@star}}
+  {\begin{@tufte@float}[#1]{table}{star}}
+  {\end{@tufte@float}}
 
 
 %%
 % Full-page-width area
 
 \newenvironment{fullwidth}
-  {\ifthenelse{\boolean{@tufte@symmetric}}
-     {\ifthenelse{\boolean{@tufte@changepage}}{\begin{adjustwidth*}{}{-\@tufte@overhang}}{\begin{adjustwidth}[]{}{-\@tufte@overhang}}}
+  {\ifthenelse{\boolean{@tufte@symmetric}}%
+     {\ifthenelse{\boolean{@tufte@changepage}}{\begin{adjustwidth*}{}{-\@tufte@overhang}}{\begin{adjustwidth}[]{}{-\@tufte@overhang}}}%
      {\begin{adjustwidth}{}{-\@tufte@overhang}}%
-  }
-  {\ifthenelse{\boolean{@tufte@symmetric}}
-    {\ifthenelse{\boolean{@tufte@changepage}}{\end{adjustwidth*}}{\end{adjustwidth}}}
-    {\end{adjustwidth}}
+  }%
+  {\ifthenelse{\boolean{@tufte@symmetric}}%
+    {\ifthenelse{\boolean{@tufte@changepage}}{\end{adjustwidth*}}{\end{adjustwidth}}}%
+    {\end{adjustwidth}}%
   }
 
 %%
@@ -1046,13 +1017,13 @@
   \par%
   \addcontentsline{\csname ext@#1\endcsname}{#1}%
     {\protect\numberline{\csname the#1\endcsname}{\ignorespaces #2}}%
-  \begingroup
-    \@parboxrestore
-    \if@minipage
-      \@setminipage
-    \fi
+  \begingroup%
+    \@parboxrestore%
+    \if@minipage%
+      \@setminipage%
+    \fi%
     \@tufte@marginfont\@tufte@justification%
-    \noindent\csname fnum@#1\endcsname: \ignorespaces#3\par
+    \noindent\csname fnum@#1\endcsname: \ignorespaces#3\par%
     %\@makecaption{\csname fnum@#1\endcsname}{\ignorespaces #3}\par
   \endgroup}
 
@@ -1262,7 +1233,7 @@
   {\relax\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\begin{fullwidth}}{}}% format applied to label+text
   {\itshape\huge\thechapter}% label
   {0pt}% horizontal separation between label and title body
-  {\huge\rm\itshape}% before the title body
+  {\huge\rmfamily\itshape}% before the title body
   [\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\end{fullwidth}}{}]% after the title body
 
 \titleformat{\section}%
@@ -1333,9 +1304,9 @@
   {\titlecontents{chapter}%
     [0em] % distance from left margin
     {\begin{fullwidth}\fontsize{13pt}{18pt}\selectfont} % above (global formatting of entry)
-    {\contentslabel{2em}\rm\itshape} % before w/label (label = ``Chapter 1'')
-    {\rm\itshape} % before w/o label
-    {\rm\qquad\thecontentspage} % filler + page (leaders and page num)
+    {\contentslabel{2em}\rmfamily\itshape} % before w/label (label = ``Chapter 1'')
+    {\rmfamily\itshape} % before w/o label
+    {\rmfamily\qquad\thecontentspage} % filler + page (leaders and page num)
     [\vspace{1.5\baselineskip}\end{fullwidth}] % after
   }
   {}
