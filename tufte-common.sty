@@ -106,7 +106,7 @@
 \DeclareOption{nobidi}{\setboolean{@tufte@loadbibi}{false}}
 
 %%
-% `nohyper' option -- loads the bidi package for bi-directional text
+% `nohyper' option -- suppresses loading of the hyperref package
 
 \newboolean{@tufte@loadhyper}
 \setboolean{@tufte@loadhyper}{true}
@@ -324,22 +324,26 @@
   }%
 }
 
-
+%%
 % Compute lengths used for full-width displays
 
 \newlength{\@tufte@overhang}
-\setlength{\@tufte@overhang}{\marginparwidth}
-\addtolength{\@tufte@overhang}{\marginparsep}
-
 \newlength{\@tufte@fullwidth}
-\setlength{\@tufte@fullwidth}{\textwidth}
-\addtolength{\@tufte@fullwidth}{\marginparsep}
-\addtolength{\@tufte@fullwidth}{\marginparwidth}
-
 \newlength{\@tufte@caption@fill}
-\setlength{\@tufte@caption@fill}{\textwidth}
-\addtolength{\@tufte@caption@fill}{\marginparsep}
 
+\newcommand{\TufteRecalculate}{%
+  \setlength{\@tufte@overhang}{\marginparwidth}
+  \addtolength{\@tufte@overhang}{\marginparsep}
+
+  \setlength{\@tufte@fullwidth}{\textwidth}
+  \addtolength{\@tufte@fullwidth}{\marginparsep}
+  \addtolength{\@tufte@fullwidth}{\marginparwidth}
+
+  \setlength{\@tufte@caption@fill}{\textwidth}
+  \addtolength{\@tufte@caption@fill}{\marginparsep}
+}
+
+\AtBeginDocument{\TufteRecalculate}
 
 %%
 % Modified \title, \author, and \date commands.  These store the
