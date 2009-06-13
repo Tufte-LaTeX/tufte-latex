@@ -327,7 +327,7 @@
 %%
 % Compute lengths used for full-width displays
 
-\newlength{\@tufte@overhang}
+\newlength{\@tufte@overhang}% used by the fullwidth environment and the running heads
 \newlength{\@tufte@fullwidth}
 \newlength{\@tufte@caption@fill}
 
@@ -926,8 +926,8 @@
     \begin{fullwidth}%
       \begin{minipage}[\floatalignment]{\linewidth}%
         \ifthenelse{\boolean{@tufte@float@star}}%
-	  {\@tufte@float@fullwidth{\@tufte@figure@box}{\@tufte@caption@box}}%
-	  {\@tufte@float@textwidth{\@tufte@figure@box}{\@tufte@caption@box}}%
+          {\@tufte@float@fullwidth{\@tufte@figure@box}{\@tufte@caption@box}}%
+          {\@tufte@float@textwidth{\@tufte@figure@box}{\@tufte@caption@box}}%
       \end{minipage}%
     \end{fullwidth}%
     \@tufte@orig@endfloat%
@@ -959,7 +959,7 @@
     {% place caption above figure
       \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
         {\hfill\smash{\usebox{#2}}\par\usebox{#1}}% caption on the right
-	{\smash{\usebox{#2}\hfill}\par\usebox{#1}}% caption on the left
+        {\smash{\usebox{#2}\hfill}\par\usebox{#1}}% caption on the left
     }%
     {% place caption below figure
       \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
@@ -1076,9 +1076,11 @@
 
 % Set the header/footer width to be the body text block plus the margin
 % note area.
-\ifthenelse{\boolean{@tufte@symmetric}}
-  {\fancyhfoffset[LE,RO]{\@tufte@overhang}}
-  {\fancyhfoffset[RE,RO]{\@tufte@overhang}}
+\AtBeginDocument{%
+  \ifthenelse{\boolean{@tufte@symmetric}}
+    {\fancyhfoffset[LE,RO]{\@tufte@overhang}}
+    {\fancyhfoffset[RE,RO]{\@tufte@overhang}}
+}
 
 % The running heads/feet don't have rules
 \renewcommand{\headrulewidth}{0pt}
