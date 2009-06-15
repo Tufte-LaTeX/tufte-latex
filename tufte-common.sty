@@ -113,7 +113,23 @@
 \DeclareOption{hyper}{\setboolean{@tufte@loadhyper}{true}}
 \DeclareOption{nohyper}{\setboolean{@tufte@loadhyper}{false}}
 
-% FIXME: should probably specify options not supported like Mittelbach's aipproc.cls
+%%
+% Unsupported options
+
+\newcommand{\@tufte@unsupported@option}[1]{\PackageWarningNoLine{\@tufte@pkgname}{Option `#1' is not supported -- \MessageBreak ignoring option}}
+
+\DeclareOption{10pt}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOption{11pt}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOption{12pt}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOption{a5paper}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOption{b5paper}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOption{executivepaper}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOption{executivepaper}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOption{legalpaper}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOption{landscape}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOption{onecolumn}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOption{twocolumn}{\@tufte@unsupported@option{\CurrentOption}}
+
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{\@tufte@class}}
 \ProcessOptions
@@ -164,7 +180,11 @@
   \hypersetup{%
     pdfborder = {0 0 0},
     bookmarksdepth = section,
-    hyperfootnotes=false,
+    hyperfootnotes = false,
+    citecolor = DarkGreen,
+    linkcolor = DarkBlue,
+    pagecolor = DarkBlue,
+    urlcolor = DarkGreen,
   }%
 }{%
 }
@@ -551,6 +571,11 @@
                 \small%
                 \item\relax}
                {\endlist}
+
+%%
+% Italicize description run-in headings (instead of the default bold)
+
+\renewcommand*\descriptionlabel[1]{\hspace\labelsep\normalfont\em #1}
 
 
 %%
