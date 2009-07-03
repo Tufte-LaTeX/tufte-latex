@@ -735,6 +735,26 @@ being loaded.  The default is to load the \docpkg{hyperref} package and use the
 \index{class options|)}
 
 
+
+\chapter{Compatibility Issues}
+\label{ch:compatibility}
+
+When switching an existing document from one document class to a \TL document class, a few changes to the document may have to be made.
+
+\section{Converting from \doccls{article} to \doccls{tufte-handout}}
+
+The following \doccls{article} class options are unsupported: \docclsopt{10pt}, \docclsopt{11pt}, \docclsopt{12pt}, \docclsopt{a5paper}, \docclsopt{b5paper}, \docclsopt{executivepaper}, \docclsopt{legalpaper}, \docclsopt{landscape}, \docclsopt{onecolumn}, and \doccls{twocolumn}.
+
+The following headings are not supported: \doccmd{subsubsection} and \doccmd{subparagraph}.
+
+\section{Converting from \doccls{book} to \doccls{tufte-book}}
+
+The following \doccls{report} class options are unsupported: \docclsopt{10pt}, \docclsopt{11pt}, \docclsopt{12pt}, \docclsopt{a5paper}, \docclsopt{b5paper}, \docclsopt{executivepaper}, \docclsopt{legalpaper}, \docclsopt{landscape}, \docclsopt{onecolumn}, and \doccls{twocolumn}.
+
+The following headings are not supported: \doccmd{subsubsection} and \doccmd{subparagraph}.
+
+
+
 \chapter{Troubleshooting and Support}
 \label{ch:troubleshooting}
 
