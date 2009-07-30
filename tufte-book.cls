@@ -9,7 +9,7 @@
 
 %%
 % Load the common style elements
-\input{tufte-common.tex}
+\input{tufte-common.def}
 
 
 %%

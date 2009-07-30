@@ -23,4 +23,4 @@ tufte-handout.cls
 sample-book.pdf
 sample-book.tex
 tufte-book.cls
-tufte-common.sty
+tufte-common.def
