@@ -2,18 +2,14 @@
 
 \ProvidesClass{tufte-book}[2009/05/17 v3.0.0 Tufte-book class]
 
+%%
+% Declare we're tufte-book
+\newcommand{\@tufte@class}{book}% the base LaTeX class (defaults to the article/handout style)
+\newcommand{\@tufte@pkgname}{tufte-book}% the name of the package (defaults to tufte-handout)
 
-\PassOptionsToPackage{book}{tufte-common}
-\DeclareOption*{% pass options to tufte-common package and the article class
-  \PassOptionsToPackage{\CurrentOption}{tufte-common}
-  \PassOptionsToClass{\CurrentOption}{book}
-  \PackageInfo{tufte-book}{Passing \CurrentOption\space to `book' class}
-}
-\ProcessOptions
-
-\LoadClass{book}
-
-\RequirePackage{tufte-common}
+%%
+% Load the common style elements
+\input{tufte-common.tex}
 
 
 %%

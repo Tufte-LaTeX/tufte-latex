@@ -3,25 +3,13 @@
 \ProvidesClass{tufte-handout}[2009/05/17 v3.0.0 Tufte-handout class]
 
 %%
-% The symmetric option forces twoside.
-\DeclareOption{symmetric}{%
-  \ExecuteOptions{twoside}
-  \PassOptionsToPackage{twoside}{tufte-common}
-  \PassOptionsToClass{twoside}{article}
-  \PackageInfo{tufte-handout}{Passing twoside to `article' class}
-}
+% Declare we're tufte-handout
+\newcommand{\@tufte@class}{article}% the base LaTeX class (defaults to the article/handout style)
+\newcommand{\@tufte@pkgname}{tufte-handout}% the name of the package (defaults to tufte-handout)
 
-\PassOptionsToPackage{handout}{tufte-common}
-\DeclareOption*{% pass options to tufte-common package and the article class
-  \PassOptionsToPackage{\CurrentOption}{tufte-common}
-  \PassOptionsToClass{\CurrentOption}{article}
-  \PackageInfo{tufte-handout}{Passing \CurrentOption\space to `article' class}
-}
-\ProcessOptions
-
-\LoadClass{article}
-
-\RequirePackage{tufte-common}
+%%
+% Load the common style elements
+\input{tufte-common.tex}
 
 
 %%
