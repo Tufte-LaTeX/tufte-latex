@@ -41,6 +41,12 @@
 \DeclareOption{a4paper}{\setboolean{@tufte@afourpaper}{true}}
 
 %%
+% `b4paper' option
+
+\newboolean{@tufte@bfivepaper}
+\DeclareOption{b5paper}{\setboolean{@tufte@bfivepaper}{true}}
+
+%%
 % `sfsidenotes' option -- typesets sidenotes in sans serif typeface
 
 \newboolean{@tufte@sfsidenotes}
@@ -106,7 +112,6 @@
 \DeclareOption{11pt}{\@tufte@unsupported@option{\CurrentOption}}
 \DeclareOption{12pt}{\@tufte@unsupported@option{\CurrentOption}}
 \DeclareOption{a5paper}{\@tufte@unsupported@option{\CurrentOption}}
-\DeclareOption{b5paper}{\@tufte@unsupported@option{\CurrentOption}}
 \DeclareOption{executivepaper}{\@tufte@unsupported@option{\CurrentOption}}
 \DeclareOption{legalpaper}{\@tufte@unsupported@option{\CurrentOption}}
 \DeclareOption{landscape}{\@tufte@unsupported@option{\CurrentOption}}
@@ -268,6 +273,10 @@
 
 \ifthenelse{\boolean{@tufte@afourpaper}}
   {\geometry{a4paper,left=24.8mm,top=27.4mm,headsep=2\baselineskip,textwidth=107mm,marginparsep=8.2mm,marginparwidth=49.4mm,textheight=49\baselineskip,headheight=\baselineskip}}
+  {}
+
+\ifthenelse{\boolean{@tufte@bfivepaper}}
+  {\geometry{paperwidth=176mm,paperheight=250mm,left=14.66mm,top=13.88mm,textwidth=102.66mm,marginparsep=7.33mm,marginparwidth=36.66mm,textheight=38\baselineskip,includehead}}
   {}
 
 \ifthenelse{\boolean{@tufte@symmetric}}
@@ -623,7 +632,7 @@
 %%
 % Citations should go in the margin as sidenotes
 
-\RequirePackage[numbers]{natbib}
+\RequirePackage{natbib}
 \RequirePackage{bibentry}        % allows bibitems to be typeset outside thebibliography environment
 % Redefine the \BR@b@bibitem command to fix a bug with bibentry+chicago style
 \renewcommand\BR@b@bibitem[2][]{%
@@ -1161,6 +1170,7 @@
   \typeout{}
   \typeout{Class options:}
   \typeoutbool{a4paper}{@tufte@afourpaper}
+  \typeoutbool{b5paper}{@tufte@bfivepaper}
   \typeoutbool{load fonts}{@tufte@loadfonts}
   \typeoutbool{fully-justified}{@tufte@justified}
   \typeoutbool{letterspacing}{@tufte@letterspace}
