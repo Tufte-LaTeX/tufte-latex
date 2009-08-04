@@ -1408,28 +1408,6 @@
 \renewcommand*\l@figure{\@tufte@lof@line}
 \let\l@table\l@figure
 
-% Formatting for main TOC (printed in front matter)
-% {section} [left] {above} {before w/label} {before w/o label} {filler + page} [after]
-\ifthenelse{\boolean{@tufte@toc}}
-  {\titlecontents{chapter}%
-    [0em] % distance from left margin
-    {\begin{fullwidth}\fontsize{13pt}{18pt}\selectfont} % above (global formatting of entry)
-    {\contentslabel{2em}\rmfamily\itshape} % before w/label (label = ``Chapter 1'')
-    {\rmfamily\itshape} % before w/o label
-    {\rmfamily\qquad\thecontentspage} % filler + page (leaders and page num)
-    [\vspace{1.5\baselineskip}\end{fullwidth}] % after
-  }
-  {}
-
-%\titlecontents{chapter}%
-%        [0em]% distance from left margin
-%        {\fontsize{12pt}{18pt}\selectfont}% above (global formatting of entry)
-%        {\textit}% before w/ label (label = ``Chapter 1'')
-%        {\textit}% before w/o label
-%        {\qquad\thecontentspage}% filler and page (leaders and page num)
-%        [\vspace{1.5\baselineskip}]% after
-
-
 
 %%
 % A handy command to disable hyphenation for short bits of text.
