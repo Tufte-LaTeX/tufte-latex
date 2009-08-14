@@ -93,7 +93,7 @@
 
 \newboolean{@tufte@loadbidi}
 \DeclareOption{bidi}{\setboolean{@tufte@loadbidi}{true}}
-\DeclareOption{nobidi}{\setboolean{@tufte@loadbibi}{false}}
+\DeclareOption{nobidi}{\setboolean{@tufte@loadbidi}{false}}
 
 %%
 % `nohyper' option -- suppresses loading of the hyperref package
