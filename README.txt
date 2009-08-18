@@ -5,7 +5,7 @@ produce Tufte-style handouts, reports, and notes.
 
 == Quick Start
 
-Try typesetting sample.tex with the following sequence
+Try typesetting sample-handout.tex with the following sequence
 of commands,
 
  pdflatex sample-handout
@@ -14,6 +14,17 @@ of commands,
  pdflatex sample-handout
 
 The result should look like sample-handout.pdf.
+
+The sample book can be compiled with the following:
+
+ pdflatex sample-book
+ bibtex sample-book
+ texindy --language english sample-book.idx
+ # or makeindex sample-book.idx
+ pdflatex sample-book
+ pdflatex sample-book
+ pdflatex sample-book
+
 
 == Troubleshooting
 
@@ -64,7 +75,7 @@ The following packages are optional and will be automatically used if installed:
 == Bugs/Features/Support
 
 For kudos, feature requests, patches, or support requests that you
-feel are /particular/ to this Tufte LaTeX package, i.e. not a general
+feel are /particular/ to this Tufte-LaTeX package, i.e., not a general
 LaTeX issue, please use this project's issue tracker available at
 
  http://tufte-latex.googlecode.com

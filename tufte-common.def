@@ -975,14 +975,18 @@
 \newcommand{\@tufte@float@textwidth}[2]{%
   \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}{%
     % asymmetric or page is odd, so caption is on the right
-    \usebox{#1}%
-    \hspace{\marginparsep}%
-    \smash{\usebox{#2}}%
+    \hbox{%
+      \usebox{#1}%
+      \hspace{\marginparsep}%
+      \smash{\usebox{#2}}%
+    }%
   }{%
     % symmetric pages and page is even, so caption is on the left
-    \strut\smash{\usebox{#2}}%
-    \hspace{\marginparsep}%
-    \usebox{#1}%
+    \hbox{%
+      \smash{\usebox{#2}}%
+      \hspace{\marginparsep}%
+      \usebox{#1}%
+    }%
   }%
 }
 
