@@ -3,6 +3,10 @@
 %\ProvidesPackage{tufte-common}[2009/05/17 v3.0.0 Common code for the Tufte-LaTeX styles]
 
 %%
+% The `xkeyval' package simplifies the user interface for the document class options
+\RequirePackage{xkeyval}
+
+%%
 % We use the `xifthen' package to handle our package option switches
 \RequirePackage{xifthen}
 
@@ -11,66 +15,66 @@
 % `debug' option -- provides more information in the .log file for use in
 % troubleshooting problems
 \newboolean{@tufte@debug}
-\DeclareOption{debug}{\setboolean{@tufte@debug}{true}}
+\DeclareOptionX[tufte]<common>{debug}{\setboolean{@tufte@debug}{true}}
 
 %%
 % `nofonts' option -- doesn't load any fonts
 % `fonts' option -- tries to load fonts
 \newboolean{@tufte@loadfonts}\setboolean{@tufte@loadfonts}{true}
-\DeclareOption{fonts}{\setboolean{@tufte@loadfonts}{true}}
-\DeclareOption{nofonts}{\setboolean{@tufte@loadfonts}{false}}
+\DeclareOptionX[tufte]<common>{fonts}{\setboolean{@tufte@loadfonts}{true}}
+\DeclareOptionX[tufte]<common>{nofonts}{\setboolean{@tufte@loadfonts}{false}}
 
 %%
 % `nols' option -- doesn't configure letterspacing
 % `ls' option -- configures letterspacing
 \newboolean{@tufte@letterspace}\setboolean{@tufte@letterspace}{true}
-\DeclareOption{ls}{\setboolean{@tufte@letterspace}{true}}
-\DeclareOption{nols}{\setboolean{@tufte@letterspace}{false}}
+\DeclareOptionX[tufte]<common>{ls}{\setboolean{@tufte@letterspace}{true}}
+\DeclareOptionX[tufte]<common>{nols}{\setboolean{@tufte@letterspace}{false}}
 
 %%
 % `titlepage' option -- creates a full title page with \maketitle
 
 \newboolean{@tufte@titlepage}
-\DeclareOption{titlepage}{\setboolean{@tufte@titlepage}{true}}
-\DeclareOption{notitlepage}{\setboolean{@tufte@titlepage}{false}}
+\DeclareOptionX[tufte]<common>{titlepage}{\setboolean{@tufte@titlepage}{true}}
+\DeclareOptionX[tufte]<common>{notitlepage}{\setboolean{@tufte@titlepage}{false}}
 
 %%
 % `a4paper' option
 
 \newboolean{@tufte@afourpaper}
-\DeclareOption{a4paper}{\setboolean{@tufte@afourpaper}{true}}
+\DeclareOptionX[tufte]<common>{a4paper}{\setboolean{@tufte@afourpaper}{true}}
 
 %%
 % `b4paper' option
 
 \newboolean{@tufte@bfivepaper}
-\DeclareOption{b5paper}{\setboolean{@tufte@bfivepaper}{true}}
+\DeclareOptionX[tufte]<common>{b5paper}{\setboolean{@tufte@bfivepaper}{true}}
 
 %%
 % `sfsidenotes' option -- typesets sidenotes in sans serif typeface
 
 \newboolean{@tufte@sfsidenotes}
-\DeclareOption{sfsidenotes}{\setboolean{@tufte@sfsidenotes}{true}}
+\DeclareOptionX[tufte]<common>{sfsidenotes}{\setboolean{@tufte@sfsidenotes}{true}}
 
 %%
 % `symmetric' option -- puts marginpar space to the outside edge of the page
 %   Note: this option forces the twoside option (see the .cls files)
 
 \newboolean{@tufte@symmetric}
-\DeclareOption{symmetric}{
+\DeclareOptionX[tufte]<common>{symmetric}{
   \setboolean{@tufte@symmetric}{true}
   \ClassInfo{\@tufte@pkgname}{The `symmetric' option implies `twoside'}
-  \ExecuteOptions{twoside}
+  \ExecuteOptionsX[tufte]<common>{twoside}
 }
 
 %%
 % `twoside' option -- alternates running heads
 
 \newboolean{@tufte@twoside}
-\DeclareOption{twoside}{%
+\DeclareOptionX[tufte]<common>{twoside}{%
   \setboolean{@tufte@twoside}{true}
-  \ClassInfo{\@tufte@pkgname}{Passing the `\CurrentOption' option to the `\@tufte@class' class}
-  \PassOptionsToClass{\CurrentOption}{\@tufte@class}
+  \ClassInfo{\@tufte@pkgname}{Passing the `twoside' option to the `\@tufte@class' class}
+  \PassOptionsToClass{twoside}{\@tufte@class}
 }
 
 %%
@@ -78,59 +82,154 @@
 
 \newboolean{@tufte@toc}
 \setboolean{@tufte@toc}{true}
-\DeclareOption{notoc}{\setboolean{@tufte@toc}{false}}
-\DeclareOption{toc}{\setboolean{@tufte@toc}{true}}
+\DeclareOptionX[tufte]<common>{notoc}{\setboolean{@tufte@toc}{false}}
+\DeclareOptionX[tufte]<common>{toc}{\setboolean{@tufte@toc}{true}}
 
 %%
 % `justified' option -- uses fully justified text (flush left and flush
 % right) instead of ragged right.
 
 \newboolean{@tufte@justified}
-\DeclareOption{justified}{\setboolean{@tufte@justified}{true}}
+\DeclareOptionX[tufte]<common>{justified}{\setboolean{@tufte@justified}{true}}
 
 %%
 % `bidi' option -- loads the bidi package for bi-directional text
 
 \newboolean{@tufte@loadbidi}
-\DeclareOption{bidi}{\setboolean{@tufte@loadbidi}{true}}
-\DeclareOption{nobidi}{\setboolean{@tufte@loadbidi}{false}}
+\DeclareOptionX[tufte]<common>{bidi}{\setboolean{@tufte@loadbidi}{true}}
+\DeclareOptionX[tufte]<common>{nobidi}{\setboolean{@tufte@loadbidi}{false}}
 
 %%
 % `nohyper' option -- suppresses loading of the hyperref package
 
 \newboolean{@tufte@loadhyper}
 \setboolean{@tufte@loadhyper}{true}
-\DeclareOption{hyper}{\setboolean{@tufte@loadhyper}{true}}
-\DeclareOption{nohyper}{\setboolean{@tufte@loadhyper}{false}}
+\DeclareOptionX[tufte]<common>{hyper}{\setboolean{@tufte@loadhyper}{true}}
+\DeclareOptionX[tufte]<common>{nohyper}{\setboolean{@tufte@loadhyper}{false}}
+
+%%
+% `sidenote', `marginnote', `caption', `citation', `marginals' options
+% Each allows one of {justified,raggedleft,raggedright,raggedouter,auto}.
+
+\newcommand*{\@tufte@sidenote@justification}{\@tufte@justification@autodetect}
+\define@choicekey*+[tufte]{common}{sidenote}[\@tufte@kvtext\@tufte@kvnum]{justified,raggedleft,raggedright,raggedouter,auto}[auto]{%
+  \ifcase\@tufte@kvnum\relax
+    \renewcommand*{\@tufte@sidenote@justification}{\justifying}% justified
+  \or
+    \renewcommand*{\@tufte@sidenote@justification}{\RaggedLeft}% ragged left
+  \or
+    \renewcommand*{\@tufte@sidenote@justification}{\RaggedRight}% ragged right
+  \or
+    \renewcommand*{\@tufte@sidenote@justification}{\@tufte@justification@outer}% ragged outer (flush right on verso pages, flush left on recto pages)
+  \or
+    \renewcommand*{\@tufte@sidenote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
+  \fi
+}{%
+  \PackageWarningNoLine{\@tufte@pkgname}{Invalid option `#1' for sidenote key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \renewcommand*{\@tufte@sidenote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
+}
+
+\newcommand*{\@tufte@marginnote@justification}{\@tufte@justification@autodetect}
+\define@choicekey*+[tufte]{common}{marginnote}[\@tufte@kvtext\@tufte@kvnum]{justified,raggedleft,raggedright,raggedouter,auto}[auto]{%
+  \ifcase\@tufte@kvnum\relax
+    \renewcommand*{\@tufte@marginnote@justification}{\justifying}% justified
+  \or
+    \renewcommand*{\@tufte@marginnote@justification}{\RaggedLeft}% ragged left
+  \or
+    \renewcommand*{\@tufte@marginnote@justification}{\RaggedRight}% ragged right
+  \or
+    \renewcommand*{\@tufte@marginnote@justification}{\@tufte@justification@outer}% ragged outer (flush right on verso pages, flush left on recto pages)
+  \or
+    \renewcommand*{\@tufte@marginnote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
+  \fi
+}{%
+  \PackageWarningNoLine{\@tufte@pkgname}{Invalid option `#1' for marginnote key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \renewcommand*{\@tufte@marginnote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
+}
+
+\newcommand*{\@tufte@caption@justification}{\@tufte@justification@autodetect}
+\define@choicekey*+[tufte]{common}{caption}[\@tufte@kvtext\@tufte@kvnum]{justified,raggedleft,raggedright,raggedouter,auto}[auto]{%
+  \ifcase\@tufte@kvnum\relax
+    \renewcommand*{\@tufte@caption@justification}{\justifying}% justified
+  \or
+    \renewcommand*{\@tufte@caption@justification}{\RaggedLeft}% ragged left
+  \or
+    \renewcommand*{\@tufte@caption@justification}{\RaggedRight}% ragged right
+  \or
+    \renewcommand*{\@tufte@caption@justification}{\@tufte@justification@caption@outer}% ragged outer (flush right on verso pages, flush left on recto pages)
+  \or
+    \renewcommand*{\@tufte@caption@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
+  \fi
+}{%
+  \PackageWarningNoLine{\@tufte@pkgname}{Invalid option `#1' for caption key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \renewcommand*{\@tufte@caption@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
+}
+
+\newcommand*{\@tufte@citation@justification}{\@tufte@justification@autodetect}
+\define@choicekey*+[tufte]{common}{citation}[\@tufte@kvtext\@tufte@kvnum]{justified,raggedleft,raggedright,raggedouter,auto}[auto]{%
+  \ifcase\@tufte@kvnum\relax
+    \renewcommand*{\@tufte@citation@justification}{\justifying}% justified
+  \or
+    \renewcommand*{\@tufte@citation@justification}{\RaggedLeft}% ragged left
+  \or
+    \renewcommand*{\@tufte@citation@justification}{\RaggedRight}% ragged right
+  \or
+    \renewcommand*{\@tufte@citation@justification}{\@tufte@justification@outer}% ragged outer (flush right on verso pages, flush left on recto pages)
+  \or
+    \renewcommand*{\@tufte@citation@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
+  \fi
+}{%
+  \PackageWarningNoLine{\@tufte@pkgname}{Invalid option `#1' for citation key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \renewcommand*{\@tufte@citation@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
+}
+
+% The ``marginals'' key simultaneously sets the same justification for all marginal material
+\define@choicekey*+[tufte]{common}{marginals}[\@tufte@kvtext\@tufte@kvnum]{justified,raggedleft,raggedright,raggedouter,auto}[auto]{%
+  \ifcase\@tufte@kvnum\relax
+    \ExecuteOptionsX[tufte]<common>{citation=justified,sidenote=justified,caption=justified,marginnote=justified}% justified
+  \or
+    \ExecuteOptionsX[tufte]<common>{citation=raggedleft,sidenote=raggedleft,caption=raggedleft,marginnote=raggedleft}% ragged left
+  \or
+    \ExecuteOptionsX[tufte]<common>{citation=raggedright,sidenote=raggedright,caption=raggedright,marginnote=raggedright}% ragged right
+  \or
+    \ExecuteOptionsX[tufte]<common>{citation=raggedouter,sidenote=raggedouter,caption=raggedouter,marginnote=raggedouter}% ragged outer (flush right on verso pages, flush left on recto pages)
+  \or
+    \ExecuteOptionsX[tufte]<common>{citation=auto,sidenote=auto,caption=auto,marginnote=auto}% autodetects best justification mode based on all class options
+  \fi
+}{%
+  \PackageWarningNoLine{\@tufte@pkgname}{Invalid option `#1' for marginals key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \ExecuteOptionsX[tufte]<common>{citation=auto,sidenote=auto,caption=auto,marginnote=auto}% autodetects best justification mode based on all class options
+}
+
 
 %%
 % Unsupported options
 
 \newcommand{\@tufte@unsupported@option}[1]{\ClassWarningNoLine{\@tufte@pkgname}{Option `#1' is not supported -- \MessageBreak ignoring option}\OptionNotUsed}
 
-\DeclareOption{10pt}{\@tufte@unsupported@option{\CurrentOption}}
-\DeclareOption{11pt}{\@tufte@unsupported@option{\CurrentOption}}
-\DeclareOption{12pt}{\@tufte@unsupported@option{\CurrentOption}}
-\DeclareOption{a5paper}{\@tufte@unsupported@option{\CurrentOption}}
-\DeclareOption{executivepaper}{\@tufte@unsupported@option{\CurrentOption}}
-\DeclareOption{legalpaper}{\@tufte@unsupported@option{\CurrentOption}}
-\DeclareOption{landscape}{\@tufte@unsupported@option{\CurrentOption}}
-\DeclareOption{onecolumn}{\@tufte@unsupported@option{\CurrentOption}}
-\DeclareOption{twocolumn}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOptionX[tufte]<common>{10pt}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOptionX[tufte]<common>{11pt}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOptionX[tufte]<common>{12pt}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOptionX[tufte]<common>{a5paper}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOptionX[tufte]<common>{executivepaper}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOptionX[tufte]<common>{legalpaper}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOptionX[tufte]<common>{landscape}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOptionX[tufte]<common>{onecolumn}{\@tufte@unsupported@option{\CurrentOption}}
+\DeclareOptionX[tufte]<common>{twocolumn}{\@tufte@unsupported@option{\CurrentOption}}
 
 %%
 % Default `book' and `handout' options
 
 \ifthenelse{\equal{\@tufte@pkgname}{tufte-book}}
-  {\ExecuteOptions{titlepage}}
-  {\ExecuteOptions{notitlepage}}
+  {\ExecuteOptionsX[tufte]<common>{titlepage}}
+  {\ExecuteOptionsX[tufte]<common>{notitlepage}}
 
 
-\DeclareOption*{%
+\DeclareOptionX*{%
   \ClassInfo{\@tufte@pkgname}{Passing \CurrentOption\space to the `\@tufte@class' class}%
   \PassOptionsToClass{\CurrentOption}{\@tufte@class}%
 }
-\ProcessOptions\relax
+\ProcessOptionsX*[tufte]<common>\relax
 
 %%
 % Load the appropriate base class
@@ -685,7 +784,7 @@
   \marginpar{%
     \hbox{}\vspace*{#1}%
     \@tufte@marginfont%
-    \@tufte@justification%
+    \@tufte@citation@justification%
     \@tufte@margin@par% use parindent and parskip settings for marginal text
     \vspace*{-1\baselineskip}%
     % Loop through all the bibentries, separating them with semicolons and spaces
@@ -722,8 +821,8 @@
 
 \RequirePackage{optparams}% for our new sidenote commands -- provides multiple optional arguments for commands
 
-\providecommand*{\footnotelayout}{\@tufte@marginfont\@tufte@justification}
-\renewcommand{\footnotelayout}{\@tufte@marginfont\@tufte@justification}
+\providecommand*{\footnotelayout}{\@tufte@marginfont\@tufte@sidenote@justification}
+\renewcommand{\footnotelayout}{\@tufte@marginfont\@tufte@sidenote@justification}
 
 % Override footmisc's definition to set the sidenote marks (numbers) inside the
 % sidenote's text block.
@@ -816,7 +915,7 @@
   \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
   \gdef\@tufte@citations{}%           clear out any old citations
   \@tufte@margin@par%                 use parindent and parskip settings for marginal text
-  \marginpar{\hbox{}\vspace*{#1}\@tufte@marginfont\@tufte@justification\vspace*{-1\baselineskip}\noindent #2}%
+  \marginpar{\hbox{}\vspace*{#1}\@tufte@marginfont\@tufte@marginnote@justification\vspace*{-1\baselineskip}\noindent #2}%
   \@tufte@reset@par%                  use parindent and parskip settings for body text
   \@tufte@print@citations%            print any citations
   \let\cite\@tufte@normal@cite%       go back to using normal in-text \cite command
@@ -840,7 +939,7 @@
     \@tufte@marginfont%
     \def\@captype{#2}%
     \hbox{}\vspace*{#1}%
-    \@tufte@justification%
+    \@tufte@caption@justification%
     \@tufte@margin@par%
     \noindent%
   }
@@ -861,9 +960,38 @@
 
 %%
 % Margin table environment
+
 \newenvironment{margintable}[1][-1.2ex]%
   {\begin{@tufte@margin@float}[#1]{table}}
   {\end{@tufte@margin@float}}
+
+
+%%
+% Auto-detects the proper text alignment based on the various class options
+
+\newcommand*{\@tufte@justification@autodetect}{%
+  \ifthenelse{\boolean{@tufte@justified}}%
+    {\justifying}%
+    {\RaggedRight}%
+}
+
+%%
+% Forces the outer edge of the caption to be set ragged.  
+% Therefore, on verso pages it's ragged left, and on recto pages it's ragged right.
+
+\newcommand*{\@tufte@justification@caption@outer}{%
+  \ifthenelse{\boolean{@tufte@float@recto}}%
+    {\RaggedRight}%
+    {\RaggedLeft}%
+}
+
+\newcommand*{\@tufte@justification@outer}{%
+  \@tufte@checkoddpage%
+  \ifthenelse{\boolean{@tufte@odd@page}}%
+    {\RaggedRight}%
+    {\RaggedLeft}%
+}
+
 
 
 %%
@@ -1062,7 +1190,7 @@
     \if@minipage%
       \@setminipage%
     \fi%
-    \@tufte@marginfont\@tufte@justification%
+    \@tufte@marginfont\@tufte@caption@justification%
     \noindent\csname fnum@#1\endcsname: \ignorespaces#3\par%
     %\@makecaption{\csname fnum@#1\endcsname}{\ignorespaces #3}\par
   \endgroup}
@@ -1397,7 +1525,7 @@
   % #2 is the page number on which the figure/table appears
   \leftskip 0.0em
   \rightskip 0em
-  \parfillskip 0em
+  \parfillskip 0em plus 1fil
   \parindent 0.0em
   \@afterindenttrue
   \interlinepenalty\@M
