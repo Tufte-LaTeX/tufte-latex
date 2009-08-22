@@ -1043,7 +1043,7 @@
   \ifthenelse{\isempty{#1}}%
     {\gdef\@tufte@stored@shortcaption{#3}}%
     {\gdef\@tufte@stored@shortcaption{#1}}%
-  \gdef\@tufte@caption@vertical@offset{-#2}% we want positive push to lower captions
+  \gdef\@tufte@caption@vertical@offset{-#2}% we want a positive offset to lower captions
   \gdef\@tufte@stored@caption{#3}%
 }
 
@@ -1113,7 +1113,7 @@
     \begin{lrbox}{\@tufte@caption@box}\hbox{}\end{lrbox}%
     \gdef\@tufte@stored@shortcaption{}%
     \gdef\@tufte@stored@caption{}%
-    \gdef\@tufte@caption@vertical@offset{0pt}% reset caption push
+    \gdef\@tufte@caption@vertical@offset{0pt}% reset caption offset
   }
 
 \newcommand{\@tufte@float@textwidth}[3][0pt]{%
@@ -1633,7 +1633,8 @@
 % If there is a `tufte-common-local.tex' file, load it up.
 
 \IfFileExists{tufte-common-local.tex}
-  {\input{tufte-common-local.tex}}
+  {\input{tufte-common-local.tex}%
+   \ClassInfo{\@tufte@pkgname}{Loading tufte-common-local.tex}}
   {}
 
 

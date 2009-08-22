@@ -599,11 +599,33 @@ environment and figure~\ref{fig:textfig} is an example of the normal
 \begin{figure}
   \includegraphics{hilbertcurves.pdf}
 %  \checkparity This is an \pageparity\ page.%
-  \caption{Hilbert curves of various degrees $n$.
-  \emph{Notice that this figure only takes up the main textblock width.}}
+  \caption[Hilbert curves of various degrees $n$.][6pt]{Hilbert curves of various degrees $n$. \emph{Notice that this figure only takes up the main textblock width.}}
   \label{fig:textfig}
   %\zsavepos{pos:textfig}
 \end{figure}
+
+As with sidenotes and marginnotes, a caption may sometimes require vertical
+adjustment. The \hlred{\doccmd{caption}} command now takes a second optional
+argument that enables you to do this by providing a dimension \docopt{offset}.
+You may specify the caption in any one of the following forms:
+\begin{docspec}
+  \doccmd{caption}\{\docarg{long caption}\}\\
+  \doccmd{caption}[\docarg{short caption}]\{\docarg{long caption}\}\\
+  \doccmd{caption}[][\docopt{offset}]\{\docarg{long caption}\}\\
+  \doccmd{caption}[\docarg{short caption}][\docopt{offset}]%
+                  \{\docarg{long caption}\}
+\end{docspec}
+A positive \docopt{offset} will push the caption down the page. The short
+caption, if provided, is what appears in the list of figures/tables, otherwise
+the ``long'' caption appears there. Note that although the arguments
+\docopt{short caption} and \docopt{offset} are both optional, they must be
+provided in order. Thus, to specify an \docopt{offset} without specifying a
+\docopt{short caption}, you must include the first set of empty brackets
+\Verb|[]|, which tell \doccmd{caption} to use the default ``long'' caption. As
+an example, the caption to figure~\ref{fig:textfig} above was given in the form
+\begin{docspec}
+  \doccmd{caption}[Hilbert curves...][6pt]\{Hilbert curves...\}
+\end{docspec}
 
 Table~\ref{tab:normaltab} shows table created with the \docpkg{booktabs}
 package.  Notice the lack of vertical rules---they serve only to clutter
