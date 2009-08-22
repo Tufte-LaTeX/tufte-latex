@@ -395,6 +395,15 @@
   {\newcommand{\@tufte@marginfont}{\normalfont\footnotesize\sffamily}}
   {\newcommand{\@tufte@marginfont}{\normalfont\footnotesize}}
 
+\newcommand*{\@tufte@sidenote@font}{\@tufte@marginfont}
+\newcommand*{\@tufte@caption@font}{\@tufte@marginfont}
+\newcommand*{\@tufte@marginnote@font}{\@tufte@marginfont}
+\newcommand*{\@tufte@citation@font}{\@tufte@marginfont}
+
+\newcommand*{\setsidenotefont}[1]{\renewcommand*{\@tufte@sidenote@font}{#1}}
+\newcommand*{\setcaptionfont}[1]{\renewcommand*{\@tufte@caption@font}{#1}}
+\newcommand*{\setmarginnotefont}[1]{\renewcommand*{\@tufte@marginnote@font}{#1}}
+\newcommand*{\setcitationfont}[1]{\renewcommand*{\@tufte@citation@font}{#1}}
 
 %%
 % Set the justification baesed on the `justified' class option
@@ -752,6 +761,7 @@
   \@for\@temp@bibkey:=#2\do{\let\@temp@last@bibkey\@temp@bibkey}%
   \sidenote[][#1]{%
     % Loop through all the bibentries, separating them with semicolons and spaces
+    \normalsize\normalfont\@tufte@citation@font%
     \setcounter{@tufte@num@bibkeys}{0}%
     \@for\@temp@bibkeyx:=#2\do{%
       \ifthenelse{\equal{\@temp@last@bibkey}{\@temp@bibkeyx}}%
@@ -783,7 +793,7 @@
   \@for\@temp@bibkey:=\@tufte@citations\do{\let\@temp@last@bibkey\@temp@bibkey}%
   \marginpar{%
     \hbox{}\vspace*{#1}%
-    \@tufte@marginfont%
+    \@tufte@citation@font%
     \@tufte@citation@justification%
     \@tufte@margin@par% use parindent and parskip settings for marginal text
     \vspace*{-1\baselineskip}%
@@ -821,12 +831,12 @@
 
 \RequirePackage{optparams}% for our new sidenote commands -- provides multiple optional arguments for commands
 
-\providecommand*{\footnotelayout}{\@tufte@marginfont\@tufte@sidenote@justification}
-\renewcommand{\footnotelayout}{\@tufte@marginfont\@tufte@sidenote@justification}
+\providecommand*{\footnotelayout}{\@tufte@sidenote@font\@tufte@sidenote@justification}
+\renewcommand{\footnotelayout}{\@tufte@sidenote@font\@tufte@sidenote@justification}
 
 % Override footmisc's definition to set the sidenote marks (numbers) inside the
 % sidenote's text block.
-\long\def\@makefntext#1{\@textsuperscript{\@tufte@marginfont\tiny\@thefnmark}\,\footnotelayout#1}
+\long\def\@makefntext#1{\@textsuperscript{\@tufte@sidenote@font\tiny\@thefnmark}\,\footnotelayout#1}
 
 % Set the in-text footnote mark in the same typeface as the body text itself.
 \def\@makefnmark{\hbox{\@textsuperscript{\normalfont\footnotesize\@thefnmark}}}
@@ -915,7 +925,7 @@
   \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
   \gdef\@tufte@citations{}%           clear out any old citations
   \@tufte@margin@par%                 use parindent and parskip settings for marginal text
-  \marginpar{\hbox{}\vspace*{#1}\@tufte@marginfont\@tufte@marginnote@justification\vspace*{-1\baselineskip}\noindent #2}%
+  \marginpar{\hbox{}\vspace*{#1}\@tufte@marginnote@font\@tufte@marginnote@justification\vspace*{-1\baselineskip}\noindent #2}%
   \@tufte@reset@par%                  use parindent and parskip settings for body text
   \@tufte@print@citations%            print any citations
   \let\cite\@tufte@normal@cite%       go back to using normal in-text \cite command
@@ -936,7 +946,7 @@
   {\FloatBarrier% process all floats before this point so the figure/table numbers stay in order.
   \begin{lrbox}{\@tufte@margin@floatbox}%
   \begin{minipage}{\marginparwidth}%
-    \@tufte@marginfont%
+    \@tufte@caption@font%
     \def\@captype{#2}%
     \hbox{}\vspace*{#1}%
     \@tufte@caption@justification%
@@ -1190,7 +1200,7 @@
     \if@minipage%
       \@setminipage%
     \fi%
-    \@tufte@marginfont\@tufte@caption@justification%
+    \@tufte@caption@font\@tufte@caption@justification%
     \noindent\csname fnum@#1\endcsname: \ignorespaces#3\par%
     %\@makecaption{\csname fnum@#1\endcsname}{\ignorespaces #3}\par
   \endgroup}
