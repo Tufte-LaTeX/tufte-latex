@@ -888,13 +888,19 @@
 %
 % Define \sidenote command.  Can handle \cite.
 
-\newcommand{\@tufte@sidenote@vertical@offset}{0pt}
+\newlength{\@tufte@sidenote@vertical@offset}
+\setlength{\@tufte@sidenote@vertical@offset}{0pt}
 
 % #1 = footnote num, #2 = vertical offset, #3 = footnote text
 \long\def\@tufte@sidenote[#1][#2]#3{%
   \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
   \gdef\@tufte@citations{}%           clear out any old citations
-  \ifthenelse{\NOT\isempty{#2}}{\renewcommand{\@tufte@sidenote@vertical@offset}{#2}}{}%
+  \ifthenelse{\NOT\isempty{#2}}{%
+    \setlength{\@tufte@sidenote@vertical@offset}{#2}%
+    \global\@tufte@sidenote@vertical@offset=\@tufte@sidenote@vertical@offset%
+  }{%
+    \global\@tufte@sidenote@vertical@offset=0pt%
+  }%
   \ifthenelse{\isempty{#1}}{%
     % no specific footnote number provided
     \stepcounter\@mpfn%
@@ -1043,7 +1049,8 @@
   \ifthenelse{\isempty{#1}}%
     {\gdef\@tufte@stored@shortcaption{#3}}%
     {\gdef\@tufte@stored@shortcaption{#1}}%
-  \gdef\@tufte@caption@vertical@offset{-#2}% we want a positive offset to lower captions
+  \setlength{\@tufte@caption@vertical@offset}{-#2}% we want a positive offset to lower captions
+  \global\@tufte@caption@vertical@offset\@tufte@caption@vertical@offset%
   \gdef\@tufte@stored@caption{#3}%
 }
 
@@ -1113,7 +1120,7 @@
     \begin{lrbox}{\@tufte@caption@box}\hbox{}\end{lrbox}%
     \gdef\@tufte@stored@shortcaption{}%
     \gdef\@tufte@stored@caption{}%
-    \gdef\@tufte@caption@vertical@offset{0pt}% reset caption offset
+    \global\@tufte@caption@vertical@offset=0pt% reset caption offset
   }
 
 \newcommand{\@tufte@float@textwidth}[3][0pt]{%
