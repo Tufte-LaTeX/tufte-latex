@@ -47,7 +47,7 @@
 \DeclareOptionX[tufte]<common>{a4paper}{\setboolean{@tufte@afourpaper}{true}}
 
 %%
-% `b4paper' option
+% `b5paper' option
 
 \newboolean{@tufte@bfivepaper}
 \DeclareOptionX[tufte]<common>{b5paper}{\setboolean{@tufte@bfivepaper}{true}}
