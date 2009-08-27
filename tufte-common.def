@@ -1,6 +1,8 @@
-%\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+%%
+%% This file contains the code that's common to the Tufte-LaTeX document classes.
+%%
 
-%\ProvidesPackage{tufte-common}[2009/05/17 v3.0.0 Common code for the Tufte-LaTeX styles]
+\ProvidesFile{tufte-common.def}[2009/08/24 v3.0.0 Common code for the Tufte-LaTeX styles]
 
 %%
 % The `xkeyval' package simplifies the user interface for the document class options
@@ -273,8 +275,15 @@
 }
 
 %%
-% Load the `hyperref' package.  We will set more options later.
-% TODO Set nice defaults for hyperref options
+% Globally sets the length
+\newcommand*{\gsetlength}[2]{%
+  \setlength{#1}{#2}%
+  \global#1=#1\relax%
+} 
+
+%%%
+%% Load the `hyperref' package.
+
 \ifthenelse{\boolean{@tufte@loadhyper}}{%
   \ifthenelse{\boolean{@tufte@xetex}}
     {\RequirePackage[xetex]{hyperref}}
@@ -896,10 +905,9 @@
   \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
   \gdef\@tufte@citations{}%           clear out any old citations
   \ifthenelse{\NOT\isempty{#2}}{%
-    \setlength{\@tufte@sidenote@vertical@offset}{#2}%
-    \global\@tufte@sidenote@vertical@offset=\@tufte@sidenote@vertical@offset%
+    \gsetlength{\@tufte@sidenote@vertical@offset}{#2}%
   }{%
-    \global\@tufte@sidenote@vertical@offset=0pt%
+    \gsetlength{\@tufte@sidenote@vertical@offset}{0pt}%
   }%
   \ifthenelse{\isempty{#1}}{%
     % no specific footnote number provided
@@ -1049,8 +1057,7 @@
   \ifthenelse{\isempty{#1}}%
     {\gdef\@tufte@stored@shortcaption{#3}}%
     {\gdef\@tufte@stored@shortcaption{#1}}%
-  \setlength{\@tufte@caption@vertical@offset}{-#2}% we want a positive offset to lower captions
-  \global\@tufte@caption@vertical@offset\@tufte@caption@vertical@offset%
+  \gsetlength{\@tufte@caption@vertical@offset}{-#2}% we want a positive offset to lower captions
   \gdef\@tufte@stored@caption{#3}%
 }
 
@@ -1120,7 +1127,7 @@
     \begin{lrbox}{\@tufte@caption@box}\hbox{}\end{lrbox}%
     \gdef\@tufte@stored@shortcaption{}%
     \gdef\@tufte@stored@caption{}%
-    \global\@tufte@caption@vertical@offset=0pt% reset caption offset
+    \gsetlength{\@tufte@caption@vertical@offset}{0pt}% reset caption offset
   }
 
 \newcommand{\@tufte@float@textwidth}[3][0pt]{%
