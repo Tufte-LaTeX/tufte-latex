@@ -100,22 +100,33 @@
 \newcommand{\TODO}{\textcolor{red}{\bf TODO!}\xspace}
 \newcommand{\ie}{\textit{i.\hairsp{}e.}\xspace}
 \newcommand{\eg}{\textit{e.\hairsp{}g.}\xspace}
+\newcommand{\na}{\quad--}% used in tables for N/A cells
 \providecommand{\XeLaTeX}{X\lower.5ex\hbox{\kern-0.15em\reflectbox{E}}\kern-0.1em\LaTeX}
 \newcommand{\tXeLaTeX}{\XeLaTeX\index{XeLaTeX@\protect\XeLaTeX}}
 % \index{\texttt{\textbackslash xyz}@\hangleft{\texttt{\textbackslash}}\texttt{xyz}}
 \newcommand{\tuftebs}{\symbol{'134}}% a backslash in tt type in OT1/T1
-\newcommand{\doccmd}[1]{%
-  \texttt{\tuftebs#1}%
-  \index{#1@\protect\hangleft{\texttt{\tuftebs}}\texttt{#1}}%
+\newcommand{\doccmdnoindex}[2][]{\texttt{\tuftebs#2}}% command name -- adds backslash automatically (and doesn't add cmd to the index)
+\newcommand{\doccmd}[2][]{%
+  \texttt{\tuftebs#2}%
+  \ifthenelse{\isempty{#1}}%
+    {% add the command to the index
+      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}% command name
+    }%
+    {% add the command the and package to the index
+      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}% command name
+      \index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}% package name
+    }
 }% command name -- adds backslash automatically
 \newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
 \newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
 \newenvironment{docspec}{\begin{quotation}\ttfamily\parskip0pt\parindent0pt\ignorespaces}{\end{quotation}}% command specification environment
-\newcommand{\docenv}[1]{\texttt{#1}\index{#1@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}% environment name
-\newcommand{\docpkg}[1]{\texttt{#1}\index{#1@\texttt{#1} package}\index{packages!#1@\texttt{#1}}}% package name
+\newcommand{\docenv}[1]{\texttt{#1}\index{#1 environment@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}\index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}}% package name
 \newcommand{\doccls}[1]{\texttt{#1}}% document class name
-\newcommand{\docclsopt}[1]{\texttt{#1}\index{#1@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}% document class option name
+\newcommand{\docclsopt}[1]{\texttt{#1}\index{#1 class option@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}% document class option name
 \newcommand{\docmsg}[2]{\bigskip\begin{fullwidth}\noindent\ttfamily#1\end{fullwidth}\medskip\par\noindent#2}
+\newcommand{\docfilehook}[2]{\texttt{#1}\index{file hooks!#2}\index{#1@\texttt{#1}}}
+\newcommand{\doccounter}[1]{\texttt{#1}\index{#1 counter@\texttt{#1} counter}}
 
 % Generates the index
 \usepackage{makeidx}
@@ -311,14 +322,14 @@ Title & & & & \\
 \quad Size     & 36 pt   & 48 pt   & 48 pt   & 36 pt \\
 \addlinespace
 Subtitle & & & & \\
-\quad Typeface & --      & --      & serif   & -- \\
-\quad Style    & --      & --      & upright & -- \\
-\quad Size     & --      & --      & 20 pt   & -- \\
+\quad Typeface & \na     & \na     & serif   & \na \\
+\quad Style    & \na     & \na     & upright & \na \\
+\quad Size     & \na     & \na     & 20 pt   & \na \\
 \addlinespace
 Edition & & & & \\
-\quad Typeface & sans serif           & --      & --      & -- \\
-\quad Style    & upright, caps & --      & --      & -- \\
-\quad Size     & 14 pt                & --      & --      & -- \\
+\quad Typeface & sans serif    & \na  & \na  & \na \\
+\quad Style    & upright, caps & \na  & \na  & \na \\
+\quad Size     & 14 pt         & \na  & \na  & \na \\
 \addlinespace
 Publisher & & & & \\
 \quad Typeface & serif   & serif   & serif   & sans serif \\
@@ -376,7 +387,7 @@ The following font sizes are defined by the \TL classes:
       \LaTeX{} size & Font size & Leading & Used for \\
       \midrule
       \verb+\tiny+         &  5 &  6 & sidenote numbers \\
-      \verb+\scriptsize+   &  7 &  8 & --- \\
+      \verb+\scriptsize+   &  7 &  8 & \na \\
       \verb+\footnotesize+ &  8 & 10 & sidenotes, captions \\
       \verb+\small+        &  9 & 12 & quote, quotation, and verse environments \\
       \verb+\normalsize+   & 10 & 14 & body text \\
@@ -448,11 +459,11 @@ The following characteristics define the various environments:
 \chapter[On the Use of the tufte-book Document Class]{On the Use of the \texttt{tufte-book} Document Class}
 \label{ch:tufte-book}
 
-The Tufte-\LaTeX\ document classes define a style similar to the
+The \TL document classes define a style similar to the
 style Edward Tufte uses in his books and handouts.  Tufte's style is known
 for its extensive use of sidenotes, tight integration of graphics with
 text, and well-set typography.  This document aims to be at once a
-demonstration of the features of the Tufte-\LaTeX\ document classes
+demonstration of the features of the \TL document classes
 and a style guide to their use.
 
 \section{Page Layout}\label{sec:page-layout}
@@ -466,7 +477,7 @@ a \Verb|\subsection|.  As Bringhurst points out in \textit{The Elements of
 Typographic Style},\cite{Bringhurst2005} you should ``use as many levels of
 headings as you need: no more, and no fewer.''
 
-The Tufte-\LaTeX\ classes will emit an error if you try to use
+The \TL classes will emit an error if you try to use
 \linebreak\Verb|\subsubsection| and smaller headings.
 
 % let's start a new thought -- a new section
@@ -726,17 +737,17 @@ The \hlred{\docclsopt{bidi}} option loads the \docpkg{bidi} package which is use
 package needs to be loaded before the sidenotes and cite commands are defined,
 it can't be loaded in the document preamble.
 
-The \hlred{\docclsopt{debug}} option causes the Tufte-\LaTeX\ classes to output debug
+The \hlred{\docclsopt{debug}} option causes the \TL classes to output debug
 information to the log file which is useful in troubleshooting bugs.  It will
 also cause the graphics to be replaced by outlines.
 
-The \hlred{\docclsopt{nofonts}} option prevents the Tufte-\LaTeX\ classes from
+The \hlred{\docclsopt{nofonts}} option prevents the \TL classes from
 automatically loading the Palatino and Helvetica typefaces.  You should use
 this option if you wish to load your own fonts.  If you're using \tXeLaTeX, this
 option is implied (\ie, the Palatino and Helvetica fonts aren't loaded if you
 use \tXeLaTeX).  
 
-The \hlred{\docclsopt{nols}} option inhibits the letterspacing code.  The Tufte-\LaTeX\
+The \hlred{\docclsopt{nols}} option inhibits the letterspacing code.  The \TL\
 classes try to load the appropriate letterspacing package (either pdf\TeX's
 \docpkg{letterspace} package or the \docpkg{soul} package).  If you're using
 \tXeLaTeX\ with \docpkg{fontenc}, however, you should configure your own
@@ -748,7 +759,7 @@ page and the \doccls{handout} class defaults to the title block.  There is an
 analogous \hlred{\docclsopt{titlepage}} option that forces \verb|\maketitle| to
 generate a full title page instead of the title block.
 
-The \hlred{\docclsopt{notoc}} option suppresses Tufte-\LaTeX's custom table of contents
+The \hlred{\docclsopt{notoc}} option suppresses \TL's custom table of contents
 (\textsc{toc}) design.  The current \textsc{toc} design only shows unnumbered
 chapter titles; it doesn't show sections or subsections.  The \docclsopt{notoc}
 option will revert to \LaTeX's \textsc{toc} design.
@@ -761,6 +772,134 @@ being loaded.  The default is to load the \docpkg{hyperref} package and use the
 \index{class options|)}
 
 
+
+\chapter[Customizing Tufte-LaTeX]{Customizing \TL}
+\label{ch:customizing}
+
+The \TL document classes are designed to closely emulate Tufte's book
+design by default.  However, each document is different and you may encounter
+situations where the default settings are insufficient.  This chapter explores
+many of the ways you can adjust the \TL document classes to better fit
+your needs.
+
+\section{File Hooks}
+\label{sec:filehooks}
+
+\index{file hooks|(}
+If you create many documents using the \TL classes, it's easier to
+store your customizations in a separate file instead of copying them into the
+preamble of each document.  The \TL classes provide three file hooks:
+\docfilehook{tufte-common-local.tex}{common}, \docfilehook{tufte-book-local.tex}{book}, and
+\docfilehook{tufte-handout-local.tex}{handout}.\sloppy
+
+\begin{description}
+  \item[\docfilehook{tufte-common-local.tex}{common}]
+    If this file exists, it will be loaded by all of the \TL document
+    classes just prior to any document-class-specific code.  If your
+    customizations or code should be included in both the book and handout
+    classes, use this file hook.
+  \item[\docfilehook{tufte-book-local.tex}{book}] 
+    If this file exists, it will be loaded after all of the common and
+    book-specific code has been read.  If your customizations apply only to the
+    book class, use this file hook.
+  \item[\docfilehook{tufte-common-handout.tex}{handout}] 
+    If this file exists, it will be loaded after all of the common and
+    handout-specific code has been read.  If your customizations apply only to
+    the handout class, use this file hook.
+\end{description}
+
+\index{file hooks|)}
+
+\section{Numbered Section Headings}
+\label{sec:numbered-sections}
+\index{headings!numbered}
+
+While Tufte dispenses with numbered headings in his books, if you require them,
+they can be anabled by changing the value of the \doccounter{secnumdepth}
+counter.  From the table below, select the heading level at which numbering
+should stop and set the \doccounter{secnumdepth} counter to that value.  For
+example, if you want parts and chapters numbered, but don't want numbering for
+sections or subsections, use the command:
+\begin{docspec}
+  \doccmd{setcounter}\{secnumdepth\}\{0\}
+\end{docspec}
+
+The default \doccounter{secnumdepth} for the \TL document classes is $-1$.
+
+\begin{table}
+  \footnotesize
+  \begin{center}
+    \begin{tabular}{lr}
+      \toprule
+      Heading level & Value \\
+      \midrule
+      Part (in \doccls{tufte-book}) & $-1$ \\
+      Part (in \doccls{tufte-handout}) & $0$ \\
+      Chapter (only in \doccls{tufte-book}) & $0$ \\
+      Section & $1$ \\
+      Subsection & $2$ \\
+      Subsubsection & $3$ \\
+      Paragraph & $4$ \\
+      Subparagraph & $5$ \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \caption{Heading levels used with the \texttt{secnumdepth} counter.}
+\end{table}
+
+\section{Changing the Paper Size}
+\label{sec:paper-size}
+
+The \TL classes currently only provide three paper sizes: \textsc{a4},
+\textsc{b5}, and \textsc{us} letter.  To specify a different paper size (and/or
+margins), use the \doccmd[geometry]{geometrysetup} command in the preamble of your
+document (or one of the file hooks).  The full documentation of the
+\doccmd{geometrysetup} command may be found in the \docpkg{geometry} package
+documentation.\cite{pkg-geometry}
+
+
+\section{Customizing Marginal Material}
+\label{sec:marginal-material}
+
+Marginal material includes sidenotes, citations, margin notes, and captions.
+Normally, the justification of the marginal material follows the justification
+of the body text.  If you specify the \docclsopt{justified} document class
+option, all of the margin material will be fully justified as well.  If you
+don't specify the \docclsopt{justified} option, then the marginal material will
+be set ragged right.
+
+You can set the justification of the marginal material separately from the body
+text using the following document class options: \docclsopt{sidenote},
+\docclsopt{marginnote}, \docclsopt{caption}, \docclsopt{citation}, and
+\docclsopt{marginals}.  Each option refers to its obviously corresponding
+marginal material type.  The \docclsopt{marginals} option simultaneously sets
+the justification on all four marginal material types.
+
+Each of the document class options takes one of five justification types:
+\begin{description}
+  \item[\docclsopt{justified}] Fully justifies the text (sets it flush left and
+    right).
+  \item[\docclsopt{raggedleft}] Sets the text ragged left, regardless of which
+    page it falls on.
+  \item[\docclsopt{raggedright}] Sets the text ragged right, regardless of
+    which page it falls on.
+  \item[\doccls{raggedouter}] Sets the text ragged left if it falls on the
+    left-hand (verso) page of the spread and otherwise sets it ragged right.
+    This is useful in conjunction with the \docclsopt{symmetric} document class
+    option.
+  \item[\docclsopt{auto}] If the \docclsopt{justified} document class option
+    was specified, then set the text fully justified; otherwise the text is set
+    ragged right.  This is the default justification option if one is not
+    explicitly specified.
+\end{description}
+
+\noindent For example, 
+\begin{docspec}
+  \doccmdnoindex{documentclass}[symmetric,justified,marginals=raggedouter]\{tufte-book\}
+\end{docspec}
+will set the body text of the document to be fully justified and all of the
+margin material (sidenotes, margin notes, captions, and citations) to be flush
+against the body text with ragged outer edges.
 
 \chapter{Compatibility Issues}
 \label{ch:compatibility}
@@ -784,12 +923,12 @@ The following headings are not supported: \doccmd{subsubsection} and \doccmd{sub
 \chapter{Troubleshooting and Support}
 \label{ch:troubleshooting}
 
-\section{Tufte-\LaTeX\ Website}\label{sec:website}
-The website for the Tufte-\LaTeX\ packages is located at
+\section{\TL Website}\label{sec:website}
+The website for the \TL packages is located at
 \url{http://code.google.com/p/tufte-latex/}.  On our website, you'll find
 links to our \smallcaps{svn} repository, mailing lists, bug tracker, and documentation.
 
-\section{Tufte-\LaTeX\ Mailing Lists}\label{sec:mailing-lists}
+\section{\TL Mailing Lists}\label{sec:mailing-lists}
 There are two mailing lists for the \TL project:
 
 \paragraph{Discussion list}
@@ -842,7 +981,7 @@ class.  In this situation, \docopt{class option} is ignored.}
 
 
 \section{Package Dependencies}\label{sec:dependencies}
-The following is a list of packages that the Tufte-\LaTeX\ document
+The following is a list of packages that the \TL document
 classes rely upon.  Packages marked with an asterisk are optional.
 \begin{multicols}{2}
 \begin{itemize}
