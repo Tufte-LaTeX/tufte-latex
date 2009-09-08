@@ -30,7 +30,7 @@
 
 \IfFileExists{tufte-handout-local.tex}
   {\input{tufte-handout-local}
-   \ClassInfo{\@tufte@pkgname}{Loading tufte-handout-local.tex}}
+   \TufteInfoNL{Loading tufte-handout-local.tex}}
   {}
 
 

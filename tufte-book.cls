@@ -72,7 +72,7 @@
 
 \IfFileExists{tufte-book-local.tex}
   {\input{tufte-book-local}
-   \ClassInfo{\@tufte@pkgname}{Loading tufte-book-local.tex}}
+   \TufteInfoNL{Loading tufte-book-local.tex}}
   {}
 
 %%

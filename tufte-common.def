@@ -12,6 +12,16 @@
 % We use the `xifthen' package to handle our package option switches
 \RequirePackage{xifthen}
 
+%%
+% Define some shortcut macros for error/warning/info logging.
+
+\newcommand{\TufteWarning}[1]{\ClassWarning{\@tufte@pkgname}{#1}}
+\newcommand{\TufteWarningNL}[1]{\ClassWarningNoLine{\@tufte@pkgname}{#1}}
+\newcommand{\TufteInfo}[1]{\ClassInfo{\@tufte@pkgname}{#1}}
+\newcommand{\TufteInfoNL}[1]{\ClassInfo{\@tufte@pkgname}{#1\@gobble}}
+\newcommand{\tufteDebugInfo}[1]{\ifthenelse{\boolean{@tufte@debug}}{\TufteInfo{#1}}{}}
+\newcommand{\TufteDebugInfoNL}[1]{\ifthenelse{\boolean{@tufte@debug}}{\TufteInfoNL{#1}}{}}
+\newcommand{\TufteError}[2]{\ClassError{\@tufte@pkgname}{#1}{#2}}
 
 %%
 % `debug' option -- provides more information in the .log file for use in
@@ -65,7 +75,7 @@
 \newboolean{@tufte@symmetric}
 \DeclareOptionX[tufte]<common>{symmetric}{
   \setboolean{@tufte@symmetric}{true}
-  \ClassInfo{\@tufte@pkgname}{The `symmetric' option implies `twoside'}
+  \TufteInfoNL{The `symmetric' option implies `twoside'}
   \ExecuteOptionsX[tufte]<common>{twoside}
 }
 
@@ -75,7 +85,7 @@
 \newboolean{@tufte@twoside}
 \DeclareOptionX[tufte]<common>{twoside}{%
   \setboolean{@tufte@twoside}{true}
-  \ClassInfo{\@tufte@pkgname}{Passing the `twoside' option to the `\@tufte@class' class}
+  \TufteInfoNL{Passing the `twoside' option to the `\@tufte@class' class}
   \PassOptionsToClass{twoside}{\@tufte@class}
 }
 
@@ -127,7 +137,7 @@
     \renewcommand*{\@tufte@sidenote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
   \fi
 }{%
-  \PackageWarningNoLine{\@tufte@pkgname}{Invalid option `#1' for sidenote key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \TufteWarningNL{Invalid option `#1' for sidenote key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
   \renewcommand*{\@tufte@sidenote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
 }
 
@@ -145,7 +155,7 @@
     \renewcommand*{\@tufte@marginnote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
   \fi
 }{%
-  \PackageWarningNoLine{\@tufte@pkgname}{Invalid option `#1' for marginnote key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \TufteWarningNL{Invalid option `#1' for marginnote key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
   \renewcommand*{\@tufte@marginnote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
 }
 
@@ -163,7 +173,7 @@
     \renewcommand*{\@tufte@caption@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
   \fi
 }{%
-  \PackageWarningNoLine{\@tufte@pkgname}{Invalid option `#1' for caption key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \TufteWarningNL{Invalid option `#1' for caption key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
   \renewcommand*{\@tufte@caption@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
 }
 
@@ -181,7 +191,7 @@
     \renewcommand*{\@tufte@citation@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
   \fi
 }{%
-  \PackageWarningNoLine{\@tufte@pkgname}{Invalid option `#1' for citation key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \TufteWarningNL{Invalid option `#1' for citation key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
   \renewcommand*{\@tufte@citation@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
 }
 
@@ -199,7 +209,7 @@
     \ExecuteOptionsX[tufte]<common>{citation=auto,sidenote=auto,caption=auto,marginnote=auto}% autodetects best justification mode based on all class options
   \fi
 }{%
-  \PackageWarningNoLine{\@tufte@pkgname}{Invalid option `#1' for marginals key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \TufteWarningNL{Invalid option `#1' for marginals key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
   \ExecuteOptionsX[tufte]<common>{citation=auto,sidenote=auto,caption=auto,marginnote=auto}% autodetects best justification mode based on all class options
 }
 
@@ -207,7 +217,7 @@
 %%
 % Unsupported options
 
-\newcommand{\@tufte@unsupported@option}[1]{\ClassWarningNoLine{\@tufte@pkgname}{Option `#1' is not supported -- \MessageBreak ignoring option}\OptionNotUsed}
+\newcommand{\@tufte@unsupported@option}[1]{\TufteWarningNL{Option `#1' is not supported -- \MessageBreak ignoring option}\OptionNotUsed}
 
 \DeclareOptionX[tufte]<common>{10pt}{\@tufte@unsupported@option{\CurrentOption}}
 \DeclareOptionX[tufte]<common>{11pt}{\@tufte@unsupported@option{\CurrentOption}}
@@ -228,14 +238,14 @@
 
 
 \DeclareOptionX*{%
-  \ClassInfo{\@tufte@pkgname}{Passing \CurrentOption\space to the `\@tufte@class' class}%
+  \TufteInfoNL{Passing \CurrentOption\space to the `\@tufte@class' class.}%
   \PassOptionsToClass{\CurrentOption}{\@tufte@class}%
 }
 \ProcessOptionsX*[tufte]<common>\relax
 
 %%
 % Load the appropriate base class
-\ClassInfo{\@tufte@pkgname}{Loading the base class `\@tufte@class'}
+\TufteInfoNL{Loading the base class `\@tufte@class'}
 \LoadClass{\@tufte@class}
 
 %%
@@ -300,12 +310,11 @@
 
 \ifthenelse{\boolean{@tufte@loadhyper}}{%
   \ifthenelse{\boolean{@tufte@xetex}}
-    {\RequirePackage[xetex]{hyperref}}
-    {\RequirePackage{hyperref}}
+    {\RequirePackage[hyperfootnotes=false,xetex]{hyperref}}
+    {\RequirePackage[hyperfootnotes=false]{hyperref}}
   \hypersetup{%
     pdfborder = {0 0 0},
     bookmarksdepth = section,
-    hyperfootnotes = false,
     citecolor = DarkGreen,
     linkcolor = DarkBlue,
     pagecolor = DarkBlue,
@@ -453,11 +462,11 @@
 
 \newboolean{@tufte@changepage}
 \IfFileExists{changepage.sty}{%
-  \ClassInfo{\@tufte@pkgname}{Found changepage.sty}
+  \TufteDebugInfoNL{Found changepage.sty}
   \RequirePackage[strict]{changepage}
   \setboolean{@tufte@changepage}{true}
 }{%
-  \ClassInfo{\@tufte@pkgname}{Found chngpage.sty}
+  \TufteDebugInfoNL{Found chngpage.sty}
   \RequirePackage[strict]{chngpage}
   \setboolean{@tufte@changepage}{false}
 }
@@ -610,7 +619,7 @@
     \sodef\allcapsspacing{\upshape}{0.15em}{0.65em}{0.6em}
     \sodef\smallcapsspacing{\scshape}{0.075em}{0.5em}{0.6em}
   }{
-    \ClassWarningNoLine{\@tufte@pkgname}{Couldn't locate `soul' package.}
+    \TufteWarningNL{Couldn't locate `soul' package}
   }% soul not installed... giving up.
 }
 
@@ -620,12 +629,12 @@
 % Otherwise fall back on the soul package.
 
 \ifthenelse{\boolean{@tufte@pdf}}
-  {\ClassInfo{\@tufte@pkgname}{ifpdf = true}}
-  {\ClassInfo{\@tufte@pkgname}{ifpdf = false}}
+  {\TufteDebugInfoNL{ifpdf = true}}
+  {\TufteDebugInfoNL{ifpdf = false}}
 
 \ifthenelse{\boolean{@tufte@xetex}}
-  {\ClassInfo{\@tufte@pkgname}{ifxetex = true}}
-  {\ClassInfo{\@tufte@pkgname}{ifxetex = false}}
+  {\TufteDebugInfoNL{ifxetex = true}}
+  {\TufteDebugInfoNL{ifxetex = false}}
 
 % Check pdfLaTeX version
 \def\@tufte@pdftexversion{0}
@@ -649,14 +658,14 @@
     % pdfLaTeX version is too old or not using pdfLaTeX
     \ifthenelse{\boolean{@tufte@xetex}}
       {% TODO use xetex letterspacing
-      \ClassInfo{\@tufte@pkgname}{XeTeX detected. Reverting to `soul' package for letterspacing.}
+      \TufteDebugInfoNL{XeTeX detected. \MessageBreak Reverting to `soul' package for letterspacing}
       \@tufte@loadsoul}
       {% use `soul' package for letterspacing
-      \ClassInfo{\@tufte@pkgname}{Old version of pdfTeX detected.  Reverting to `soul' package for letterspacing.}
+      \TufteDebugInfoNL{Old version of pdfTeX detected. \MessageBreak Reverting to `soul' package for letterspacing}
       \@tufte@loadsoul}
   \else
     \IfFileExists{letterspace.sty}{% 
-      \ClassInfo{\@tufte@pkgname}{Modern version of pdfTeX detected.  Using `letterspace' package.}
+      \TufteDebugInfoNL{Modern version of pdfTeX detected. \MessageBreak Using `letterspace' package}
       \RequirePackage{letterspace}
       % Set up letterspacing (using microtype package) -- requires pdfTeX v1.40+
       \renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}
@@ -664,7 +673,7 @@
       \renewcommand{\allcaps}[1]{\textls[200]{\MakeTextUppercase{##1}}}
       \renewcommand{\smallcaps}[1]{\textsc{\MakeTextLowercase{##1}}}
     }{% microtype failed, check for soul
-      \ClassInfo{\@tufte@pkgname}{Modern version of pdfTeX detected, but `letterspace' package not installed.  Reverting to  `soul' package for letterspacing.}
+      \TufteDebugInfoNL{Modern version of pdfTeX detected, but `letterspace' \MessageBreak package not installed.  \MessageBreak Reverting to  `soul' package for letterspacing}
       \@tufte@loadsoul
     }
   \fi}
@@ -1481,7 +1490,7 @@
 % Subsubsection and following section headings shouldn't be used.
 % See Bringhurst's _The Elements of Typography_, section 4.2.2.
 \renewcommand\subsubsection{%
-  \ClassError{\@tufte@pkgname}{\noexpand\subsubsection is undefined by this class.%
+  \TufteError{\noexpand\subsubsection is undefined by this class.%
     \MessageBreak See Robert Bringhurst's _The Elements of 
     \MessageBreak Typographic Style_, section 4.2.2.
     \MessageBreak \noexpand\subsubsection was used}
@@ -1491,7 +1500,7 @@
 }
 
 \renewcommand\subparagraph{%
-  \ClassError{\@tufte@pkgname}{\noexpand\subparagraph is undefined by this class.%
+  \TufteError{\noexpand\subparagraph is undefined by this class.%
     \MessageBreak See Robert Bringhurst's _The Elements of 
     \MessageBreak Typographic Style_, section 4.2.2.
     \MessageBreak \noexpand\subparagraph was used}
@@ -1662,7 +1671,7 @@
 
 \IfFileExists{tufte-common-local.tex}
   {\input{tufte-common-local.tex}%
-   \ClassInfo{\@tufte@pkgname}{Loading tufte-common-local.tex}}
+   \TufteInfoNL{Loading tufte-common-local.tex}}
   {}
 
 
