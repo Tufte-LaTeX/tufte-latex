@@ -276,10 +276,24 @@
 
 %%
 % Globally sets the length
+
 \newcommand*{\gsetlength}[2]{%
   \setlength{#1}{#2}%
   \global#1=#1\relax%
-} 
+}
+
+%%
+% Globally sets a boolean
+
+\newcommand*{\gsetboolean}[2]{% based on code from ifthen pkg
+  \lowercase{\def\@tempa{#2}}%
+  \@ifundefined{@tempswa\@tempa}%
+    {\PackageError{ifthen}{You can only set a boolean to `true' or `false'}\@ehc}%
+    {\@ifundefined{#1\@tempa}%
+      {\PackageError{ifthen}{Boolean #1 undefined}\@ehc}%
+      {\global\csname#1\@tempa\endcsname}%
+    }%
+}
 
 %%%
 %% Load the `hyperref' package.
@@ -1027,8 +1041,8 @@
 \newcommand{\floatalignment}{x}% holds the current float alignment (t, b, h, p)
 \newcommand{\setfloatalignment}[1]{\global\def\floatalignment{#1}}% manually sets the float alignment
 \newboolean{@tufte@float@recto}
-\newcommand{\forcerectofloat}{\global\@tufte@float@rectotrue}
-\newcommand{\forceversofloat}{\global\@tufte@float@rectofalse}
+\newcommand{\forcerectofloat}{\gsetboolean{@tufte@float@recto}{true}}
+\newcommand{\forceversofloat}{\gsetboolean{@tufte@float@recto}{false}}
 
 % Boxes to temporarily store our float and caption
 \newsavebox{\@tufte@figure@box}
@@ -1082,8 +1096,8 @@
     % Check page side (recto/verso) and store detected value -- can be overriden in environment contents
     \@tufte@checkoddpage%
     \ifthenelse{\boolean{@tufte@odd@page}}%
-      {\global\@tufte@float@rectotrue}%
-      {\global\@tufte@float@rectofalse}%
+      {\gsetboolean{@tufte@float@recto}{true}}%
+      {\gsetboolean{@tufte@float@recto}{false}}%
 
     % If the float placement specifier is 'b' and only 'b', then bottom-align the mini-pages, otherwise top-align them.
     \renewcommand{\@tufte@fps}{#1}%
