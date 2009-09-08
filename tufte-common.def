@@ -19,7 +19,7 @@
 \newcommand{\TufteWarningNL}[1]{\ClassWarningNoLine{\@tufte@pkgname}{#1}}
 \newcommand{\TufteInfo}[1]{\ClassInfo{\@tufte@pkgname}{#1}}
 \newcommand{\TufteInfoNL}[1]{\ClassInfo{\@tufte@pkgname}{#1\@gobble}}
-\newcommand{\tufteDebugInfo}[1]{\ifthenelse{\boolean{@tufte@debug}}{\TufteInfo{#1}}{}}
+\newcommand{\TufteDebugInfo}[1]{\ifthenelse{\boolean{@tufte@debug}}{\TufteInfo{#1}}{}}
 \newcommand{\TufteDebugInfoNL}[1]{\ifthenelse{\boolean{@tufte@debug}}{\TufteInfoNL{#1}}{}}
 \newcommand{\TufteError}[2]{\ClassError{\@tufte@pkgname}{#1}{#2}}
 
@@ -1047,11 +1047,18 @@
 % \forcerectofloat forces the float to be treated as if it were appearing on a recto page.
 % \forceversofloat does the same, but for verso pages.
 
+\newcommand{\@tufte@float@debug@info}{}% contains debug info generated as the float is processed
+\newcommand{\@tufte@float@debug}[1]{% adds debug info to the queue for output
+\ifthenelse{\equal{\@tufte@float@debug@info}{}}%
+    {\def\@tufte@float@debug@info{#1}}%
+    {\g@addto@macro\@tufte@float@debug@info{\MessageBreak#1}}
+}
+
 \newcommand{\floatalignment}{x}% holds the current float alignment (t, b, h, p)
-\newcommand{\setfloatalignment}[1]{\global\def\floatalignment{#1}}% manually sets the float alignment
+\newcommand{\setfloatalignment}[1]{\global\def\floatalignment{#1}\@tufte@float@debug{Forcing position: [#1]}}% manually sets the float alignment
 \newboolean{@tufte@float@recto}
-\newcommand{\forcerectofloat}{\gsetboolean{@tufte@float@recto}{true}}
-\newcommand{\forceversofloat}{\gsetboolean{@tufte@float@recto}{false}}
+\newcommand{\forcerectofloat}{\gsetboolean{@tufte@float@recto}{true}\@tufte@float@debug{Forcing page: [recto]}}
+\newcommand{\forceversofloat}{\gsetboolean{@tufte@float@recto}{false}\@tufte@float@debug{Forcing page: [verso]}}
 
 % Boxes to temporarily store our float and caption
 \newsavebox{\@tufte@figure@box}
@@ -1100,19 +1107,19 @@
   {% begin @tufte@float
     % Should this float be full-width or just text-width?
     \ifthenelse{\equal{#3}{star}}%
-      {\setboolean{@tufte@float@star}{true}}%
-      {\setboolean{@tufte@float@star}{false}}%
+      {\gsetboolean{@tufte@float@star}{true}}%
+      {\gsetboolean{@tufte@float@star}{false}}%
     % Check page side (recto/verso) and store detected value -- can be overriden in environment contents
     \@tufte@checkoddpage%
     \ifthenelse{\boolean{@tufte@odd@page}}%
-      {\gsetboolean{@tufte@float@recto}{true}}%
-      {\gsetboolean{@tufte@float@recto}{false}}%
-
+      {\gsetboolean{@tufte@float@recto}{true}\@tufte@float@debug{Detected page: [recto/odd]}}%
+      {\gsetboolean{@tufte@float@recto}{false}\@tufte@float@debug{Detected page: [verso/even]}}%
     % If the float placement specifier is 'b' and only 'b', then bottom-align the mini-pages, otherwise top-align them.
     \renewcommand{\@tufte@fps}{#1}%
+    \@tufte@float@debug{Allowed positions: [#1]}
     \ifthenelse{\equal{#1}{b}\OR\equal{#1}{B}}%
-      {\renewcommand{\floatalignment}{b}}%
-      {\renewcommand{\floatalignment}{t}}%
+      {\renewcommand{\floatalignment}{b}\@tufte@float@debug{Presumed position: [bottom]}}%
+      {\renewcommand{\floatalignment}{t}\@tufte@float@debug{Presumed position: [top]}}%
     % Capture the contents of the \caption and \label commands to use later
     \renewcommand{\caption}{\optparams{\@tufte@caption}{[][0pt]}}%
     \renewcommand{\label}[1]{\@tufte@label{##1}}%
@@ -1142,14 +1149,30 @@
           {\@tufte@float@textwidth[\@tufte@caption@vertical@offset]{\@tufte@figure@box}{\@tufte@caption@box}}%
       \end{minipage}%
     \end{fullwidth}%
-    \@tufte@orig@endfloat%
+    \@tufte@orig@endfloat% end original LaTeX float environment
+    % output debug info
+    \ifthenelse{\boolean{@tufte@debug}}{%
+      \typeout{^^J^^J----------- Tufte-LaTeX float information ----------}%
+      \ifthenelse{\equal{\@tufte@stored@label}{}}%
+        {\typeout{Warning: Float unlabeled!}}%
+        {\typeout{Float label: [\@tufte@stored@label]}}%
+      \typeout{Page number: [\thepage]}%
+      \def\MessageBreak{^^J}%
+      \typeout{\@tufte@float@debug@info}%
+      \ifthenelse{\boolean{@tufte@symmetric}}%
+        {\typeout{Symmetric: [true]}}%
+        {\typeout{Symmetric: [false]}}%
+      \typeout{----------------------------------------------------^^J^^J}%
+    }{}%
     % reset commands and temp boxes and captions
+    \gdef\@tufte@float@debug@info{}%
     \let\caption\@tufte@orig@caption%
     \let\label\@tufte@orig@label%
     \begin{lrbox}{\@tufte@figure@box}\hbox{}\end{lrbox}%
     \begin{lrbox}{\@tufte@caption@box}\hbox{}\end{lrbox}%
     \gdef\@tufte@stored@shortcaption{}%
     \gdef\@tufte@stored@caption{}%
+    \gdef\@tufte@stored@label{}%
     \gsetlength{\@tufte@caption@vertical@offset}{0pt}% reset caption offset
   }
 
@@ -1161,12 +1184,14 @@
       \hspace{\marginparsep}%
       \smash{\raisebox{#1}{\usebox{#3}}}%
     }%
+    \@tufte@float@debug{Caption position: [right]}%
   }{% symmetric pages and page is even, so caption is on the left
     \hbox{%
       \smash{\raisebox{#1}{\usebox{#3}}}%
       \hspace{\marginparsep}%
       \usebox{#2}%
     }%
+    \@tufte@float@debug{Caption position: [left]}%
   }%
 }
 
@@ -1174,12 +1199,12 @@
   \ifthenelse{\equal{\floatalignment}{b}}%
     {% place caption above figure
       \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
-        {\hfill\smash{\raisebox{#1}{\usebox{#3}}}\par\usebox{#2}}% caption on the right
-        {\smash{\raisebox{#1}{\usebox{#3}}}\hfill\par\usebox{#2}}% caption on the left
+        {\hfill\smash{\raisebox{#1}{\usebox{#3}}}\par\usebox{#2}\@tufte@float@debug{Caption position: [above right]}}% caption on the right
+        {\smash{\raisebox{#1}{\usebox{#3}}}\hfill\par\usebox{#2}\@tufte@float@debug{Caption position: [above left]}}% caption on the left
     }{% place caption below figure
       \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
-        {\usebox{#2}\par\hfill\smash{\raisebox{#1}{\usebox{#3}}}}% caption on the right
-        {\usebox{#2}\par\smash{\raisebox{#1}{\usebox{#3}}}\hfill}% caption on the left
+        {\usebox{#2}\par\hfill\smash{\raisebox{#1}{\usebox{#3}}}\@tufte@float@debug{Caption position: [below right]}}% caption on the right
+        {\usebox{#2}\par\smash{\raisebox{#1}{\usebox{#3}}}\hfill\@tufte@float@debug{Caption position: [below left]}}% caption on the left
     }%
 }
 
