@@ -320,7 +320,8 @@
     pagecolor = DarkBlue,
     urlcolor = DarkGreen,
   }%
-}{%
+}{% hyperfootnotes override our modifications to the \footnote* and \@footnote* commands.
+  \PassOptionsToPackage{hyperfootnotes=false}{hyperref}
 }
 
 %%
