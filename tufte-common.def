@@ -1069,12 +1069,6 @@
 \let\@tufte@orig@float\@float
 \let\@tufte@orig@endfloat\end@float
 
-% Save original LaTeX \caption and \label commands
-\AtBeginDocument{%
-  \let\@tufte@orig@caption\caption%
-  \let\@tufte@orig@label\label%
-}
-
 % New length for tweaking float captions
 \newlength{\@tufte@caption@vertical@offset}
 \setlength{\@tufte@caption@vertical@offset}{0pt}
@@ -1122,6 +1116,8 @@
       {\renewcommand{\floatalignment}{b}\@tufte@float@debug{Presumed position: [bottom]}}%
       {\renewcommand{\floatalignment}{t}\@tufte@float@debug{Presumed position: [top]}}%
     % Capture the contents of the \caption and \label commands to use later
+    \global\let\@tufte@orig@caption\caption%
+    \global\let\@tufte@orig@label\label%
     \renewcommand{\caption}{\optparams{\@tufte@caption}{[][0pt]}}%
     \renewcommand{\label}[1]{\@tufte@label{##1}}%
     \@tufte@orig@float{#2}[#1]%
