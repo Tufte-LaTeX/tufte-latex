@@ -310,8 +310,8 @@
 
 \ifthenelse{\boolean{@tufte@loadhyper}}{%
   \ifthenelse{\boolean{@tufte@xetex}}
-    {\RequirePackage[hyperfootnotes=false,xetex]{hyperref}}
-    {\RequirePackage[hyperfootnotes=false]{hyperref}}
+    {\RequirePackage[unicode,hyperfootnotes=false,xetex]{hyperref}}
+    {\RequirePackage[unicode,hyperfootnotes=false]{hyperref}}
   \hypersetup{%
     pdfborder = {0 0 0},
     bookmarksdepth = section,
@@ -1678,6 +1678,112 @@
 \renewcommand\indexspace{\par\addvspace{1.0\baselineskip plus 0.5ex minus 0.2ex}\relax}%
 \newcommand{\lettergroup}[1]{}% swallow the letter heading in the index
 
+
+%%
+% A couple commands to incresae the number of floats you can use at a time.
+
+\def\morefloats{% provides a total of 52 floats
+  \ifthenelse{\isundefined{\bx@S}}{%
+    \TufteDebugInfoNL{Adding 34 more float slots.}
+    \newinsert\bx@S
+    \newinsert\bx@T
+    \newinsert\bx@U
+    \newinsert\bx@V
+    \newinsert\bx@W
+    \newinsert\bx@X
+    \newinsert\bx@Y
+    \newinsert\bx@Z
+    \newinsert\bx@a
+    \newinsert\bx@b
+    \newinsert\bx@c
+    \newinsert\bx@d
+    \newinsert\bx@e
+    \newinsert\bx@f
+    \newinsert\bx@g
+    \newinsert\bx@h
+    \newinsert\bx@i
+    \newinsert\bx@j
+    \newinsert\bx@k
+    \newinsert\bx@l
+    \newinsert\bx@m
+    \newinsert\bx@n
+    \newinsert\bx@o
+    \newinsert\bx@p
+    \newinsert\bx@q
+    \newinsert\bx@r
+    \newinsert\bx@s
+    \newinsert\bx@t
+    \newinsert\bx@u
+    \newinsert\bx@v
+    \newinsert\bx@w
+    \newinsert\bx@x
+    \newinsert\bx@y
+    \newinsert\bx@z
+    \gdef\@freelist{\@elt\bx@A\@elt\bx@B\@elt\bx@C\@elt\bx@D\@elt\bx@E
+                    \@elt\bx@F\@elt\bx@G\@elt\bx@H\@elt\bx@I\@elt\bx@J
+                    \@elt\bx@K\@elt\bx@L\@elt\bx@M\@elt\bx@N
+                    \@elt\bx@O\@elt\bx@P\@elt\bx@Q\@elt\bx@R
+                    \@elt\bx@S\@elt\bx@T\@elt\bx@U\@elt\bx@V
+                    \@elt\bx@W\@elt\bx@X\@elt\bx@Y\@elt\bx@Z
+                    \@elt\bx@a\@elt\bx@b\@elt\bx@c\@elt\bx@d\@elt\bx@e
+                    \@elt\bx@f\@elt\bx@g\@elt\bx@h\@elt\bx@i\@elt\bx@j
+                    \@elt\bx@k\@elt\bx@l\@elt\bx@m\@elt\bx@n
+                    \@elt\bx@o\@elt\bx@p\@elt\bx@q\@elt\bx@r
+                    \@elt\bx@s\@elt\bx@t\@elt\bx@u\@elt\bx@v
+                    \@elt\bx@w\@elt\bx@x\@elt\bx@y\@elt\bx@z}%
+  }{% we've already added another 34 floats, so we'll add 26 more, but that's it!
+    \ifthenelse{\isundefined{\bx@AA}}{%
+      \TufteDebugInfoNL{Adding 26 more float slots.}
+      \newinsert\bx@AA
+      \newinsert\bx@BB
+      \newinsert\bx@CC
+      \newinsert\bx@DD
+      \newinsert\bx@EE
+      \newinsert\bx@FF
+      \newinsert\bx@GG
+      \newinsert\bx@HH
+      \newinsert\bx@II
+      \newinsert\bx@JJ
+      \newinsert\bx@KK
+      \newinsert\bx@LL
+      \newinsert\bx@MM
+      \newinsert\bx@NN
+      \newinsert\bx@OO
+      \newinsert\bx@PP
+      \newinsert\bx@QQ
+      \newinsert\bx@RR
+      \newinsert\bx@SS
+      \newinsert\bx@TT
+      \newinsert\bx@UU
+      \newinsert\bx@VV
+      \newinsert\bx@WW
+      \newinsert\bx@XX
+      \newinsert\bx@YY
+      \newinsert\bx@ZZ
+      \gdef\@freelist{\@elt\bx@A\@elt\bx@B\@elt\bx@C\@elt\bx@D\@elt\bx@E
+                      \@elt\bx@F\@elt\bx@G\@elt\bx@H\@elt\bx@I\@elt\bx@J
+                      \@elt\bx@K\@elt\bx@L\@elt\bx@M\@elt\bx@N
+                      \@elt\bx@O\@elt\bx@P\@elt\bx@Q\@elt\bx@R
+                      \@elt\bx@S\@elt\bx@T\@elt\bx@U\@elt\bx@V
+                      \@elt\bx@W\@elt\bx@X\@elt\bx@Y\@elt\bx@Z
+                      \@elt\bx@a\@elt\bx@b\@elt\bx@c\@elt\bx@d\@elt\bx@e
+                      \@elt\bx@f\@elt\bx@g\@elt\bx@h\@elt\bx@i\@elt\bx@j
+                      \@elt\bx@k\@elt\bx@l\@elt\bx@m\@elt\bx@n
+                      \@elt\bx@o\@elt\bx@p\@elt\bx@q\@elt\bx@r
+                      \@elt\bx@s\@elt\bx@t\@elt\bx@u\@elt\bx@v
+                      \@elt\bx@w\@elt\bx@x\@elt\bx@y\@elt\bx@z
+                      \@elt\bx@AA\@elt\bx@BB\@elt\bx@CC\@elt\bx@DD\@elt\bx@EE
+                      \@elt\bx@FF\@elt\bx@GG\@elt\bx@HH\@elt\bx@II\@elt\bx@JJ
+                      \@elt\bx@KK\@elt\bx@LL\@elt\bx@MM\@elt\bx@NN
+                      \@elt\bx@OO\@elt\bx@PP\@elt\bx@QQ\@elt\bx@RR
+                      \@elt\bx@SS\@elt\bx@TT\@elt\bx@UU\@elt\bx@VV
+                      \@elt\bx@WW\@elt\bx@XX\@elt\bx@YY\@elt\bx@ZZ}%
+    }{%
+      \TufteError{You may only call \string\morefloats\space twice. See the\MessageBreak Tufte-LaTeX documentation for other workarounds}
+        {There are already 78 float slots allocated. Try using \string\FloatBarrier\space or\MessageBreak \string\clearpage\space to place some floats before creating more.}
+    }%
+  }%
+}
 
 %%
 % If debugging is enabled, print the Tufte-LaTeX options and the list of

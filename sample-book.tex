@@ -106,6 +106,17 @@
 % \index{\texttt{\textbackslash xyz}@\hangleft{\texttt{\textbackslash}}\texttt{xyz}}
 \newcommand{\tuftebs}{\symbol{'134}}% a backslash in tt type in OT1/T1
 \newcommand{\doccmdnoindex}[2][]{\texttt{\tuftebs#2}}% command name -- adds backslash automatically (and doesn't add cmd to the index)
+\newcommand{\doccmddef}[2][]{%
+  \hlred{\texttt{\tuftebs#2}}\label{cmd:#2}%
+  \ifthenelse{\isempty{#1}}%
+    {% add the command to the index
+      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}% command name
+    }%
+    {% add the command the and package to the index
+      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}% command name
+      \index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}% package name
+    }%
+}% command name -- adds backslash automatically
 \newcommand{\doccmd}[2][]{%
   \texttt{\tuftebs#2}%
   \ifthenelse{\isempty{#1}}%
@@ -115,15 +126,17 @@
     {% add the command the and package to the index
       \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}% command name
       \index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}% package name
-    }
+    }%
 }% command name -- adds backslash automatically
 \newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
 \newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
 \newenvironment{docspec}{\begin{quotation}\ttfamily\parskip0pt\parindent0pt\ignorespaces}{\end{quotation}}% command specification environment
 \newcommand{\docenv}[1]{\texttt{#1}\index{#1 environment@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}% environment name
+\newcommand{\docenvdef}[1]{\hlred{\texttt{#1}}\label{env:#1}\index{#1 environment@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}% environment name
 \newcommand{\docpkg}[1]{\texttt{#1}\index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}}% package name
 \newcommand{\doccls}[1]{\texttt{#1}}% document class name
 \newcommand{\docclsopt}[1]{\texttt{#1}\index{#1 class option@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}% document class option name
+\newcommand{\docclsoptdef}[1]{\hlred{\texttt{#1}}\label{clsopt:#1}\index{#1 class option@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}% document class option name defined
 \newcommand{\docmsg}[2]{\bigskip\begin{fullwidth}\noindent\ttfamily#1\end{fullwidth}\medskip\par\noindent#2}
 \newcommand{\docfilehook}[2]{\texttt{#1}\index{file hooks!#2}\index{#1@\texttt{#1}}}
 \newcommand{\doccounter}[1]{\texttt{#1}\index{#1 counter@\texttt{#1} counter}}
@@ -484,7 +497,7 @@ The \TL classes will emit an error if you try to use
 \newthought{In his later books},\cite{Tufte2006} Tufte
 starts each section with a bit of vertical space, a non-indented paragraph,
 and sets the first few words of the sentence in \textsc{small caps}.  To
-accomplish this using this style, use the \hlred{\doccmd{newthought}} command:
+accomplish this using this style, use the \doccmddef{newthought} command:
 \begin{docspec}
   \doccmd{newthought}\{In his later books\}, Tufte starts\ldots
 \end{docspec}
@@ -497,11 +510,11 @@ for sidenotes and small figures.  Any \doccmd{footnote}s will automatically
 be converted to sidenotes.\footnote{This is a sidenote that was entered
 using the \texttt{\textbackslash footnote} command.}  If you'd like to place ancillary
 information in the margin without the sidenote mark (the superscript
-number), you can use the \hlred{\doccmd{marginnote}} command.\marginnote{This is a
+number), you can use the \doccmd{marginnote} command.\marginnote{This is a
 margin note.  Notice that there isn't a number preceding the note, and
 there is no number in the main text where this note was written.}
 
-The specification of the \hlred{\doccmd{sidenote}} command is:
+The specification of the \doccmddef{sidenote} command is:
 \begin{docspec}
   \doccmd{sidenote}[\docopt{number}][\docopt{offset}]\{\docarg{Sidenote text.}\}
 \end{docspec}
@@ -536,20 +549,20 @@ completely omit the \docopt{offset} argument:
   \doccmd{sidenote}[\docopt{number}]\{\docarg{Sidenote text.}\}
 \end{docspec}
 
-The \doccmd{marginnote} command has a similar \docarg{offset} argument:
+The \doccmddef{marginnote} command has a similar \docarg{offset} argument:
 \begin{docspec}
   \doccmd{marginnote}[\docopt{offset}]\{\docarg{Margin note text.}\}
 \end{docspec}
 
 \section{References}
 References are placed alongside their citations as sidenotes,
-as well.  This can be accomplished using the normal \hlred{\doccmd{cite}}
+as well.  This can be accomplished using the normal \doccmddef{cite}
 command.\sidenote{The first paragraph of this document includes a citation.}
 
 The complete list of references may also be printed automatically by using
-the \hlred{\doccmd{bibliography}} command.  (See the end of this document for an
+the \doccmddef{bibliography} command.  (See the end of this document for an
 example.)  If you do not want to print a bibliography at the end of your
-document, use the \hlred{\doccmd{nobibliography}} command in its place.  
+document, use the \doccmddef{nobibliography} command in its place.  
 
 To enter multiple citations at one location,\cite[-3\baselineskip]{Tufte2006,Tufte1990} you can
 provide a list of keys separated by commas and the same optional vertical
@@ -560,13 +573,13 @@ offset argument: \Verb|\cite{Tufte2006,Tufte1990}|.
 
 \section{Figures and Tables}\label{sec:figures-and-tables}
 Images and graphics play an integral role in Tufte's work.
-In addition to the standard \hlred{\docenv{figure}} and \hlred{\docenv{tabular}} environments,
+In addition to the standard \docenvdef{figure} and \docenvdef{tabular} environments,
 this style provides special figure and table environments for full-width
 floats.
 
-Full page--width figures and tables may be placed in \hlred{\docenv{figure*}} or
-\hlred{\docenv{table*}} environments.  To place figures or tables in the margin,
-use the \hlred{\docenv{marginfigure}} or \hlred{\docenv{margintable}} environments as follows
+Full page--width figures and tables may be placed in \docenvdef{figure*} or
+\docenvdef{table*} environments.  To place figures or tables in the margin,
+use the \docenvdef{marginfigure} or \docenvdef{margintable} environments as follows
 (see figure~\ref{fig:marginfig}):
 
 \begin{marginfigure}%
@@ -616,7 +629,7 @@ environment and figure~\ref{fig:textfig} is an example of the normal
 \end{figure}
 
 As with sidenotes and marginnotes, a caption may sometimes require vertical
-adjustment. The \hlred{\doccmd{caption}} command now takes a second optional
+adjustment. The \doccmddef{caption} command now takes a second optional
 argument that enables you to do this by providing a dimension \docopt{offset}.
 You may specify the caption in any one of the following forms:
 \begin{docspec}
@@ -661,9 +674,51 @@ the table's data.
   %\zsavepos{pos:normaltab}
 \end{table}
 
+\newthought{Occasionally} \LaTeX{} will generate an error message:\label{err:too-many-floats}
+\begin{docspec}
+  Error: Too many unprocessed floats
+\end{docspec}
+\LaTeX{} tries to place floats in the best position on the page.  Until it's
+finished composing the page, however, it won't know where those positions are.
+If you have a lot of floats on a page (including sidenotes, margin notes,
+figures, tables, etc.), \LaTeX{} may run out of ``slots'' to keep track of them
+and will generate the above error.
+
+\LaTeX{} initially allocates 18 slots for storing floats.  To work around this
+limitation, the \TL document classes provide a \doccmddef{morefloats} command
+that will reserve more slots.
+
+The first time \doccmd{morefloats} is called, it allocates an additional 34
+slots.  The second time \doccmd{morefloats} is called, it allocates another 26
+slots.
+
+The \doccmd{morefloats} command may only be used two times.  Calling it a
+third time will generate an error message.  (This is because we can't safely
+allocate many more floats or \LaTeX{} will run out of memory.)
+
+If, after using the \doccmd{morefloats} command twice, you continue to get the
+\texttt{Too many unprocessed floats} error, there are a couple things you can
+do.
+
+The \doccmddef{FloatBarrier} command will immediately process all the floats
+before typesetting more material.  Since \doccmd{FloatBarrier} will start a new
+paragraph, you should place this command at the beginning or end of a
+paragraph.
+
+The \doccmddef{clearpage} command will also process the floats before
+continuing, but instead of starting a new paragraph, it will start a new page.
+
+You can also try moving your floats around a bit: move a figure or table to the
+next page or reduce the number of sidenotes.  (Each sidenote actually uses
+\emph{two} slots.)
+
+After the floats have placed, \LaTeX{} will mark those slots as unused so they
+are available for the next page to be composed.
+
+
 \section{Full-width text blocks}
 
-In addition to the new float types, there is a \hlred{\docenv{fullwidth}}
+In addition to the new float types, there is a \docenvdef{fullwidth}
 environment that stretches across the main text block and the sidenotes
 area.
 
@@ -690,13 +745,13 @@ existing commands for letterspacing.
 
 When setting strings of \allcaps{ALL CAPS} or \smallcaps{small caps}, the
 letter\-spacing---that is, the spacing between the letters---should be
-increased slightly.\cite{Bringhurst2005}  The \hlred{\doccmd{allcaps}} command has proper letterspacing for
-strings of \allcaps{FULL CAPITAL LETTERS}, and the \hlred{\doccmd{smallcaps}} command
+increased slightly.\cite{Bringhurst2005}  The \doccmddef{allcaps} command has proper letterspacing for
+strings of \allcaps{FULL CAPITAL LETTERS}, and the \doccmddef{smallcaps} command
 has letterspacing for \smallcaps{small capital letters}.  These commands
 will also automatically convert the case of the text to upper- or
 lowercase, respectively.
 
-The \hlred{\doccmd{textsc}} command has also been redefined to include
+The \doccmddef{textsc} command has also been redefined to include
 letterspacing.  The case of the \doccmd{textsc} argument is left as is,
 however.  This allows one to use both uppercase and lowercase letters:
 \textsc{The Initial Letters Of The Words In This Sentence Are Capitalized.}
@@ -711,60 +766,60 @@ document class.  Therefore, you can pass any of the typical book
 options.  There are a few options that are specific to the
 \doccls{tufte-book} document class, however.
 
-The \hlred{\docclsopt{a4paper}} option will set the paper size to \smallcaps{A4} instead of
+The \docclsoptdef{a4paper} option will set the paper size to \smallcaps{A4} instead of
 the default \smallcaps{US} letter size.
 
-The \hlred{\docclsopt{sfsidenotes}} option will set the sidenotes and title block in a 
+The \docclsoptdef{sfsidenotes} option will set the sidenotes and title block in a 
 \textsf{sans serif} typeface instead of the default roman.
 
-The \hlred{\docclsopt{twoside}} option will modify the running heads so that the page
+The \docclsoptdef{twoside} option will modify the running heads so that the page
 number is printed on the outside edge (as opposed to always printing the page
-number on the right-side edge in \hlred{\docclsopt{oneside}} mode).  
+number on the right-side edge in \docclsoptdef{oneside} mode).  
 
-The \hlred{\docclsopt{symmetric}} option typesets the sidenotes on the outside edge of
+The \docclsoptdef{symmetric} option typesets the sidenotes on the outside edge of
 the page.  This is how books are traditionally printed, but is contrary to
 Tufte's book design which sets the sidenotes on the right side of the page.
 This option implicitly sets the \docclsopt{twoside} option.
 
-The \hlred{\docclsopt{justified}} option sets all the text fully justified (flush left
+The \docclsoptdef{justified} option sets all the text fully justified (flush left
 and right).  The default is to set the text ragged right.  
 The body text of Tufte's books are set ragged right.  This prevents
 needless hyphenation and makes it easier to read the text in the slightly
 narrower column.
 
-The \hlred{\docclsopt{bidi}} option loads the \docpkg{bidi} package which is used with
+The \docclsoptdef{bidi} option loads the \docpkg{bidi} package which is used with
 \tXeLaTeX\ to typeset bi-directional text.  Since the \docpkg{bidi}
 package needs to be loaded before the sidenotes and cite commands are defined,
 it can't be loaded in the document preamble.
 
-The \hlred{\docclsopt{debug}} option causes the \TL classes to output debug
+The \docclsoptdef{debug} option causes the \TL classes to output debug
 information to the log file which is useful in troubleshooting bugs.  It will
 also cause the graphics to be replaced by outlines.
 
-The \hlred{\docclsopt{nofonts}} option prevents the \TL classes from
+The \docclsoptdef{nofonts} option prevents the \TL classes from
 automatically loading the Palatino and Helvetica typefaces.  You should use
 this option if you wish to load your own fonts.  If you're using \tXeLaTeX, this
 option is implied (\ie, the Palatino and Helvetica fonts aren't loaded if you
 use \tXeLaTeX).  
 
-The \hlred{\docclsopt{nols}} option inhibits the letterspacing code.  The \TL\
+The \docclsoptdef{nols} option inhibits the letterspacing code.  The \TL\
 classes try to load the appropriate letterspacing package (either pdf\TeX's
 \docpkg{letterspace} package or the \docpkg{soul} package).  If you're using
 \tXeLaTeX\ with \docpkg{fontenc}, however, you should configure your own
 letterspacing.  
 
-The \hlred{\docclsopt{notitlepage}} option causes \verb|\maketitle| to generate a title
+The \docclsoptdef{notitlepage} option causes \doccmd{maketitle} to generate a title
 block instead of a title page.  The \doccls{book} class defaults to a title
 page and the \doccls{handout} class defaults to the title block.  There is an
-analogous \hlred{\docclsopt{titlepage}} option that forces \verb|\maketitle| to
+analogous \docclsoptdef{titlepage} option that forces \doccmd{maketitle} to
 generate a full title page instead of the title block.
 
-The \hlred{\docclsopt{notoc}} option suppresses \TL's custom table of contents
+The \docclsoptdef{notoc} option suppresses \TL's custom table of contents
 (\textsc{toc}) design.  The current \textsc{toc} design only shows unnumbered
 chapter titles; it doesn't show sections or subsections.  The \docclsopt{notoc}
 option will revert to \LaTeX's \textsc{toc} design.
 
-The \hlred{\docclsopt{nohyper}} option prevents the \docpkg{hyperref} package from
+The \docclsoptdef{nohyper} option prevents the \docpkg{hyperref} package from
 being loaded.  The default is to load the \docpkg{hyperref} package and use the
 \doccmd{title} and \doccmd{author} contents as metadata for the generated
 \textsc{pdf}.
@@ -957,8 +1012,9 @@ document using the \docclsopt{debug} class option and send the generated
 
 \section{Errors, Warnings, and Informational Messages}\label{sec:tl-messages}
 The following is a list of all of the errors, warnings, and other messages generated by the \TL classes and a brief description of their meanings.
+\index{error messages}\index{warming messages}\index{debug messages}
 
-
+% Errors
 \docmsg{Error: \doccmd{subparagraph} is undefined by this class.}{%
 The \doccmd{subparagraph} command is not defined in the \TL document classes.
 If you'd like to use the \doccmd{subparagraph} command, you'll need to redefine
@@ -972,12 +1028,24 @@ redefine it yourself.  See the ``Headings'' section on
 page~\pageref{sec:headings} for a description of the heading styles availaboe
 in the \TL document classes.}
 
+\docmsg{Error: You may only call \doccmd{morefloats} twice. See the\par\noindent\ \ \ \ \ \ \ \ Tufte-LaTeX documentation for other workarounds.}{%
+\LaTeX{} allocates 18 slots for storing floats.  The first time
+\doccmd{morefloats} is called, it allocates an additional 34 slots.  The second
+time \doccmd{morefloats} is called, it allocates another 26 slots.
+
+The \doccmd{morefloats} command may only be called two times.  Calling it a
+third time will generate this error message.  See
+page~\pageref{err:too-many-floats} for more information.}
+
+% Warnings
 \docmsg{Warning: Option `\docopt{class option}' is not supported -{}- ignoring option.}{%
 This warning appears when you've tried to use \docopt{class option} with a \TL
 document class, but \docopt{class option} isn't supported by the \TL document
 class.  In this situation, \docopt{class option} is ignored.}
 
-
+% Info / Debug messages
+\docmsg{Info: The `\docclsopt{symmetric}' option implies `\docclsopt{twoside}'}{%
+You specified the \docclsopt{symmetric} document class option.  This option automatically forces the \docclsopt{twoside} option as well.  See page~\pageref{clsopt:symmetric} for more information on the \docclsopt{symmetric} class option.}
 
 
 \section{Package Dependencies}\label{sec:dependencies}
