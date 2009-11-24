@@ -306,9 +306,9 @@
 }
 
 %%%
-%% Load the `hyperref' package.
+%% Loads the hyperref package and sets some default options.
 
-\ifthenelse{\boolean{@tufte@loadhyper}}{%
+\newcommand{\TufteLoadHyperref}{%
   \ifthenelse{\boolean{@tufte@xetex}}
     {\RequirePackage[unicode,hyperfootnotes=false,xetex]{hyperref}}
     {\RequirePackage[unicode,hyperfootnotes=false]{hyperref}}
@@ -320,6 +320,13 @@
     pagecolor = DarkBlue,
     urlcolor = DarkGreen,
   }%
+}
+
+%%%
+%% Load the `hyperref' package.
+
+\ifthenelse{\boolean{@tufte@loadhyper}}{%
+  \TufteLoadHyperref%
 }{% hyperfootnotes override our modifications to the \footnote* and \@footnote* commands.
   \PassOptionsToPackage{hyperfootnotes=false}{hyperref}
 }
@@ -542,7 +549,7 @@
   \ifthenelse{\isempty{#1}}%
     {\renewcommand{\plaintitle}{\thanklesstitle}}% use thankless title
     {\renewcommand{\plaintitle}{#1}}% use provided plain-text title
-  \ifthenelse{\boolean{@tufte@loadhyper}}{\hypersetup{pdftitle={\plaintitle}}}{}% set the PDF metadata title
+  \@ifpackageloaded{hyperref}{\hypersetup{pdftitle={\plaintitle}}}{}% set the PDF metadata title
 }
 
 \def\@author{}% default author is empty (suppresses LaTeX's ``no author'' warning)
@@ -556,7 +563,7 @@
   \ifthenelse{\isempty{#1}}
     {\renewcommand{\plainauthor}{\thanklessauthor}}% use thankless author
     {\renewcommand{\plainauthor}{#1}}% use provided plain-text author
-  \ifthenelse{\boolean{@tufte@loadhyper}}{\hypersetup{pdfauthor={\plainauthor}}}{}% set the PDF metadata author
+  \@ifpackageloaded{hyperref}{\hypersetup{pdfauthor={\plainauthor}}}{}% set the PDF metadata author
 }
 
 \renewcommand*{\date}[1]{%
@@ -1120,6 +1127,11 @@
     \global\let\@tufte@orig@label\label%
     \renewcommand{\caption}{\optparams{\@tufte@caption}{[][0pt]}}%
     \renewcommand{\label}[1]{\@tufte@label{##1}}%
+    % Handle subfigure package compatibility
+    \ifthenelse{\boolean{@tufte@packages@subfigure}}{%
+      % don't move the label while inside a \subfigure or \subtable command
+      \global\let\label\@tufte@orig@label%
+    }{}% subfigure package is not loaded
     \@tufte@orig@float{#2}[#1]%
     \ifthenelse{\boolean{@tufte@float@star}}%
       {\setlength{\@tufte@float@contents@width}{\@tufte@fullwidth}}%
@@ -1784,6 +1796,19 @@
     }%
   }%
 }
+
+
+%%
+% Detect if the subfigure package has been loaded
+
+\newboolean{@tufte@packages@subfigure}
+\setboolean{@tufte@packages@subfigure}{false}
+\AtBeginDocument{%
+  \@ifpackageloaded{subfigure}
+    {\gsetboolean{@tufte@packages@subfigure}{true}}
+    {\gsetboolean{@tufte@packages@subfigure}{false}}%
+}
+
 
 %%
 % If debugging is enabled, print the Tufte-LaTeX options and the list of
