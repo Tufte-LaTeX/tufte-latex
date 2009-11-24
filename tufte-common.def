@@ -305,6 +305,13 @@
     }%
 }
 
+%%
+% The titlesec and titletoc packages are used to change the style of the
+% section headings.  These packages should be loaded before the hyperref
+% package.
+
+\RequirePackage{titlesec,titletoc}
+
 %%%
 %% Loads the hyperref package and sets some default options.
 
@@ -1482,8 +1489,6 @@
 %%
 % Make Tuftian-style section headings and TOC formatting
 
-\RequirePackage{titlesec,titletoc}
-
 \titleformat{\chapter}%
   [display]% shape
   {\relax\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\begin{fullwidth}}{}}% format applied to label+text
@@ -1515,7 +1520,6 @@
   {1em}% horizontal separation between label and title body
   {}% before the title body
   []% after the title body
-
 
 \titlespacing*{\chapter}{0pt}{50pt}{40pt}
 \titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
