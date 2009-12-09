@@ -696,7 +696,7 @@
 
 
 \DeclareTextFontCommand{\textsmallcaps}{\scshape}
-\renewcommand{\textsc}[1]{\textsmallcaps{\smallcapsspacing{#1}}}
+\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{#1}}}
 
 
 %%
