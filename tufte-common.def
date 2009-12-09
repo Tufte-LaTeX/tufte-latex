@@ -622,21 +622,13 @@
 % Failing that, try to use the `soul' package, if it's available.
 % Failing that, well, I give up.
 
-\RequirePackage{textcase} % provides \MakeTextUppercase and \MakeTextLowercase
-\def\allcapsspacing{\relax}
-\def\smallcapsspacing{\relax}
-\newcommand{\allcaps}[1]{\MakeTextUppercase{\allcapsspacing{#1}}}
-\newcommand{\smallcaps}[1]{\MakeTextLowercase{\textsc{#1}}}
+\DeclareTextFontCommand{\textsmallcaps}{\scshape}
 
-\newcommand{\@tufte@loadsoul}{%
-  \IfFileExists{soul.sty}{%
-    \RequirePackage{soul}
-    \sodef\allcapsspacing{\upshape}{0.15em}{0.65em}{0.6em}
-    \sodef\smallcapsspacing{\scshape}{0.075em}{0.5em}{0.6em}
-  }{
-    \TufteWarningNL{Couldn't locate `soul' package}
-  }% soul not installed... giving up.
-}
+\RequirePackage{textcase} % provides \MakeTextUppercase and \MakeTextLowercase
+\def\allcapsspacing{\TufteWarning{Proper spacing of ALL-CAPS letters has not been set up.}}
+\def\smallcapsspacing{\TufteWarning{Proper spacing of small-caps letters has not been set up.}}
+\newcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{#1}}}
+\newcommand{\smallcaps}[1]{\smallcapsspacing{\MakeTextLowercase{#1}}}
 
 % If we're using pdfLaTeX v1.40+, use the letterspace package. 
 % If we're using pdfLaTex < v1.40, use the soul package.
@@ -667,36 +659,78 @@
   \fi
 \fi
 
-\ifthenelse{\boolean{@tufte@letterspace}}
-  {%
-  \ifnum\@tufte@pdftexversion<6
-    % pdfLaTeX version is too old or not using pdfLaTeX
-    \ifthenelse{\boolean{@tufte@xetex}}
-      {% TODO use xetex letterspacing
-      \TufteDebugInfoNL{XeTeX detected. \MessageBreak Reverting to `soul' package for letterspacing}
-      \@tufte@loadsoul}
-      {% use `soul' package for letterspacing
-      \TufteDebugInfoNL{Old version of pdfTeX detected. \MessageBreak Reverting to `soul' package for letterspacing}
-      \@tufte@loadsoul}
-  \else
-    \IfFileExists{letterspace.sty}{% 
+\newboolean{@tufte@letterspace@pkg@prereqs}
+\setboolean{@tufte@letterspace@pkg@prereqs}{true}
+\ifnum\@tufte@pdftexversion<6
+  \setboolean{@tufte@letterspace@pkg@prereqs}{false}
+\fi
+
+
+\ifthenelse{\boolean{@tufte@letterspace}}{%
+  \ifthenelse{\boolean{@tufte@pdf}\AND\boolean{@tufte@letterspace@pkg@prereqs}\AND\NOT\boolean{@tufte@xetex}}{%
+    % load letterspace pkg
+    \IfFileExists{letterspace.sty}{%
       \TufteDebugInfoNL{Modern version of pdfTeX detected. \MessageBreak Using `letterspace' package}
       \RequirePackage{letterspace}
       % Set up letterspacing (using microtype package) -- requires pdfTeX v1.40+
       \renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}
       \renewcommand{\smallcapsspacing}[1]{\textls[50]{##1}}
       \renewcommand{\allcaps}[1]{\textls[200]{\MakeTextUppercase{##1}}}
-      \renewcommand{\smallcaps}[1]{\textsc{\MakeTextLowercase{##1}}}
-    }{% microtype failed, check for soul
-      \TufteDebugInfoNL{Modern version of pdfTeX detected, but `letterspace' \MessageBreak package not installed.  \MessageBreak Reverting to  `soul' package for letterspacing}
-      \@tufte@loadsoul
-    }
-  \fi}
-  {}
+      \renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{##1}}}
+      \renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{##1}}}
+    }{}%
+  }{}%
+  % load soul pkg
+  \@ifpackageloaded{letterspace}{}{%
+    \IfFileExists{soul.sty}{%
+      \RequirePackage{soul}
+      \sodef\allcapsspacing{}{0.15em}{0.65em}{0.6em}
+      \sodef\smallcapsspacing{}{0.075em}{0.5em}{0.6em}
+      \sodef\sotextsc{\scshape}{0.075em}{0.5em}{0.6em}
+      \renewcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{##1}}}
+      \renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{##1}}}
+      \renewcommand{\textsc}[1]{\sotextsc{##1}}
+    }{
+      \TufteWarningNL{Couldn't locate `soul' package}
+    }% soul not installed... giving up.
+  }%
+}{}
 
-
-\DeclareTextFontCommand{\textsmallcaps}{\scshape}
-\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{#1}}}
+%\ifthenelse{\boolean{@tufte@letterspace}}{%
+  %\ifthenelse{\boolean{pdf}}{%
+    %\ifthenelse{\NOT\boolean{@tufte@letterspace@pkg@prereqs}}{%
+      %% pdfLaTeX version is too old or not using pdfLaTeX
+      %\ifthenelse{\boolean{@tufte@xetex}}{%
+        %% TODO use xetex letterspacing
+        %\TufteDebugInfoNL{XeTeX detected. \MessageBreak Reverting to `soul' package for letterspacing}%
+        %\@tufte@loadsoul%
+      %}{%
+        %% use `soul' package for letterspacing
+        %\TufteDebugInfoNL{Old version of pdfTeX detected. \MessageBreak Reverting to `soul' package for letterspacing}%
+        %\@tufte@loadsoul%
+      %}
+    %}{%
+      %\IfFileExists{letterspace.sty}{%
+        %\TufteDebugInfoNL{Modern version of pdfTeX detected. \MessageBreak Using `letterspace' package}
+        %\RequirePackage{letterspace}
+        %% Set up letterspacing (using microtype package) -- requires pdfTeX v1.40+
+        %\renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}
+        %\renewcommand{\smallcapsspacing}[1]{\textls[50]{##1}}
+        %\renewcommand{\allcaps}[1]{\textls[200]{\MakeTextUppercase{##1}}}
+        %\renewcommand{\smallcaps}[1]{\smallcapsspacing{\MakeTextLowercase{##1}}}
+        %\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{##1}}}
+      %}{% microtype failed, check for soul
+        %\TufteDebugInfoNL{Modern version of pdfTeX detected, but `letterspace' \MessageBreak package not installed.  \MessageBreak Reverting to  `soul' package for letterspacing}
+        %\@tufte@loadsoul
+      %}%
+    %}%
+  %}{%
+    %\TufteDebugInfoNL{Plain LaTeX detected. \MessageBreak Using `soul' package for letterspacing}
+    %\@tufte@loadsoul
+  %}
+%}{%
+%% we're not to load letterspacing, so do nothing
+%}
 
 
 %%
