@@ -47,7 +47,8 @@
 
 \begin{abstract}
 \noindent This document describes the Tufte handout \LaTeX\ document style.
-It also provides examples and comments on the style's use.
+It also provides examples and comments on the style's use.  Only a brief
+overview is presented here; for a complete reference, see the sample book.
 \end{abstract}
 
 %\printclassoptions
@@ -64,27 +65,8 @@ and a style guide to their use.
 This style provides \textsc{a}- and \textsc{b}-heads (that is,
 \Verb|\section| and \Verb|\subsection|), demonstrated above.
 
-If you need more than two levels of section headings, you'll have to define
-them yourself at the moment;\sidenote{See the ``\nameref{sec:defining-sections}'' on
-page~\pageref{sec:defining-sections} for help with defining more heading
-levels.} there are no pre-defined styles for anything below a
-\Verb|\subsection|.  As Bringhurst points out in \textit{The Elements of
-Typographic Style},\cite{Bringhurst2005} you should ``use as many levels of
-headings as you need: no more, and no fewer.''
-
 The Tufte-\LaTeX\ classes will emit an error if you try to use
 \linebreak\Verb|\subsubsection| and smaller headings.
-
-%\medskip
-%\begin{fullwidth}
-%\begin{Verbatim}
-%! Package tufte-handout Error: \subsubsection is undefined by this class.
-%(tufte-handout)                See Robert Bringhurst's _The Elements of 
-%(tufte-handout)                Typographic Style_, section 4.2.2. 
-%(tufte-handout)                \subsubsection was used.
-%\end{Verbatim}
-%\end{fullwidth}
-%\medskip
 
 % let's start a new thought -- a new section
 \newthought{In his later books},\cite{Tufte2006} Tufte
@@ -156,7 +138,7 @@ the \Verb|\bibliography| command.  (See the end of this document for an
 example.)  If you do not want to print a bibliography at the end of your
 document, use the \Verb|\nobibliography| command in its place.  
 
-To enter multiple citations at one location,\cite[-3\baselineskip]{Tufte2006,Tufte1990} you can
+To enter multiple citations at one location,\cite{Tufte2006,Tufte1990} you can
 provide a list of keys separated by commas and the same optional vertical
 offset argument: \Verb|\cite{Tufte2006,Tufte1990}|.  
 \begin{docspec}
@@ -217,6 +199,7 @@ environment and figure~\ref{fig:textfig} is an example of the normal
   \emph{Notice that this figure only takes up the main textblock width.}}
   \label{fig:textfig}
   %\zsavepos{pos:textfig}
+  \setfloatalignment{b}
 \end{figure}
 
 Table~\ref{tab:normaltab} shows table created with the \docpkg{booktabs}
@@ -283,43 +266,6 @@ however.  This allows one to use both uppercase and lowercase letters:
 \textsc{The Initial Letters Of The Words In This Sentence Are Capitalized.}
 
 
-\section{Customization}\label{sec:customization}
-\subsection{Document class options}\label{sec:options}
-The \doccls{tufte-handout} class is based on the \LaTeX\ \doccls{article}
-document class.  Therefore, you can pass any of the typical article
-options.  There are a few options that are specific to the
-\doccls{tufte-handout} document class, however.
-
-The \docclsopt{a4paper} option will set the paper size to \smallcaps{A4} instead of
-the default \smallcaps{US} letter size.
-
-The \docclsopt{sfsidenotes} option will set the sidenotes and title block in a 
-\textsf{sans serif} typeface instead of the default roman.
-
-The \docclsopt{twoside} option will modify the running heads so that the page
-number is printed on the outside edge (as opposed to always printing the page
-number on the right-side edge in \docclsopt{oneside} mode).  
-
-The \docclsopt{symmetric} option typesets the sidenotes on the outside edge of
-the page.  This is how books are traditionally printed, but is contrary to
-Tufte's book design which sets the sidenotes on the right side of the page.
-This option implicitly sets the \docclsopt{twoside} option.
-
-The \docclsopt{justified} option sets all the text fully justified (flush left
-and right).  The default is to set the text ragged right.  
-The body text of Tufte's books are set ragged right.  This prevents
-needless hyphenation and makes it easier to read the text in the slightly
-narrower column.
-
-\subsection{Defining new sections}\label{sec:defining-sections}
-As mentioned in the ``\nameref{sec:headings}'' section (see
-page~\pageref{sec:headings}), the \doccls{tufte\-handout} document class only
-defines \doccmd{section} and \doccmd{subsection} headings.  
-
-We use the \docpkg{titlesec} package to define the appearance of the headings.
-To modify an existing section or to add a new section, see the documentation of
-the \docpkg{titlesec} package.
-
 
 \section{Installation}\label{sec:installation}
 To install the Tufte-\LaTeX\ classes, simply drop the
@@ -335,41 +281,13 @@ file:
 % TODO add instructions for installing it globally
 
 
+
+\section{More Documentation}\label{sec:more-doc}
+For more documentation on the Tufte-\LaTeX{} document classes (including commands not
+mentioned in this handout), please see the sample book.
+
 \section{Support}\label{sec:support}
 
-\subsection{Package Dependencies}\label{sec:dependencies}
-The following is a list of packages that the Tufte-\LaTeX\ document
-classes rely upon.  Packages marked with an asterisk are optional.
-\begin{multicols}{2}
-\begin{itemize}
-  \item xifthen
-  \item ifpdf*
-  \item ifxetex*
-  \item hyperref
-  \item geometry
-  \item ragged2e
-  \item chngpage \emph{or} changepage
-  \item paralist
-  \item textcase
-  \item soul*
-  \item letterspace*
-  \item setspace
-  \item natbib \emph{and} bibentry
-  \item optparams
-  \item placeins
-  \item mathpazo*
-  \item helvet*
-  \item fontenc
-  \item beramono*
-  \item fancyhdr
-  \item xcolor
-  \item textcomp
-  \item titlesec
-  \item titletoc
-\end{itemize}
-\end{multicols}
-
-\subsection{Tufte-\LaTeX\ Website}\label{sec:website}
 The website for the Tufte-\LaTeX\ packages is located at
 \url{http://code.google.com/p/tufte-latex/}.  On our website, you'll find
 links to our \smallcaps{svn} repository, mailing lists, bug tracker, and documentation.

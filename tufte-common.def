@@ -2,7 +2,7 @@
 %% This file contains the code that's common to the Tufte-LaTeX document classes.
 %%
 
-\ProvidesFile{tufte-common.def}[2009/08/24 v3.0.0 Common code for the Tufte-LaTeX styles]
+\ProvidesFile{tufte-common.def}[2009/12/11 v3.4.9 Common code for the Tufte-LaTeX styles]
 
 %%
 % The `xkeyval' package simplifies the user interface for the document class options

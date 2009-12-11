@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 
-\ProvidesClass{tufte-book}[2009/05/17 v3.0.0 Tufte-book class]
+\ProvidesClass{tufte-book}[2009/12/11 v3.4.9 Tufte-book class]
 
 %%
 % Declare we're tufte-book

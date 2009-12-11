@@ -112,7 +112,7 @@
     {% add the command to the index
       \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}% command name
     }%
-    {% add the command the and package to the index
+    {% add the command and package to the index
       \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}% command name
       \index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}% package name
     }%
@@ -123,7 +123,7 @@
     {% add the command to the index
       \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}% command name
     }%
-    {% add the command the and package to the index
+    {% add the command and package to the index
       \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}% command name
       \index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}% package name
     }%
@@ -715,6 +715,58 @@ next page or reduce the number of sidenotes.  (Each sidenote actually uses
 After the floats have placed, \LaTeX{} will mark those slots as unused so they
 are available for the next page to be composed.
 
+\section{Captions}
+You may notice that the captions are sometimes misaligned.
+Due to the way \LaTeX's float mechanism works, we can't know for sure where it
+decided to put a float. Therefore, the \TL document classes provide commands to
+override the caption position.
+
+\paragraph{Vertical alignment} To override the vertical alignment, use the
+\doccmd{setfloatalignment} command inside the float environment.  For
+example:
+
+\begin{fullwidth}
+\begin{docspec}
+  \textbackslash begin\{figure\}[btp]\\
+  \qquad \textbackslash includegraphics\{sinewave\}\\
+  \qquad \textbackslash caption\{This is an example of a sine wave.\}\\
+  \qquad \textbackslash label\{fig:sinewave\}\\
+  \qquad \hlred{\textbackslash setfloatalignment\{b\}\% forces caption to be bottom-aligned}\\
+  \textbackslash end\{figure\}
+\end{docspec}
+\end{fullwidth}
+
+\noindent The syntax of the \doccmddef{setfloatalignment} command is:
+
+\begin{docspec}
+  \doccmd{setfloatalignment}\{\docopt{pos}\}
+\end{docspec}
+
+\noindent where \docopt{pos} can be either \texttt{b} for bottom-aligned
+captions, or \texttt{t} for top-aligned captions.
+
+\paragraph{Horizontal alignment}\label{par:overriding-horizontal}
+To override the horizontal alignment, use either the \doccmd{forceversofloat}
+or the \doccmd{forcerectofloat} command inside of the float environment.  For
+example:
+
+\begin{fullwidth}
+\begin{docspec}
+  \textbackslash begin\{figure\}[btp]\\
+  \qquad \textbackslash includegraphics\{sinewave\}\\
+  \qquad \textbackslash caption\{This is an example of a sine wave.\}\\
+  \qquad \textbackslash label\{fig:sinewave\}\\
+  \qquad \hlred{\textbackslash forceversofloat\% forces caption to be set to the left of the float}\\
+  \textbackslash end\{figure\}
+\end{docspec}
+\end{fullwidth}
+
+The \doccmddef{forceversofloat} command causes the algorithm to assume the
+float has been placed on a verso page---that is, a page on the left side of a
+two-page spread.  Conversely, the \doccmddef{forcerectofloat} command causes
+the algorithm to assume the float has been placed on a recto page---that is, a
+page on the right side of a two-page spread.
+
 
 \section{Full-width text blocks}
 
@@ -955,6 +1007,28 @@ Each of the document class options takes one of five justification types:
 will set the body text of the document to be fully justified and all of the
 margin material (sidenotes, margin notes, captions, and citations) to be flush
 against the body text with ragged outer edges.
+
+\newthought{The font and style} of the marginal material may also be modified using the following commands:
+
+\begin{docspec}
+  \doccmd{setsidenotefont}\{\docopt{font commands}\}\\
+  \doccmd{setcaptionfont}\{\docopt{font commands}\}\\
+  \doccmd{setmarginnotefont}\{\docopt{font commands}\}\\
+  \doccmd{setcitationfont}\{\docopt{font commands}\}
+\end{docspec}
+
+The \doccmddef{setsidenotefont} sets the font and style for sidenotes, the
+\doccmddef{setcaptionfont} for captions, the \doccmddef{setmarginnotefont} for
+margin notes, and the \doccmddef{setcitationfont} for citations.  The
+\docopt{font commands} can contain font size changes (e.g.,
+\doccmdnoindex{footnotesize}, \doccmdnoindex{Huge}, etc.), font style changes (e.g.,
+\doccmdnoindex{sffamily}, \doccmdnoindex{ttfamily}, \doccmdnoindex{itshape}, etc.), color changes (e.g.,
+\doccmdnoindex{color}\texttt{\{blue\}}), and many other adjustments.
+
+If, for example, you wanted the captions to be set in italic sans serif, you could use:
+\begin{docspec}
+  \doccmd{setcaptionfont}\{\doccmdnoindex{itshape}\doccmdnoindex{sffamily}\}
+\end{docspec}
 
 \chapter{Compatibility Issues}
 \label{ch:compatibility}
