@@ -1,3 +1,20 @@
+== 3.5.0 / 2009-12-11
+* Added a [nohyper] document class option that suppresses loading of the
+  hyperref package.
+* Added three commands to modify the positioning of the captions.
+* Now automatically recalculates the lengths in case you've modified the page
+  size or margins.
+* Added a B5 paper size.
+* The justification of sidenotes, margin notes, captions, and citations can be
+  set individually now.
+* The font and style of sidenotes, margin notes, captions, and citations can
+  now be set individually.
+* The \caption command now accepts an optional vertical offset argument.
+* Added the \morefloats command that works in the same way the morefloats
+  package does.
+* Fixed a number of bugs.
+
+
 == 3.0.0 / 2009-05-17
 * Created a Tufte-book document class.
 * Added optional offset parameter to sienotes, cite, etc. so their vertical

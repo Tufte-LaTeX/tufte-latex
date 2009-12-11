@@ -2,7 +2,7 @@
 
 PACKAGE="tufte-latex"
 CLASS_FILES="tufte-handout.cls tufte-book.cls"
-STYLE_FILES="tufte-common.sty"
+STYLE_FILES="tufte-common.def"
 SOURCE_FILES="sample-handout.pdf sample-handout.tex sample-handout.bib sample-book.pdf sample-book.tex"
 
 # Exit on first error:
