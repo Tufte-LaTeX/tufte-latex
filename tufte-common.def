@@ -1851,6 +1851,76 @@
 
 
 %%
+% Detect of the float package has been loaded
+
+\AtBeginDocument{%
+  \@ifpackageloaded{float}{%
+    % Save the redefined float environment (instead of the LaTeX float environment)
+    \let\@tufte@orig@float\@float
+    \let\@tufte@orig@endfloat\end@float
+
+    % Define Tuftian float styles (with the caption in the margin)
+    \newcommand{\floatc@tufteplain}[2]{%
+      \begin{lrbox}{\@tufte@caption@box}%
+        \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
+          \@tufte@caption@font{\@fs@cfont #1:} #2\par%
+        \end{minipage}%
+      \end{lrbox}%
+      \smash{\hspace{\@tufte@caption@fill}\usebox{\@tufte@caption@box}}%
+    }
+    \newcommand{\fs@tufteplain}{%
+      \def\@fs@cfont{\@tufte@caption@font}%
+      \let\@fs@capt\floatc@tufteplain%
+      \def\@fs@pre{}%
+      \def\@fs@post{}%
+      \def\@fs@mid{}%
+      \let\@fs@iftopcapt\iftrue%
+    }
+    \let\fs@tufteplaintop=\fs@tufteplain
+    \let\floatc@tufteplaintop=\floatc@tufteplain
+    \newcommand\floatc@tufteruled[2]{%
+      {\@fs@cfont #1} #2\par%
+    }
+    \newcommand\fs@tufteruled{%
+      \def\@fs@cfont{\@tufte@caption@font}%
+      \let\@fs@capt\floatc@tufteplain%
+      \def\@fs@pre{\hrule height.8pt depth0pt width\textwidth \kern2pt}%
+      \def\@fs@post{\kern2pt\hrule width\textwidth\relax}%
+      \def\@fs@mid{}%
+      \let\@fs@iftopcapt\iftrue%
+    }
+    \newcommand\fs@tufteboxed{%
+      \def\@fs@cfont{}%
+      \let\@fs@capt\floatc@tufteplain%
+      \def\@fs@pre{%
+        \setbox\@currbox\vbox{\hbadness10000
+        \moveleft3.4pt\vbox{\advance\hsize by6.8pt
+          \hrule \hbox to\hsize{\vrule\kern3pt
+            \vbox{\kern3pt\box\@currbox\kern3pt}\kern3pt\vrule}\hrule}}
+      }%
+      \def\@fs@mid{\kern2pt}%
+      \def\@fs@post{}%
+      \let\@fs@iftopcapt\iftrue%
+    }
+  }{%
+    % Nothing to do
+  }
+}
+
+\AtBeginDocument{%
+  \@ifpackageloaded{algorithm}{%
+    % Set the float style to the Tuftian version
+    \ifthenelse{\equal{\ALG@floatstyle}{plain}\OR\equal{\ALG@floatstyle}{ruled}\OR\equal{\ALG@floatstyle}{boxed}}{%
+      \TufteInfoNL{Switching algorithm float style from \ALG@floatstyle\MessageBreak to tufte\ALG@floatstyle}%
+      \floatstyle{tufte\ALG@floatstyle}%
+      \restylefloat{algorithm}%
+    }{}%
+  }{%
+    % Nothing to do
+  }
+}
+
+%%
 % If debugging is enabled, print the Tufte-LaTeX options and the list of
 % files.
 
