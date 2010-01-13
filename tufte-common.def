@@ -1675,36 +1675,14 @@
 \newcommand{\nohyphenation}{\language\langwohyphens}% can be used inside environments for longer text
 
 %%
-% The bibliography environment
+% Redefine \bibsection to not mark the running heads.
+% (Code modified from natbib.sty.)
 
-\setlength\bibindent{1.5em}
-\renewenvironment{thebibliography}[1]
-  {%
-    \ifthenelse{\equal{\@tufte@class}{book}}%
-      {\chapter{\bibname}}%
-      {\section*{\refname}}%
-%   \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
-    \list{\@biblabel{\@arabic\c@enumiv}}%
-         {\settowidth\labelwidth{\@biblabel{#1}}%
-          \leftmargin\labelwidth
-          \advance\leftmargin\labelsep
-          \@openbib@code
-          \usecounter{enumiv}%
-          \let\p@enumiv\@empty
-          \renewcommand\theenumiv{\@arabic\c@enumiv}}%
-    \sloppy
-    \clubpenalty4000
-    \@clubpenalty \clubpenalty
-    \widowpenalty4000%
-    \sfcode`\.\@m%
-  }
-  {%
-    \def\@noitemerr
-    {\@latex@warning{Empty `thebibliography' environment}}%
-    \endlist%
-  }
-\renewcommand\newblock{\hskip .11em\@plus.33em\@minus.07em}
-
+\@ifundefined{chapter}%
+  {\renewcommand\bibsection{\section*{\refname}}}
+  {\@ifundefined{NAT@sectionbib}%
+    {\renewcommand\bibsection{\chapter*{\bibname}}}
+    {\renewcommand\bibsection{\section*{\bibname}}}}
 
 %%
 % An index environment to mimic Tufte's indexes
