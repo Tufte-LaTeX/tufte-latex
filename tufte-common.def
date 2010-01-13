@@ -1681,7 +1681,7 @@
 \@ifundefined{chapter}%
   {\renewcommand\bibsection{\section*{\refname}}}
   {\@ifundefined{NAT@sectionbib}%
-    {\renewcommand\bibsection{\chapter*{\bibname}}}
+    {\renewcommand\bibsection{\chapter{\bibname}}}
     {\renewcommand\bibsection{\section*{\bibname}}}}
 
 %%
