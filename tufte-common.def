@@ -1670,9 +1670,13 @@
 % A handy command to disable hyphenation for short bits of text.
 % Borrowed from Peter Wilson's `hyphenat' package.
 
-\newlanguage\langwohyphens% define a language without hyphenation rules
-\newcommand{\nohyphens}[1]{{\language\langwohyphens #1}}% used for short bits of text
-\newcommand{\nohyphenation}{\language\langwohyphens}% can be used inside environments for longer text
+\AtBeginDocument{%
+  \@ifpackageloaded{hyphenat}{}{%
+    \newlanguage\langwohyphens% define a language without hyphenation rules
+    \newcommand{\nohyphens}[1]{{\language\langwohyphens #1}}% used for short bits of text
+    \newcommand{\nohyphenation}{\language\langwohyphens}% can be used inside environments for longer text
+  }%
+}
 
 %%
 % Redefine \bibsection to not mark the running heads.
