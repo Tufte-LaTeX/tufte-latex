@@ -1,114 +1,81 @@
-#!/bin/bash
+#! /bin/bash
+
+set -o errexit # exit on first error
+set -o nounset # report undefined variables
+
+set +o xtrace # debugging
 
 PACKAGE="tufte-latex"
+
 CLASS_FILES="tufte-handout.cls tufte-book.cls"
-STYLE_FILES="tufte-common.def"
+DEF_FILES="tufte-common.def"
 SOURCE_FILES="sample-handout.pdf sample-handout.tex sample-handout.bib sample-book.pdf sample-book.tex"
 
-# Exit on first error:
+if test $# -ne 1 ; then echo "Usage: $0 3.5.2 (version number)" ; exit 1 ; fi
 
-set -e
-
-# Verify prerequisites:
-
-if [ $# -ne 1 ]; then
-  echo "Usage: $0 VERSION"
-  exit 1
-fi
-
-DATE=`date +%Y/%m/%d` # (with slashes)
 VERSION=$1
+DATE=$(date +"%Y/%m/%d")
 
-echo -n "Testing version number format..."
-if ! echo $VERSION | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$"; then
-  echo "VERSION should be of the form 1.2.5 (major.minor.revision)"
+if ! echo $VERSION | egrep -q "^[0-9]+\.[0-9]+\.[0-9]+$" ; then
+  echo "Error: version argument should be of the form 1.2.5 (major.minor.revision)."
   exit 1
 fi
-echo "ok."
 
-for CLASS in $CLASS_FILES; do
-  echo -n "Checking version number of $CLASS..."
-  if ! grep -q $VERSION $CLASS; then
-    echo "Error: version skew. '$VERSION' does not match that in $CLASS"
-    grep -H ProvidesClass $CLASS
+# TODO: instead of all this checking, just sed values into the appropriate files
+
+for class_file in $CLASS_FILES ; do
+  if ! grep -q $VERSION $class_file -o ! grep -q $DATE $class_file ; then
+    echo "Error: '$VERSION' and '$DATE' do not match that in $class_file:"
+    grep -H ProvidesClass $class_file
     exit 1
   fi
-  echo "ok."
-
-  echo -n "Checking date of $CLASS..."
-  if ! grep -q $DATE $CLASS; then
-    echo "Error: date skew.  '$DATE' does not match that in $CLASS"
-    grep -H ProvidesClass $CLASS
-    exit 1
-  fi
-  echo "ok."
 done
 
-for STYLE in $STYLE_FILES; do
-  echo -n "Checking version number of $STYLE..."
-  if ! grep -q $VERSION $STYLE; then
-    echo "Error: version skew. '$VERSION' does not match that in $STYLE"
-    grep -H ProvidesPackage $STYLE
+for aux_file in $DEF_FILES ; do
+  if ! grep -q $VERSION $aux_file -o ! grep -q $DATE $aux_file ; then
+    echo "Error: '$VERSION' and '$DATE' do not match that in $aux_file"
+    grep -H ProvidesFile $aux_file
     exit 1
   fi
-  echo "ok."
-
-  echo -n "Checking date of $STYLE..."
-  if ! grep -q $DATE $STYLE; then
-    echo "Error: date skew. '$DATE' does not match that in $STYLE"
-    grep -H ProvidesPackage $STYLE
-    exit 1
-  fi
-  echo "ok."
 done
 
-echo -n "Checking for history notes..."
-HISTORY_DATE=`date +%Y-%m-%d` # (with dashes)
-if ! grep -q $VERSION History.txt; then
-  echo "Error: no release notes for '$VERSION' found in History.txt"
-  grep -H $VERSION History.txt
+VERSION_DATE="$VERSION - $DATE"
+if ! grep -q "$VERSION_DATE" History.txt ; then
+  echo "Error: no release notes for '$VERSION_DATE' found in History.txt"
   exit 1
 fi
-
-if ! grep -q $HISTORY_DATE History.txt; then
-  echo "Error: '$HISTORY_DATE' not found in History.txt"
-  grep -H $HISTORY_DATE History.txt
-  exit 1
-fi
-echo "ok."
 
 # Refresh sample documents
 
-echo -n "Building sample-handout..."
+echo "Building sample-handout ..."
 pdflatex sample-handout >  refresh-sample.log
 bibtex   sample-handout >> refresh-sample.log
 pdflatex sample-handout >> refresh-sample.log
 pdflatex sample-handout >> refresh-sample.log
-rm -f sample-handout.{aux,log,out,blg,bbl} refresh-sample.log
-echo "done."
+rm -f sample-handout.{aux,blg,bbl,log,out} refresh-sample.log
+echo "Success"
 
-echo -n "Building sample-book..."
-pdflatex sample-book >  refresh-sample.log
-bibtex   sample-book >> refresh-sample.log
-texindy --language english sample-book.idx >> refresh-sample.log
-pdflatex sample-book >> refresh-sample.log
-pdflatex sample-book >> refresh-sample.log
-rm -f sample-bok.{aux,log,out,blg,bbl,idx,ind,toc} refresh-sample.log
-echo "done."
+echo "Building sample-book ..."
+pdflatex sample-book >  refresh-book.log
+bibtex   sample-book >> refresh-book.log
+texindy --language english sample-book.idx >> refresh-book.log
+pdflatex sample-book >> refresh-book.log
+pdflatex sample-book >> refresh-book.log
+rm -f sample-book.{aux,blg,bbl,idx,ind,lof,log,lot,out,toc} refresh-book.log
+echo "Success"
 
-
-# To ease googlecode upload, make a distinct version of sample-handout:
+# To ease Google Code upload, make a distinct version of samples:
 
 cp sample-handout.pdf sample-handout-$VERSION.pdf
-cp sample-book.pdf sample-book-$VERSION.pdf
+cp sample-book.pdf    sample-book-$VERSION.pdf
 
 # Make bundle for Google Code release
 
-echo -n "Creating zip bundle for Google Code release..."
+echo "Creating zip bundle for Google Code release ..."
 mkdir -p pkg/$PACKAGE-$VERSION
-tar cf - `cat Manifest.txt` | ( cd pkg/$PACKAGE-$VERSION && tar xf - )
+tar -cf - $(cat Manifest.txt) | tar -C pkg/$PACKAGE-$VERSION -xf -
 ( cd pkg && zip -rq $PACKAGE-$VERSION.zip $PACKAGE-$VERSION )
-echo "done."
+echo "Complete"
 
 # Make bundle for CTAN release
 
@@ -117,25 +84,25 @@ TDS_TEX_DIR=$TDS_DIR/tex/latex/$PACKAGE/
 TDS_DOC_DIR=$TDS_DIR/doc/latex/$PACKAGE/
 TDS_SRC_DIR=$TDS_DIR/source/latex/$PACKAGE/
 
-echo -n "Creating zip bundle for CTAN release..."
+echo "Creating zip bundle for CTAN release ..."
 mkdir -p $TDS_DIR $TDS_TEX_DIR $TDS_DOC_DIR $TDS_SRC_DIR
 
-cp $CLASS_FILES $STYLE_FILES $TDS_TEX_DIR/
+cp $CLASS_FILES $DEF_FILES $TDS_TEX_DIR/
 
 cp History.txt README.txt sample-handout.{pdf,tex,bib} sample-book.{pdf,tex} $TDS_DOC_DIR/
 mkdir $TDS_DOC_DIR/graphics
 cp graphics/* $TDS_DOC_DIR/graphics/
 
-cp $CLASS_FILES $STYLE_FILES $SOURCE_FILES $TDS_SRC_DIR/
+cp $CLASS_FILES $DEF_FILES $SOURCE_FILES $TDS_SRC_DIR/
 
 ( cd $TDS_DIR && zip -rq ../../$PACKAGE-$VERSION/$PACKAGE.tds.zip * )
 rm -fr pkg/$PACKAGE
 mv pkg/$PACKAGE-$VERSION pkg/$PACKAGE
 ( cd pkg && zip -rq $PACKAGE.zip $PACKAGE )
-echo "done."
+echo "Complete"
 
 # Remove our temporary files
-rm -fr pkg/$PACKAGE
+rm -rf pkg/$PACKAGE
 
 # Provide some cut-n-paste material for manual steps:
 
@@ -149,7 +116,7 @@ Don't forget to create an SVN tag (after committing changes),
    https://$PACKAGE.googlecode.com/svn/trunk \\
    https://$PACKAGE.googlecode.com/svn/tags/rel_$VERSION
 
-And upload the zip file,
+And upload the zip file:
 
  http://code.google.com/p/$PACKAGE/downloads/list
  http://ctan.org/upload
