@@ -559,12 +559,12 @@
   \ifthenelse{\isempty{#1}}%
     {\renewcommand{\plaintitle}{\thanklesstitle}}% use thankless title
     {\renewcommand{\plaintitle}{#1}}% use provided plain-text title
-  \ifthenelse{\isundefined{\hypersetup}}
-    {}% hyperref isn't loaded; do nothing
+  \ifthenelse{\isundefined{\hypersetup}}%
+    {}% hyperref is not loaded; do nothing
     {\hypersetup{pdftitle={\plaintitle}}}% set the PDF metadata title
 }
 
-\def\@author{}% default author is empty (suppresses LaTeX's ``no author'' warning)
+\def\@author{}% suppress default latex.ltx ``no author'' warning
 \renewcommand*{\author}[2][]{%
   \gdef\@author{#2}%
   \begingroup%
@@ -572,11 +572,11 @@
     \renewcommand{\thanks}[1]{}% swallow \thanks contents
     \protected@xdef\thanklessauthor{#2}%
   \endgroup%
-  \ifthenelse{\isempty{#1}}
+  \ifthenelse{\isempty{#1}}%
     {\renewcommand{\plainauthor}{\thanklessauthor}}% use thankless author
     {\renewcommand{\plainauthor}{#1}}% use provided plain-text author
-  \ifthenelse{\isundefined{\hypersetup}}
-    {}% hyperref isn't loaded; do nothing
+  \ifthenelse{\isundefined{\hypersetup}}%
+    {}% hyperref is not loaded; do nothing
     {\hypersetup{pdfauthor={\plainauthor}}}% set the PDF metadata author
 }
 
