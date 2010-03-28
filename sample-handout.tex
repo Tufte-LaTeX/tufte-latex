@@ -1,54 +1,44 @@
 \documentclass{tufte-handout}
 
-%\geometry{showframe}% for debugging purposes -- displays the margins
-
-\usepackage{amsmath}
-
-% Set up the images/graphics package
-\usepackage{graphicx}
-\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
-\graphicspath{{graphics/}}
-
 \title{An Example of the Usage of the Tufte-Handout Style\thanks{Inspired by Edward~R. Tufte!}}
+
 \author[The Tufte-LaTeX Developers]{The Tufte-\LaTeX\ Developers}
-\date{24 January 2009}  % if the \date{} command is left out, the current date will be used
 
-% The following package makes prettier tables.  We're all about the bling!
-\usepackage{booktabs}
+%\date{28 March 2010} % without \date command, current date is supplied
 
-% The units package provides nice, non-stacked fractions and better spacing
-% for units.
-\usepackage{units}
+%\geometry{showframe} % display margins for debugging page layout
 
-% The fancyvrb package lets us customize the formatting of verbatim
-% environments.  We use a slightly smaller font.
-\usepackage{fancyvrb}
-\fvset{fontsize=\normalsize}
+\usepackage{graphicx} % allow embedded images
+  \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+  \graphicspath{{graphics/}} % set of paths to search for images
+\usepackage{amsmath}  % extended mathematics
+\usepackage{booktabs} % book-quality tables
+\usepackage{units}    % non-stacked fractions and better unit spacing
+\usepackage{multicol} % multiple column layout facilities
+\usepackage{lipsum}   % filler text
+\usepackage{fancyvrb} % extended verbatim environments
+  \fvset{fontsize=\normalsize}% default font size for fancy-verbatim environments
 
-% Small sections of multiple columns
-\usepackage{multicol}
-
-% Provides paragraphs of dummy text
-\usepackage{lipsum}
-
-% These commands are used to pretty-print LaTeX commands
+% Standardize command font styles and environments
 \newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
 \newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
 \newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
-\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
 \newcommand{\docenv}[1]{\textsf{#1}}% environment name
 \newcommand{\docpkg}[1]{\texttt{#1}}% package name
 \newcommand{\doccls}[1]{\texttt{#1}}% document class name
 \newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
 
 \begin{document}
 
 \maketitle% this prints the handout title, author, and date
 
 \begin{abstract}
-\noindent This document describes the Tufte handout \LaTeX\ document style.
-It also provides examples and comments on the style's use.  Only a brief
-overview is presented here; for a complete reference, see the sample book.
+\noindent
+This document describes the Tufte handout \LaTeX\ document style.
+It also provides examples and comments on the style's use.
+Only a brief overview is presented here;
+for a complete reference, see the sample book.
 \end{abstract}
 
 %\printclassoptions
