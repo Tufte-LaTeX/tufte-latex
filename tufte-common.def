@@ -565,7 +565,7 @@
 }
 
 \def\@author{}% suppress default latex.ltx ``no author'' warning
-\renewcommand*{\author}[2][]{%
+\renewcommand{\author}[2][]{%
   \gdef\@author{#2}%
   \begingroup%
     % TODO store contents of \thanks command

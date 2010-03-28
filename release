@@ -9,7 +9,7 @@ PACKAGE="tufte-latex"
 
 CLASS_FILES="tufte-handout.cls tufte-book.cls"
 DEF_FILES="tufte-common.def"
-BST_FILES="tufte-common.def"
+BST_FILES="tufte.bst"
 SOURCE_FILES="sample-handout.pdf sample-handout.tex sample-handout.bib sample-book.pdf sample-book.tex"
 
 if test $# -ne 1 ; then echo "Usage: $0 3.5.2 (version number)" ; exit 1 ; fi
