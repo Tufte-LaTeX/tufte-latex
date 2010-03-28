@@ -16,7 +16,7 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-CLASS_DATE=`date +%Y/%m/%d` # (with slashes)
+DATE=`date +%Y/%m/%d` # (with slashes)
 VERSION=$1
 
 echo -n "Testing version number format..."
@@ -36,8 +36,8 @@ for CLASS in $CLASS_FILES; do
   echo "ok."
 
   echo -n "Checking date of $CLASS..."
-  if ! grep -q $CLASS_DATE $CLASS; then
-    echo "Error: date skew.  '$CLASS_DATE' does not match that in $CLASS"
+  if ! grep -q $DATE $CLASS; then
+    echo "Error: date skew.  '$DATE' does not match that in $CLASS"
     grep -H ProvidesClass $CLASS
     exit 1
   fi
@@ -54,8 +54,8 @@ for STYLE in $STYLE_FILES; do
   echo "ok."
 
   echo -n "Checking date of $STYLE..."
-  if ! grep -q $CLASS_DATE $STYLE; then
-    echo "Error: date skew. '$CLASS_DATE' does not match that in $STYLE"
+  if ! grep -q $DATE $STYLE; then
+    echo "Error: date skew. '$DATE' does not match that in $STYLE"
     grep -H ProvidesPackage $STYLE
     exit 1
   fi
