@@ -16,11 +16,11 @@ graphics/vdqi-contents.pdf
 graphics/vdqi-title.pdf
 graphics/ve-contents.pdf
 graphics/ve-title.pdf
+sample-book.pdf
+sample-book.tex
 sample-handout.bib
 sample-handout.pdf
 sample-handout.tex
-tufte-handout.cls
-sample-book.pdf
-sample-book.tex
 tufte-book.cls
 tufte-common.def
+tufte-handout.cls
