@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 
-\ProvidesClass{tufte-handout}[2009/12/11 v3.5.0 Tufte-handout class]
+\ProvidesClass{tufte-handout}[2010/03/28 v3.5.1 Tufte-handout class]
 
 %%
 % Declare we're tufte-handout

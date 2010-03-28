@@ -1,3 +1,8 @@
+== 3.5.1 - 2010/03/28
+
+*  Added bibliography style that didn't make it into the intial release.
+*  TBD
+
 == 3.5.0 - 2009/12/11
 
 * Added a [nohyper] document class option that suppresses loading of the

@@ -9,6 +9,7 @@ PACKAGE="tufte-latex"
 
 CLASS_FILES="tufte-handout.cls tufte-book.cls"
 DEF_FILES="tufte-common.def"
+BST_FILES="tufte-common.def"
 SOURCE_FILES="sample-handout.pdf sample-handout.tex sample-handout.bib sample-book.pdf sample-book.tex"
 
 if test $# -ne 1 ; then echo "Usage: $0 3.5.2 (version number)" ; exit 1 ; fi
@@ -87,19 +88,21 @@ TDS_SRC_DIR=$TDS_DIR/source/latex/$PACKAGE/
 echo "Creating zip bundle for CTAN release ..."
 mkdir -p $TDS_DIR $TDS_TEX_DIR $TDS_DOC_DIR $TDS_SRC_DIR
 
-cp $CLASS_FILES $DEF_FILES $TDS_TEX_DIR/
+cp $CLASS_FILES $DEF_FILES $BST_FILES $TDS_TEX_DIR/
 
 cp History.txt README.txt sample-handout.{pdf,tex,bib} sample-book.{pdf,tex} $TDS_DOC_DIR/
 mkdir $TDS_DOC_DIR/graphics
 cp graphics/* $TDS_DOC_DIR/graphics/
 
-cp $CLASS_FILES $DEF_FILES $SOURCE_FILES $TDS_SRC_DIR/
+cp $CLASS_FILES $DEF_FILES $BST_FILES $SOURCE_FILES $TDS_SRC_DIR/
 
 ( cd $TDS_DIR && zip -rq ../../$PACKAGE-$VERSION/$PACKAGE.tds.zip * )
 rm -fr pkg/$PACKAGE
 mv pkg/$PACKAGE-$VERSION pkg/$PACKAGE
 ( cd pkg && zip -rq $PACKAGE.zip $PACKAGE )
 echo "Complete"
+
+# TODO: test release (unpack and build sample-*.tex files)
 
 # Remove our temporary files
 rm -rf pkg/$PACKAGE
