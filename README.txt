@@ -25,7 +25,6 @@ The sample book can be compiled with the following:
  pdflatex sample-book
  pdflatex sample-book
 
-
 == Troubleshooting
 
 If you encounter errors of the form,
