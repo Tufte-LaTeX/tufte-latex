@@ -19,7 +19,7 @@ VERSION=$1
 DATE=$(date +"%Y/%m/%d")
 
 if ! echo $VERSION | egrep -q "^[0-9]+\.[0-9]+\.[0-9]+$" ; then
-  echo "Error: version argument should be of the form 1.2.5 (major.minor.revision)."
+  echo "Error: version should be of the form 1.2.5 (major.minor.revision)."
   exit 1
 fi
 
