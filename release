@@ -1,9 +1,9 @@
 #! /bin/bash
 
+# shell options: -o = on, +o = off
 set -o errexit # exit on first error
-set -o nounset # report undefined variables
-
-set +o xtrace # debugging
+set -o nounset # report unset variables
+set +o xtrace  # show commands
 
 PACKAGE="tufte-latex"
 
