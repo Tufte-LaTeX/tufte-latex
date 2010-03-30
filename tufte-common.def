@@ -1161,7 +1161,7 @@
       {\gsetboolean{@tufte@float@recto}{false}\@tufte@float@debug{Detected page: [verso/even]}}%
     % If the float placement specifier is 'b' and only 'b', then bottom-align the mini-pages, otherwise top-align them.
     \renewcommand{\@tufte@fps}{#1}%
-    \@tufte@float@debug{Allowed positions: [#1]}
+    \@tufte@float@debug{Allowed positions: [#1]}%
     \ifthenelse{\equal{#1}{b}\OR\equal{#1}{B}}%
       {\renewcommand{\floatalignment}{b}\@tufte@float@debug{Presumed position: [bottom]}}%
       {\renewcommand{\floatalignment}{t}\@tufte@float@debug{Presumed position: [top]}}%
