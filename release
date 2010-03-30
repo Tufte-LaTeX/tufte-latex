@@ -8,7 +8,7 @@ set +o xtrace  # show commands
 
 PACKAGE="tufte-latex"
 
-CLASS_FILES="tufte-handout.cls tufte-book.cls"
+CLS_FILES="tufte-handout.cls tufte-book.cls"
 DEF_FILES="tufte-common.def"
 BST_FILES="tufte.bst"
 SOURCE_FILES="sample-handout.pdf sample-handout.tex sample-handout.bib sample-book.pdf sample-book.tex"
@@ -26,7 +26,7 @@ fi
 # TODO: instead of all this checking, just sed values into the appropriate files
 
 DATE_VERSION="$DATE $VERSION"
-for file in $CLASS_FILES $DEF_FILES ; do
+for file in $CLS_FILES $DEF_FILES ; do
   if ! grep -q $DATE_VERSION $file ; then
     echo "Error: $file does not contain '$DATE_VERSION':"
     egrep 'Provides(Class|File)' $file
@@ -82,13 +82,13 @@ TDS_SRC_DIR=$TDS_DIR/source/latex/$PACKAGE/
 echo "Creating zip bundle for CTAN release ..."
 mkdir -p $TDS_DIR $TDS_TEX_DIR $TDS_DOC_DIR $TDS_SRC_DIR
 
-cp $CLASS_FILES $DEF_FILES $BST_FILES $TDS_TEX_DIR/
+cp $CLS_FILES $DEF_FILES $BST_FILES $TDS_TEX_DIR/
 
 cp History.txt README.txt sample-handout.{pdf,tex,bib} sample-book.{pdf,tex} $TDS_DOC_DIR/
 mkdir $TDS_DOC_DIR/graphics
 cp graphics/* $TDS_DOC_DIR/graphics/
 
-cp $CLASS_FILES $DEF_FILES $BST_FILES $SOURCE_FILES $TDS_SRC_DIR/
+cp $CLS_FILES $DEF_FILES $BST_FILES $SOURCE_FILES $TDS_SRC_DIR/
 
 ( cd $TDS_DIR && zip -rq ../../$PACKAGE-$VERSION/$PACKAGE.tds.zip * )
 rm -fr pkg/$PACKAGE
