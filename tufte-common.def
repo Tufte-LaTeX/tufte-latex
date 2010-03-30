@@ -1102,7 +1102,7 @@
 \newcommand{\@tufte@float@debug}[1]{% adds debug info to the queue for output
 \ifthenelse{\equal{\@tufte@float@debug@info}{}}%
     {\def\@tufte@float@debug@info{#1}}%
-    {\g@addto@macro\@tufte@float@debug@info{\MessageBreak#1}}
+    {\g@addto@macro\@tufte@float@debug@info{\MessageBreak#1}}%
 }
 
 \newcommand{\floatalignment}{x}% holds the current float alignment (t, b, h, p)
