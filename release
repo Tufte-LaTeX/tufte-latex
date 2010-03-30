@@ -1,6 +1,7 @@
 #! /bin/bash
 
-# shell options: -o = on, +o = off
+# Shell options: -o = on, +o = off
+
 set -o errexit # exit on first error
 set -o nounset # report unset variables
 set +o xtrace  # show commands
@@ -24,18 +25,11 @@ fi
 
 # TODO: instead of all this checking, just sed values into the appropriate files
 
-for class_file in $CLASS_FILES ; do
-  if ! grep -q $VERSION $class_file -o ! grep -q $DATE $class_file ; then
-    echo "Error: '$VERSION' and '$DATE' do not match that in $class_file:"
-    grep -H ProvidesClass $class_file
-    exit 1
-  fi
-done
-
-for aux_file in $DEF_FILES ; do
-  if ! grep -q $VERSION $aux_file -o ! grep -q $DATE $aux_file ; then
-    echo "Error: '$VERSION' and '$DATE' do not match that in $aux_file"
-    grep -H ProvidesFile $aux_file
+DATE_VERSION="$DATE $VERSION"
+for file in $CLASS_FILES $DEF_FILES ; do
+  if ! grep -q $DATE_VERSION $file ; then
+    echo "Error: $file does not contain '$DATE_VERSION':"
+    egrep 'Provides(Class|File)' $file
     exit 1
   fi
 done
