@@ -1100,7 +1100,7 @@
 
 \newcommand{\@tufte@float@debug@info}{}% contains debug info generated as the float is processed
 \newcommand{\@tufte@float@debug}[1]{% adds debug info to the queue for output
-\ifthenelse{\equal{\@tufte@float@debug@info}{}}%
+  \ifthenelse{\equal{\@tufte@float@debug@info}{}}%
     {\def\@tufte@float@debug@info{#1}}%
     {\g@addto@macro\@tufte@float@debug@info{\MessageBreak#1}}%
 }
@@ -1264,8 +1264,8 @@
 %%
 % Redefine the figure environment to place the captions in the margin space
 
-\renewenvironment{figure}[1][htbp]
-  {\begin{@tufte@float}[#1]{figure}{}}
+\renewenvironment{figure}[1][htbp]%
+  {\unskip\begin{@tufte@float}[#1]{figure}{}}
   {\end{@tufte@float}}
 
 
@@ -1273,7 +1273,7 @@
 % Redefine the table environment to place the captions in the margin space
 
 \renewenvironment{table}[1][htbp]
-  {\begin{@tufte@float}[#1]{table}{}}
+  {\unskip\begin{@tufte@float}[#1]{table}{}}
   {\end{@tufte@float}}
 
 
@@ -1281,7 +1281,7 @@
 % Full-width figure
 
 \renewenvironment{figure*}[1][htbp]%
-  {\begin{@tufte@float}[#1]{figure}{star}}
+  {\unskip\begin{@tufte@float}[#1]{figure}{star}}
   {\end{@tufte@float}}
 
 
@@ -1289,7 +1289,7 @@
 % Full-width table
 
 \renewenvironment{table*}[1][htbp]%
-  {\begin{@tufte@float}[#1]{table}{star}}
+  {\unskip\begin{@tufte@float}[#1]{table}{star}}
   {\end{@tufte@float}}
 
 
