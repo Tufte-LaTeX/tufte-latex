@@ -564,9 +564,9 @@
     {\hypersetup{pdftitle={\plaintitle}}}% set the PDF metadata title
 }
 
-\def\@author{}% suppress default latex.ltx ``no author'' warning
+\let\@author\@empty% suppress default latex.ltx ``no author'' warning
 \renewcommand{\author}[2][]{%
-  \gdef\@author{#2}%
+  \ifthenelse{\isempty{#2}}{}{\gdef\@author{#2}}%
   \begingroup%
     % TODO store contents of \thanks command
     \renewcommand{\thanks}[1]{}% swallow \thanks contents
@@ -580,7 +580,7 @@
     {\hypersetup{pdfauthor={\plainauthor}}}% set the PDF metadata author
 }
 
-\renewcommand*{\date}[1]{%
+\renewcommand{\date}[1]{%
   \gdef\@date{#1}%
   \begingroup%
     % TODO store contents of \thanks command
@@ -918,7 +918,7 @@
 
 \RequirePackage{optparams}% for our new sidenote commands -- provides multiple optional arguments for commands
 
-\providecommand*{\footnotelayout}{\@tufte@sidenote@font\@tufte@sidenote@justification}
+\providecommand{\footnotelayout}{\@tufte@sidenote@font\@tufte@sidenote@justification}
 \renewcommand{\footnotelayout}{\@tufte@sidenote@font\@tufte@sidenote@justification}
 
 % Override footmisc's definition to set the sidenote marks (numbers) inside the
@@ -931,7 +931,7 @@
 \providecommand*{\multiplefootnotemarker}{3sp}
 \providecommand*{\multfootsep}{,}
 
-\renewcommand*\@footnotemark{%
+\renewcommand{\@footnotemark}{%
   \leavevmode%
   \ifhmode%
     \edef\@x@sf{\the\spacefactor}%
@@ -1006,8 +1006,8 @@
   \kern\multiplefootnotemarker\relax% add new \kern here to replace the one we yanked
 }
 
-\newcommand*{\sidenote}{\optparams{\@tufte@sidenote}{[][0pt]}}
-\renewcommand*{\footnote}{\optparams{\@tufte@sidenote}{[][0pt]}}
+\newcommand{\sidenote}{\optparams{\@tufte@sidenote}{[][0pt]}}
+\renewcommand{\footnote}{\optparams{\@tufte@sidenote}{[][0pt]}}
 
 %%
 % Sidenote without the footnote mark
@@ -1476,26 +1476,27 @@
 % Title block
 
 \renewcommand{\maketitle}{%
-  \newpage
+  \newpage%
   \global\@topnum\z@% prevent floats from being placed at the top of the page
-  \begingroup
-  \setlength{\parindent}{0pt}
-  \setlength{\parskip}{4pt}
-  \ifthenelse{\boolean{@tufte@sfsidenotes}}
-    {\begingroup
-      % FIXME fails with \thanks
-      \sffamily
-      \par{\LARGE\allcaps{\@title}}
-      \ifthenelse{\equal{\@author}{}}{}{\par{\Large\allcaps{\@author}}}
-      \ifthenelse{\equal{\@date}{}}{}{\par{\Large\allcaps{\@date}}}
-    \endgroup}
-    {\begingroup
-      \par{\LARGE\textit{\@title}}
-      \ifthenelse{\equal{\@author}{}}{}{\par{\Large\textit{\@author}}}
-      \ifthenelse{\equal{\@date}{}}{}{\par{\Large\textit{\@date}}}
-    \endgroup}
-  \par
-  \endgroup
+  \begingroup%
+    \setlength{\parindent}{0pt}%
+    \setlength{\parskip}{4pt}%
+    \let\@@title\@empty%
+    \let\@@author\@empty%
+    \let\@@date\@empty%
+    \ifthenelse{\boolean{@tufte@sfsidenotes}}{%
+      \gdef\@@title{\sffamily\LARGE\allcaps{\@title}\par}%
+      \gdef\@@author{\sffamily\Large\allcaps{\@author}\par}%
+      \gdef\@@date{\sffamily\Large\allcaps{\@date}\par}%
+    }{%
+      \gdef\@@title{\LARGE\itshape\@title\par}%
+      \gdef\@@author{\Large\itshape\@author\par}%
+      \gdef\@@date{\Large\itshape\@date\par}%
+    }%
+    \@@title%
+    \@@author%
+    \@@date%
+  \endgroup%
   \thispagestyle{plain}% suppress the running head
 }
 
@@ -1560,7 +1561,7 @@
 \titlespacing*{\chapter}{0pt}{50pt}{40pt}
 \titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 \titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
-  
+
 % Subsubsection and following section headings shouldn't be used.
 % See Bringhurst's _The Elements of Typography_, section 4.2.2.
 \renewcommand\subsubsection{%
