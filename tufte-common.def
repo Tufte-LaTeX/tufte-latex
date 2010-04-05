@@ -284,6 +284,11 @@
   \setboolean{@tufte@xetex}{false}
 }
 
+\ifthenelse{\boolean{@tufte@xetex}}{%
+  \RequirePackage{xltxtra}% xltxtra loads xunicode and fontspec; must be loaded before bidi
+}{}
+
+
 %%
 % Globally sets the length
 
@@ -787,10 +792,19 @@
 \RequirePackage{setspace}
 
 %%
+% Color
+\RequirePackage[usenames,dvipsnames,svgnames]{xcolor}% load before bidi
+
+%%
 % Load the bidi package if instructed to do so.  This package must be loaded
 % prior to our redefining the \footnote and \cite commands.
 
-\ifthenelse{\boolean{@tufte@loadbidi}}{\RequirePackage{bidi}}{}
+\ifthenelse{\boolean{@tufte@loadbidi}}{%
+  \AtBeginDocument{%
+    \RequirePackage{bidi}
+    \@tufte@pkghook@post@bidi%
+  }%
+}{}
 
 
 %%
@@ -956,7 +970,6 @@
   \marginpar{%
     \hbox{}\vspace*{#1}%
     \def\baselinestretch {\setspace@singlespace}%
-    \ifthenelse{\boolean{@tufte@loadbidi}}{\if@rl@footnote\@rltrue\else\@rlfalse\fi}{}%
     \reset@font\footnotesize%
     \@tufte@margin@par% use parindent and parskip settings for marginal text
     \vspace*{-1\baselineskip}\noindent%
@@ -968,6 +981,29 @@
          \ignorespaces#2%
        }%
     \color@endgroup%
+  }%
+}%
+
+% Ensure this is run after the bidi package has been loaded
+\def\@tufte@pkghook@post@bidi{}%
+\g@addto@macro{\@tufte@pkghook@post@bidi}{%
+  \renewcommand\@footnotetext[2][0pt]{%
+    \marginpar{%
+      \hbox{}\vspace*{#1}%
+      \def\baselinestretch {\setspace@singlespace}%
+      \if@rl@footnote\@rltrue\else\@rlfalse\fi%
+      \reset@font\footnotesize%
+      \@tufte@margin@par% use parindent and parskip settings for marginal text
+      \vspace*{-1\baselineskip}\noindent%
+      \protected@edef\@currentlabel{%
+         \csname p@footnote\endcsname\@thefnmark%
+      }%
+      \color@begingroup%
+         \@makefntext{%
+           \ignorespaces#2%
+         }%
+      \color@endgroup%
+    }%
   }%
 }%
 
@@ -1448,10 +1484,6 @@
 }
 
 
-
-%%
-% Color
-\RequirePackage[usenames,dvipsnames,svgnames]{xcolor}
 
 %%
 % Produces a full title page
