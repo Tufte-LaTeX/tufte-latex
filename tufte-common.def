@@ -687,7 +687,7 @@
       % Set up letterspacing (using microtype package) -- requires pdfTeX v1.40+
       \renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}
       \renewcommand{\smallcapsspacing}[1]{\textls[50]{##1}}
-      \renewcommand{\allcaps}[1]{\textls[200]{\MakeTextUppercase{##1}}}
+      \renewcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{##1}}}
       \renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{##1}}}
       \renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{##1}}}
     }{}%
