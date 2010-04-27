@@ -1725,20 +1725,20 @@
 % An index environment to mimic Tufte's indexes
 
 \RequirePackage{multicol}
-\renewenvironment{theindex}
-  {\begin{fullwidth}%
-    \small%
-    \ifthenelse{\equal{\@tufte@class}{book}}%
-      {\chapter{\indexname}}%
-      {\section*{\indexname}}%
-    \parskip0pt%
-    \parindent0pt%
-    \let\item\@idxitem%
-    \begin{multicols}{3}%
-  }
-  {\end{multicols}%
-    \end{fullwidth}%
-  }
+\renewenvironment{theindex}{%
+  \ifthenelse{\equal{\@tufte@class}{book}}%
+    {\chapter{\indexname}}%
+    {\section*{\indexname}}%
+  \begin{fullwidth}%
+  \small%
+  \parskip0pt%
+  \parindent0pt%
+  \let\item\@idxitem%
+  \begin{multicols}{3}%
+}{%
+  \end{multicols}%
+  \end{fullwidth}%
+}
 \renewcommand\@idxitem{\par\hangindent 2em}
 \renewcommand\subitem{\par\hangindent 3em\hspace*{1em}}
 \renewcommand\subsubitem{\par\hangindent 4em\hspace*{2em}}
