@@ -2,7 +2,7 @@
 %% This file contains the code that is common to the Tufte-LaTeX document classes.
 %%
 
-\ProvidesFile{tufte-common.def}[2010/03/28 v3.5.1 Common code for the Tufte-LaTeX styles]
+\ProvidesFile{tufte-common.def}[2011/06/18 v3.5.2 Common code for the Tufte-LaTeX styles]
 
 %%
 % The `xkeyval' package simplifies the user interface for the document class options
@@ -14,14 +14,10 @@
 
 %%
 % Define some shortcut macros for error/warning/info logging.
-
-\newcommand{\TufteWarning}[1]{\ClassWarning{\@tufte@pkgname}{#1}}
-\newcommand{\TufteWarningNL}[1]{\ClassWarningNoLine{\@tufte@pkgname}{#1}}
-\newcommand{\TufteInfo}[1]{\ClassInfo{\@tufte@pkgname}{#1}}
-\newcommand{\TufteInfoNL}[1]{\ClassInfo{\@tufte@pkgname}{#1\@gobble}}
-\newcommand{\TufteDebugInfo}[1]{\ifthenelse{\boolean{@tufte@debug}}{\TufteInfo{#1}}{}}
-\newcommand{\TufteDebugInfoNL}[1]{\ifthenelse{\boolean{@tufte@debug}}{\TufteInfoNL{#1}}{}}
-\newcommand{\TufteError}[2]{\ClassError{\@tufte@pkgname}{#1}{#2}}
+\RequirePackage{hardwrap}
+\GenerateClassLogMacros[@tufte]{\@tufte@pkgname}
+\newcommand{\@tufte@debug@info}[1]{\ifthenelse{\boolean{@tufte@debug}}{\@tufte@info{#1}}{}}
+\newcommand{\@tufte@debug@info@noline}[1]{\ifthenelse{\boolean{@tufte@debug}}{\@tufte@info@noline{#1}}{}}
 
 %%
 % `debug' option -- provides more information in the .log file for use in
@@ -75,7 +71,7 @@
 \newboolean{@tufte@symmetric}
 \DeclareOptionX[tufte]<common>{symmetric}{
   \setboolean{@tufte@symmetric}{true}
-  \TufteInfoNL{The `symmetric' option implies `twoside'}
+  \@tufte@info@noline{The `symmetric' option implies `twoside'}
   \ExecuteOptionsX[tufte]<common>{twoside}
 }
 
@@ -85,7 +81,7 @@
 \newboolean{@tufte@twoside}
 \DeclareOptionX[tufte]<common>{twoside}{%
   \setboolean{@tufte@twoside}{true}
-  \TufteInfoNL{Passing the `twoside' option to the `\@tufte@class' class}
+  \@tufte@info@noline{Passing the `twoside' option to the `\@tufte@class' class}
   \PassOptionsToClass{twoside}{\@tufte@class}
 }
 
@@ -137,7 +133,7 @@
     \renewcommand*{\@tufte@sidenote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
   \fi
 }{%
-  \TufteWarningNL{Invalid option `#1' for sidenote key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \@tufte@warning@noline{Invalid option `#1' for sidenote key. Must be one of: justified, raggedleft, raggedright, raggedouter, auto}
   \renewcommand*{\@tufte@sidenote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
 }
 
@@ -155,7 +151,7 @@
     \renewcommand*{\@tufte@marginnote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
   \fi
 }{%
-  \TufteWarningNL{Invalid option `#1' for marginnote key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \@tufte@warning@noline{Invalid option `#1' for marginnote key. Must be one of: justified, raggedleft, raggedright, raggedouter, auto}
   \renewcommand*{\@tufte@marginnote@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
 }
 
@@ -173,7 +169,7 @@
     \renewcommand*{\@tufte@caption@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
   \fi
 }{%
-  \TufteWarningNL{Invalid option `#1' for caption key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \@tufte@warning@noline{Invalid option `#1' for caption key. Must be one of: justified, raggedleft, raggedright, raggedouter, auto}
   \renewcommand*{\@tufte@caption@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
 }
 
@@ -191,7 +187,7 @@
     \renewcommand*{\@tufte@citation@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
   \fi
 }{%
-  \TufteWarningNL{Invalid option `#1' for citation key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \@tufte@warning@noline{Invalid option `#1' for citation key. Must be one of: justified, raggedleft, raggedright, raggedouter, auto}
   \renewcommand*{\@tufte@citation@justification}{\@tufte@justification@autodetect}% autodetects best justification mode based on all class options
 }
 
@@ -209,7 +205,7 @@
     \ExecuteOptionsX[tufte]<common>{citation=auto,sidenote=auto,caption=auto,marginnote=auto}% autodetects best justification mode based on all class options
   \fi
 }{%
-  \TufteWarningNL{Invalid option `#1' for marginals key.\MessageBreak Must be one of: justified, raggedleft,\MessageBreak raggedright, raggedouter, auto}
+  \@tufte@warning@noline{Invalid option `#1' for marginals key. Must be one of: justified, raggedleft, raggedright, raggedouter, auto}
   \ExecuteOptionsX[tufte]<common>{citation=auto,sidenote=auto,caption=auto,marginnote=auto}% autodetects best justification mode based on all class options
 }
 
@@ -217,7 +213,7 @@
 %%
 % Unsupported options
 
-\newcommand{\@tufte@unsupported@option}[1]{\TufteWarningNL{Option `#1' is not supported -- \MessageBreak ignoring option}\OptionNotUsed}
+\newcommand{\@tufte@unsupported@option}[1]{\@tufte@warning@noline{Option `#1' is not supported -- ignoring option}\OptionNotUsed}
 
 \DeclareOptionX[tufte]<common>{10pt}{\@tufte@unsupported@option{\CurrentOption}}
 \DeclareOptionX[tufte]<common>{11pt}{\@tufte@unsupported@option{\CurrentOption}}
@@ -238,14 +234,14 @@
 
 
 \DeclareOptionX*{%
-  \TufteInfoNL{Passing \CurrentOption\space to the `\@tufte@class' class.}%
+  \@tufte@info@noline{Passing \CurrentOption\space to the `\@tufte@class' class.}%
   \PassOptionsToClass{\CurrentOption}{\@tufte@class}%
 }
 \ProcessOptionsX*[tufte]<common>\relax
 
 %%
 % Load the appropriate base class
-\TufteInfoNL{Loading the base class `\@tufte@class'}
+\@tufte@info@noline{Loading the base class `\@tufte@class'}
 \LoadClass{\@tufte@class}
 
 %%
@@ -485,11 +481,11 @@
 
 \newboolean{@tufte@changepage}
 \IfFileExists{changepage.sty}{%
-  \TufteDebugInfoNL{Found changepage.sty}
+  \@tufte@debug@info@noline{Found changepage.sty}
   \RequirePackage[strict]{changepage}
   \setboolean{@tufte@changepage}{true}
 }{%
-  \TufteDebugInfoNL{Found chngpage.sty}
+  \@tufte@debug@info@noline{Found chngpage.sty}
   \RequirePackage[strict]{chngpage}
   \setboolean{@tufte@changepage}{false}
 }
@@ -637,8 +633,8 @@
 \DeclareTextFontCommand{\textsmallcaps}{\scshape}
 
 \RequirePackage{textcase} % provides \MakeTextUppercase and \MakeTextLowercase
-\def\allcapsspacing{\TufteWarning{Proper spacing of ALL-CAPS letters has not been set up.}}
-\def\smallcapsspacing{\TufteWarning{Proper spacing of small-caps letters has not been set up.}}
+\def\allcapsspacing{\@tufte@warning{Proper spacing of ALL-CAPS letters has not been set up.}}
+\def\smallcapsspacing{\@tufte@warning{Proper spacing of small-caps letters has not been set up.}}
 \newcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{#1}}}
 \newcommand{\smallcaps}[1]{\smallcapsspacing{\MakeTextLowercase{#1}}}
 
@@ -648,12 +644,12 @@
 % Otherwise fall back on the soul package.
 
 \ifthenelse{\boolean{@tufte@pdf}}
-  {\TufteDebugInfoNL{ifpdf = true}}
-  {\TufteDebugInfoNL{ifpdf = false}}
+  {\@tufte@debug@info@noline{ifpdf = true}}
+  {\@tufte@debug@info@noline{ifpdf = false}}
 
 \ifthenelse{\boolean{@tufte@xetex}}
-  {\TufteDebugInfoNL{ifxetex = true}}
-  {\TufteDebugInfoNL{ifxetex = false}}
+  {\@tufte@debug@info@noline{ifxetex = true}}
+  {\@tufte@debug@info@noline{ifxetex = false}}
 
 % Check pdfLaTeX version
 \def\@tufte@pdftexversion{0}
@@ -678,32 +674,40 @@
 \fi
 
 
+\newcommand{\@tufte@letterspacing@soul}{%
+  \RequirePackage{soul}%
+  \sodef\allcapsspacing{}{0.15em}{0.65em}{0.6em}%
+  \sodef\smallcapsspacing{}{0.075em}{0.5em}{0.6em}%
+  \sodef\sotextsc{\scshape}{0.075em}{0.5em}{0.6em}%
+  \renewcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{##1}}}%
+  \renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{##1}}}%
+  \renewcommand{\textsc}[1]{\sotextsc{##1}}%
+}
+
+\newcommand{\@tufte@letterspacing@letterspace}{%
+  \@tufte@debug@info@noline{Modern version of pdfTeX detected. Using `letterspace' package}%
+  \RequirePackage{letterspace}%
+  % Set up letterspacing (using microtype package) -- requires pdfTeX v1.40+
+  \renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}%
+  \renewcommand{\smallcapsspacing}[1]{\textls[50]{##1}}%
+  \renewcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{##1}}}%
+  \renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{##1}}}%
+  \renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{##1}}}%
+}
+
 \ifthenelse{\boolean{@tufte@letterspace}}{%
   \ifthenelse{\boolean{@tufte@pdf}\AND\boolean{@tufte@letterspace@pkg@prereqs}\AND\NOT\boolean{@tufte@xetex}}{%
     % load letterspace pkg
     \IfFileExists{letterspace.sty}{%
-      \TufteDebugInfoNL{Modern version of pdfTeX detected. \MessageBreak Using `letterspace' package}
-      \RequirePackage{letterspace}
-      % Set up letterspacing (using microtype package) -- requires pdfTeX v1.40+
-      \renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}
-      \renewcommand{\smallcapsspacing}[1]{\textls[50]{##1}}
-      \renewcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{##1}}}
-      \renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{##1}}}
-      \renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{##1}}}
+      \@tufte@letterspacing@letterspace
     }{}%
   }{}%
   % load soul pkg
   \@ifpackageloaded{letterspace}{}{%
     \IfFileExists{soul.sty}{%
-      \RequirePackage{soul}
-      \sodef\allcapsspacing{}{0.15em}{0.65em}{0.6em}
-      \sodef\smallcapsspacing{}{0.075em}{0.5em}{0.6em}
-      \sodef\sotextsc{\scshape}{0.075em}{0.5em}{0.6em}
-      \renewcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{##1}}}
-      \renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{##1}}}
-      \renewcommand{\textsc}[1]{\sotextsc{##1}}
-    }{
-      \TufteWarningNL{Couldn't locate `soul' package}
+      \@tufte@letterspacing@soul
+    }{%
+      \@tufte@warning@noline{Couldn't locate `soul' package}%
     }% soul not installed... giving up.
   }%
 }{}
@@ -714,16 +718,16 @@
       %% pdfLaTeX version is too old or not using pdfLaTeX
       %\ifthenelse{\boolean{@tufte@xetex}}{%
         %% TODO use xetex letterspacing
-        %\TufteDebugInfoNL{XeTeX detected. \MessageBreak Reverting to `soul' package for letterspacing}%
+        %\@tufte@debug@info@noline{XeTeX detected. Reverting to `soul' package for letterspacing}%
         %\@tufte@loadsoul%
       %}{%
         %% use `soul' package for letterspacing
-        %\TufteDebugInfoNL{Old version of pdfTeX detected. \MessageBreak Reverting to `soul' package for letterspacing}%
+        %\@tufte@debug@info@noline{Old version of pdfTeX detected. Reverting to `soul' package for letterspacing}%
         %\@tufte@loadsoul%
       %}
     %}{%
       %\IfFileExists{letterspace.sty}{%
-        %\TufteDebugInfoNL{Modern version of pdfTeX detected. \MessageBreak Using `letterspace' package}
+        %\@tufte@debug@info@noline{Modern version of pdfTeX detected. Using `letterspace' package}
         %\RequirePackage{letterspace}
         %% Set up letterspacing (using microtype package) -- requires pdfTeX v1.40+
         %\renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}
@@ -732,12 +736,12 @@
         %\renewcommand{\smallcaps}[1]{\smallcapsspacing{\MakeTextLowercase{##1}}}
         %\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{##1}}}
       %}{% microtype failed, check for soul
-        %\TufteDebugInfoNL{Modern version of pdfTeX detected, but `letterspace' \MessageBreak package not installed.  \MessageBreak Reverting to  `soul' package for letterspacing}
+        %\@tufte@debug@info@noline{Modern version of pdfTeX detected, but `letterspace' package not installed.  Reverting to  `soul' package for letterspacing}
         %\@tufte@loadsoul
       %}%
     %}%
   %}{%
-    %\TufteDebugInfoNL{Plain LaTeX detected. \MessageBreak Using `soul' package for letterspacing}
+    %\@tufte@debug@info@noline{Plain LaTeX detected. Using `soul' package for letterspacing}
     %\@tufte@loadsoul
   %}
 %}{%
@@ -1301,7 +1305,7 @@
 % Redefine the figure environment to place the captions in the margin space
 
 \renewenvironment{figure}[1][htbp]%
-  {\ifvmode\else\unskip\fi\unskip\begin{@tufte@float}[#1]{figure}{}}
+  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{figure}{}}
   {\end{@tufte@float}}
 
 
@@ -1325,7 +1329,7 @@
 % Full-width table
 
 \renewenvironment{table*}[1][htbp]%
-  {\ifvmode\else\unskip\fi\unskip\begin{@tufte@float}[#1]{table}{star}}
+  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{table}{star}}
   {\end{@tufte@float}}
 
 
@@ -1597,23 +1601,23 @@
 % Subsubsection and following section headings shouldn't be used.
 % See Bringhurst's _The Elements of Typography_, section 4.2.2.
 \renewcommand\subsubsection{%
-  \TufteError{\noexpand\subsubsection is undefined by this class.%
-    \MessageBreak See Robert Bringhurst's _The Elements of 
-    \MessageBreak Typographic Style_, section 4.2.2.
-    \MessageBreak \noexpand\subsubsection was used}
+  \@tufte@error{\string\subsubsection is undefined by this class.
+    See Robert Bringhurst's _The Elements of 
+    Typographic Style_, section 4.2.2.
+    \string\subsubsection was used}
     {From Bringhurst's _The Elements of Typographic Style_, section 4.2.2: Use as 
-    \MessageBreak many levels of headings as you need, no more and no fewer.  Also see the many 
-    \MessageBreak related threads on Ask E.T. at http://www.edwardtufte.com/.}
+    many levels of headings as you need, no more and no fewer.  Also see the many 
+    related threads on Ask E.T. at http://www.edwardtufte.com/.}
 }
 
 \renewcommand\subparagraph{%
-  \TufteError{\noexpand\subparagraph is undefined by this class.%
-    \MessageBreak See Robert Bringhurst's _The Elements of 
-    \MessageBreak Typographic Style_, section 4.2.2.
-    \MessageBreak \noexpand\subparagraph was used}
+  \@tufte@error{\string\subparagraph is undefined by this class.%
+    See Robert Bringhurst's _The Elements of 
+    Typographic Style_, section 4.2.2.
+    \string\subparagraph was used}
     {From Bringhurst's _The Elements of Typographic Style_, section 4.2.2: Use as 
-    \MessageBreak many levels of headings as you need, no more and no fewer.  Also see the many 
-    \MessageBreak related threads on Ask E.T. at http://www.edwardtufte.com/.}
+    many levels of headings as you need, no more and no fewer.  Also see the many 
+    related threads on Ask E.T. at http://www.edwardtufte.com/.}
 }
 
 
@@ -1751,7 +1755,7 @@
 
 \def\morefloats{% provides a total of 52 floats
   \ifthenelse{\isundefined{\bx@S}}{%
-    \TufteDebugInfoNL{Adding 34 more float slots.}
+    \@tufte@debug@info@noline{Adding 34 more float slots.}
     \newinsert\bx@S
     \newinsert\bx@T
     \newinsert\bx@U
@@ -1800,7 +1804,7 @@
                     \@elt\bx@w\@elt\bx@x\@elt\bx@y\@elt\bx@z}%
   }{% we've already added another 34 floats, so we'll add 26 more, but that's it!
     \ifthenelse{\isundefined{\bx@AA}}{%
-      \TufteDebugInfoNL{Adding 26 more float slots.}
+      \@tufte@debug@info@noline{Adding 26 more float slots.}
       \newinsert\bx@AA
       \newinsert\bx@BB
       \newinsert\bx@CC
@@ -1846,8 +1850,8 @@
                       \@elt\bx@SS\@elt\bx@TT\@elt\bx@UU\@elt\bx@VV
                       \@elt\bx@WW\@elt\bx@XX\@elt\bx@YY\@elt\bx@ZZ}%
     }{%
-      \TufteError{You may only call \string\morefloats\space twice. See the\MessageBreak Tufte-LaTeX documentation for other workarounds}
-        {There are already 78 float slots allocated. Try using \string\FloatBarrier\space or\MessageBreak \string\clearpage\space to place some floats before creating more.}
+      \@tufte@error{You may only call \string\morefloats\space twice. See the Tufte-LaTeX documentation for other workarounds}
+        {There are already 78 float slots allocated. Try using \string\FloatBarrier\space or \string\clearpage\space to place some floats before creating more.}
     }%
   }%
 }
@@ -1926,7 +1930,7 @@
   \@ifpackageloaded{algorithm}{%
     % Set the float style to the Tuftian version
     \ifthenelse{\equal{\ALG@floatstyle}{plain}\OR\equal{\ALG@floatstyle}{ruled}\OR\equal{\ALG@floatstyle}{boxed}}{%
-      \TufteInfoNL{Switching algorithm float style from \ALG@floatstyle\MessageBreak to tufte\ALG@floatstyle}%
+      \@tufte@info@noline{Switching algorithm float style from \ALG@floatstyle\space to tufte\ALG@floatstyle}%
       \floatstyle{tufte\ALG@floatstyle}%
       \restylefloat{algorithm}%
     }{}%
@@ -1958,7 +1962,7 @@
 
 \IfFileExists{tufte-common-local.tex}
   {\input{tufte-common-local.tex}%
-   \TufteInfoNL{Loading tufte-common-local.tex}}
+   \@tufte@info@noline{Loading tufte-common-local.tex}}
   {}
 
 
