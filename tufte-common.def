@@ -773,7 +773,7 @@
 % An environment for paragraph-style section
 
 \providecommand\newthought[1]{%
-   \addvspace{1.0\baselineskip plus 0.5ex minus 0.2ex}%
+   \tuftebreak
    \noindent\textsc{#1}%
 }
 
@@ -1507,6 +1507,16 @@
   \typeout{----------------------------------------------------}
 }
 
+%%
+% Amount of space to skip before \newthought or after title block
+
+\newskip\tufteskipamount
+\tufteskipamount=1.0\baselineskip plus 0.5ex minus 0.2ex
+
+\newcommand{\tuftebreak}{\par\ifdim\lastskip<\tufteskipamount
+  \removelastskip\penalty-100\tufteskip\fi}
+
+\newcommand{\tufteskip}{\vspace\tufteskipamount}
 
 
 %%
@@ -1532,14 +1542,14 @@
 % Title block
 
 \renewcommand{\maketitle}{%
-  \newpage%
+  \newpage
   \global\@topnum\z@% prevent floats from being placed at the top of the page
-  \begingroup%
+  \begingroup
     \setlength{\parindent}{0pt}%
     \setlength{\parskip}{4pt}%
-    \let\@@title\@empty%
-    \let\@@author\@empty%
-    \let\@@date\@empty%
+    \let\@@title\@empty
+    \let\@@author\@empty
+    \let\@@date\@empty
     \ifthenelse{\boolean{@tufte@sfsidenotes}}{%
       \gdef\@@title{\sffamily\LARGE\allcaps{\@title}\par}%
       \gdef\@@author{\sffamily\Large\allcaps{\@author}\par}%
@@ -1549,11 +1559,13 @@
       \gdef\@@author{\Large\itshape\@author\par}%
       \gdef\@@date{\Large\itshape\@date\par}%
     }%
-    \@@title%
-    \@@author%
-    \@@date%
-  \endgroup%
+    \@@title
+    \@@author
+    \@@date
+  \endgroup
   \thispagestyle{plain}% suppress the running head
+  \tuftebreak% add some space before the text begins
+  \@afterindentfalse\@afterheading% suppress indentation of the next paragraph
 }
 
 
