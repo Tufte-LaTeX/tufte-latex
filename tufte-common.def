@@ -1758,8 +1758,8 @@
 \AtBeginDocument{%
   \@ifpackageloaded{hyphenat}{}{%
     \newlanguage\langwohyphens% define a language without hyphenation rules
-    \newcommand{\nohyphens}[1]{{\language\langwohyphens #1}}% used for short bits of text
-    \newcommand{\nohyphenation}{\language\langwohyphens}% can be used inside environments for longer text
+    \providecommand{\nohyphens}[1]{{\language\langwohyphens #1}}% used for short bits of text
+    \providecommand{\nohyphenation}{\language\langwohyphens}% can be used inside environments for longer text
   }%
 }
 
