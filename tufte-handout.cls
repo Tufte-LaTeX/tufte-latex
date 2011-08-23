@@ -28,10 +28,10 @@
 %%
 % If there is a `tufte-handout-local.tex' file, load it.
 
-\IfFileExists{tufte-handout-local.tex}
-  {\input{tufte-handout-local}
-   \TufteInfoNL{Loading tufte-handout-local.tex}}
-  {}
+\IfFileExists{tufte-handout-local.tex}{%
+  \input{tufte-handout-local}%
+  \@tufte@info@noline{Loading tufte-handout-local.tex}%
+}{}
 
 
 %%

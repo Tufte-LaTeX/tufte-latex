@@ -70,10 +70,10 @@
 %%
 % If there is a `tufte-book-local.sty' file, load it.
 
-\IfFileExists{tufte-book-local.tex}
-  {\input{tufte-book-local}
-   \TufteInfoNL{Loading tufte-book-local.tex}}
-  {}
+\IfFileExists{tufte-book-local.tex}{%
+  \@tufte@info@noline{Loading tufte-book-local.tex}%
+  \input{tufte-book-local}%
+}{}
 
 %%
 % End of file
