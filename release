@@ -25,9 +25,9 @@ fi
 
 # TODO: instead of all this checking, just sed values into the appropriate files
 
-DATE_VERSION="$DATE $VERSION"
+DATE_VERSION="$DATE v$VERSION"
 for file in $CLS_FILES $DEF_FILES ; do
-  if ! grep -q $DATE_VERSION $file ; then
+  if ! grep -q "$DATE_VERSION" $file ; then
     echo "Error: $file does not contain '$DATE_VERSION':"
     egrep 'Provides(Class|File)' $file
     exit 1
@@ -85,8 +85,7 @@ mkdir -p $TDS_DIR $TDS_TEX_DIR $TDS_DOC_DIR $TDS_SRC_DIR
 cp $CLS_FILES $DEF_FILES $BST_FILES $TDS_TEX_DIR/
 
 cp History.txt README.txt sample-handout.{pdf,tex,bib} sample-book.{pdf,tex} $TDS_DOC_DIR/
-mkdir $TDS_DOC_DIR/graphics
-cp graphics/* $TDS_DOC_DIR/graphics/
+cp -a graphics $TDS_DOC_DIR/
 
 cp $CLS_FILES $DEF_FILES $BST_FILES $SOURCE_FILES $TDS_SRC_DIR/
 
@@ -109,13 +108,11 @@ cat << MESSAGE
 
 Don't forget to create an SVN tag (after committing changes),
 
- svn cp -m'To tag release $VERSION.' \\
-   https://$PACKAGE.googlecode.com/svn/trunk \\
-   https://$PACKAGE.googlecode.com/svn/tags/rel_$VERSION
+  git tag -a v$VERSION -m 'Tufte-LaTeX v$VERSION'
 
 And upload the zip file:
 
- http://code.google.com/p/$PACKAGE/downloads/list
- http://ctan.org/upload
+  https://github.com/Tufte-LaTeX/tufte-latex/releases
+  http://ctan.org/upload
 
 MESSAGE

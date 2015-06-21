@@ -1,7 +1,10 @@
+== 3.5.2 - 2015/06/21
+
+* A variety of bug fixes and small improvements.
+
 == 3.5.1 - 2010/03/28
 
 *  Added bibliography style that didn't make it into the intial release.
-*  TBD
 
 == 3.5.0 - 2009/12/11
 
