@@ -821,7 +821,7 @@
 
 %%
 % Color
-\RequirePackage[usenames,dvipsnames,svgnames]{xcolor}% load before bidi
+\RequirePackage[dvipsnames,svgnames]{xcolor}% load before bidi
 
 %%
 % Load the bidi package if instructed to do so.  This package must be loaded
