@@ -1707,6 +1707,8 @@
     {\hspace*{6em}} % before w/o label
     {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
     [\end{fullwidth}] % after
+  \renewcommand*\l@figure{\@tufte@lof@line}
+  \let\l@table\l@figure
 }{}
 
 %%
@@ -1746,9 +1748,6 @@
   {#1}\nobreak\qquad\nobreak#2%
   \par%
 }
-
-\renewcommand*\l@figure{\@tufte@lof@line}
-\let\l@table\l@figure
 
 
 %%
