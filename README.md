@@ -33,7 +33,7 @@ If you encounter errors of the form,
 
 you will need to obtain missing packages from [CTAN](http://ctan.org).
 For package installation instructions and answers to many other
-questions, see the [UK TeX FAQ](http://www.tex.ac.uk/cgi-bin/texfaq2html?introduction=yes) or search the [`comp.text.tex` group](http://groups.google.com/group/comp.text.tex).
+questions, see the [UK TeX FAQ](http://www.tex.ac.uk/faq/) or search the [`comp.text.tex` group](http://groups.google.com/group/comp.text.tex).
 
 The following packages are required:
 
