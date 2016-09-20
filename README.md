@@ -54,6 +54,7 @@ The following packages are required:
  * titletoc
  * xcolor
  * xifthen
+ * xindy
 
 The following packages are optional and will be automatically used if installed:
 
