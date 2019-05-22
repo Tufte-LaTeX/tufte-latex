@@ -1388,9 +1388,9 @@
 %%
 % Full-width table with full width caption
 
-% \newenvironment{fullwidth_table}[1][htbp]%
-%   {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{table}{star}{fwcaption}}
-%   {\end{@tufte@float}}
+\newenvironment{tablefw}[1][htbp]%
+  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{table}{star}{fwcaption}}
+  {\end{@tufte@float}}
 
 %%
 % Full-page-width area
