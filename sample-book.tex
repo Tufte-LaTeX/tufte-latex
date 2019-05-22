@@ -766,6 +766,42 @@ two-page spread.  Conversely, the \doccmddef{forcerectofloat} command causes
 the algorithm to assume the float has been placed on a recto page---that is, a
 page on the right side of a two-page spread.
 
+\paragraph{Full-width captions} The \texttt{figurefw} and \texttt{tablefw}
+envirionmets behave like their \texttt{*} counterparts, but also add
+a full-width caption. This is useful for full-page figures.
+
+\begin{docspec}
+    \textbackslash begin\{figurefw\}[btp]\\
+  \qquad \textbackslash includegraphics\{sinewave\}\\
+  \qquad \textbackslash caption\{This graph shows ....\}\\
+  \qquad \textbackslash label\{fig:sinewave\}\\
+  \textbackslash end\{figurefw\}\\
+\end{docspec}
+
+\begin{figurefw}[h]
+  \includegraphics[width=\linewidth]{sine.pdf}%
+  \caption{This graph shows $y = \sin x$ from about $x = [-10, 10]$.
+  \emph{Notice that this figure takes up the full page width and that its caption takes up the full page width.}}%
+  \label{fig:fullcapfig}%
+\end{figurefw}%
+
+\begin{tablefw}[h]
+  \begin{center}
+    \footnotesize%
+    \begin{tabular}{lcl}
+      \toprule
+      Environment & Font size & Notes \\
+      \midrule
+      Body text & \measure{10}{14}{26} & \\
+      Block quote & \measure{9}{12}{24} & Block indent (left and right) by \unit[1]{pc} \\
+      Sidenotes & \measure{8}{10}{12} & Sidenote number is set inline, followed by word space \\
+      Captions & \measure{8}{10}{12} &  really long filler text to show that this is a really wide table that spans the whole page width\\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \caption{Really wide example table.}
+  \label{tab:wide_table}
+\end{tablefw}
 
 \section{Full-width text blocks}
 
