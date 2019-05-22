@@ -1219,12 +1219,13 @@
 \newcommand{\@tufte@fps}{}
 
 \newboolean{@tufte@float@star}
+\newboolean{@tufte@float@fwcaption}
 \newlength{\@tufte@float@contents@width}
 
 %%
 % Define a float environment to place the captions in the margin space
 
-\newenvironment{@tufte@float}[3][htbp]%
+\newenvironment{@tufte@float}[4][htbp]%
   {% begin @tufte@float
     % Should this float be full-width or just text-width?
     \ifthenelse{\equal{#3}{star}}%
@@ -1262,13 +1263,21 @@
       \end{minipage}%
     \end{lrbox}%
     % build the caption box
+    \ifthenelse{\equal{#4}{fwcaption}}{%
+      \setlength{\@tufte@float@fwwidth}{\@tufte@fullwidth}%
+      \setlength{\@tufte@float@fwalign}{t}%
+    }{%
+      \setlength{\@tufte@float@fwwidth}{\marginparwidth}%
+      \setlength{\@tufte@float@fqalign}{\floatalignment}%
+    }%
     \begin{lrbox}{\@tufte@caption@box}%
-      \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
-        \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}%
-        \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{\@tufte@orig@label{\@tufte@stored@label}}{}%
-        \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
-      \end{minipage}%
-    \end{lrbox}%
+      \begin{minipage}[\@tufte@float@fwalign]{\@tufte@float@fwwidth}\hbox{}% this is my version
+          \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}%
+          \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{\@tufte@orig@label{\@tufte@stored@label}}{}%
+          \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
+        \end{minipage}%
+      \end{lrbox}%
+
     % now typeset the stored boxes
     \begin{fullwidth}%
       \begin{minipage}[\floatalignment]{\linewidth}%
@@ -1341,7 +1350,7 @@
 % Redefine the figure environment to place the captions in the margin space
 
 \renewenvironment{figure}[1][htbp]%
-  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{figure}{}}
+  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{figure}{}{}}
   {\end{@tufte@float}}
 
 
@@ -1349,7 +1358,7 @@
 % Redefine the table environment to place the captions in the margin space
 
 \renewenvironment{table}[1][htbp]
-  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{table}{}}
+  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{table}{}{}}
   {\end{@tufte@float}}
 
 
@@ -1357,7 +1366,11 @@
 % Full-width figure
 
 \renewenvironment{figure*}[1][htbp]%
-  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{figure}{star}}
+  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{figure}{star}{}}
+  {\end{@tufte@float}}
+
+\newenvironment{figurefw}[1][htbp]%
+  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{figure}{star}{fwcaption}}
   {\end{@tufte@float}}
 
 
@@ -1365,7 +1378,7 @@
 % Full-width table
 
 \renewenvironment{table*}[1][htbp]%
-  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{table}{star}}
+  {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{table}{star}{}}
   {\end{@tufte@float}}
 
 
