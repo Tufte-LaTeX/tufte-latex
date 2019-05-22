@@ -1217,10 +1217,12 @@
 }
 
 \newcommand{\@tufte@fps}{}
+\newcommand{\@tufte@float@fwalign}{}
 
 \newboolean{@tufte@float@star}
 \newboolean{@tufte@float@fwcaption}
 \newlength{\@tufte@float@contents@width}
+\newlength{\@tufte@float@fwwidth}
 
 %%
 % Define a float environment to place the captions in the margin space
@@ -1231,6 +1233,13 @@
     \ifthenelse{\equal{#3}{star}}%
       {\gsetboolean{@tufte@float@star}{true}}%
       {\gsetboolean{@tufte@float@star}{false}}%
+    \ifthenelse{\equal{#4}{fwcaption}}{%
+      \setlength{\@tufte@float@fwwidth}{\@tufte@fullwidth}%
+      \renewcommand{\@tufte@float@fwalign}{t}
+    }{%
+      \setlength{\@tufte@float@fwwidth}{\marginparwidth}%
+      \renewcommand{\@tufte@float@fwalign}{\floatalignment}%
+    }%
     % Check page side (recto/verso) and store detected value -- can be overriden in environment contents
     \@tufte@checkoddpage%
     \ifthenelse{\boolean{@tufte@odd@page}}%
@@ -1263,13 +1272,6 @@
       \end{minipage}%
     \end{lrbox}%
     % build the caption box
-    \ifthenelse{\equal{#4}{fwcaption}}{%
-      \setlength{\@tufte@float@fwwidth}{\@tufte@fullwidth}%
-      \setlength{\@tufte@float@fwalign}{t}%
-    }{%
-      \setlength{\@tufte@float@fwwidth}{\marginparwidth}%
-      \setlength{\@tufte@float@fqalign}{\floatalignment}%
-    }%
     \begin{lrbox}{\@tufte@caption@box}%
       \begin{minipage}[\@tufte@float@fwalign]{\@tufte@float@fwwidth}\hbox{}% this is my version
           \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}%
@@ -1277,7 +1279,6 @@
           \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
         \end{minipage}%
       \end{lrbox}%
-
     % now typeset the stored boxes
     \begin{fullwidth}%
       \begin{minipage}[\floatalignment]{\linewidth}%
@@ -1369,6 +1370,9 @@
   {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{figure}{star}{}}
   {\end{@tufte@float}}
 
+%%
+% Full-width figure with full width caption
+
 \newenvironment{figurefw}[1][htbp]%
   {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{figure}{star}{fwcaption}}
   {\end{@tufte@float}}
@@ -1381,6 +1385,12 @@
   {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{table}{star}{}}
   {\end{@tufte@float}}
 
+%%
+% Full-width table with full width caption
+
+% \newenvironment{fullwidth_table}[1][htbp]%
+%   {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{table}{star}{fwcaption}}
+%   {\end{@tufte@float}}
 
 %%
 % Full-page-width area
