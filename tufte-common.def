@@ -1713,7 +1713,7 @@
 % Format lists of figures/tables
 
 \renewcommand\listoffigures{%
-  \ifthenelse{\equal{\@tufte@class}{book}}%
+  \ifthenelse{\equal{\@tufte@pkgname}{tufte-book}}%
     {\chapter*{\listfigurename}}%
     {\section*{\listfigurename}}%
 %  \begin{fullwidth}%
@@ -1722,7 +1722,7 @@
 }
 
 \renewcommand\listoftables{%
-  \ifthenelse{\equal{\@tufte@class}{book}}%
+  \ifthenelse{\equal{\@tufte@pkgname}{tufte-book}}%
     {\chapter*{\listtablename}}%
     {\section*{\listtablename}}%
 %  \begin{fullwidth}%
@@ -1784,7 +1784,7 @@
 
 \RequirePackage{multicol}
 \renewenvironment{theindex}{%
-  \ifthenelse{\equal{\@tufte@class}{book}}%
+  \ifthenelse{\equal{\@tufte@pkgname}{tufte-book}}%
     {\chapter{\indexname}}%
     {\section*{\indexname}}%
   \begin{fullwidth}%
