@@ -635,7 +635,7 @@
 
 \RequirePackage{paralist}
 
-% Add rightmargin to compact enum
+% Add rightmargin to compactenum
 
 \def\@compactenum@{%
   \expandafter\list\csname label\@enumctr\endcsname{%
