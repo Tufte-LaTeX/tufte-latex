@@ -481,7 +481,7 @@
 \newcommand*{\setcitationfont}[1]{\renewcommand*{\@tufte@citation@font}{#1}}
 
 %%
-% Set the justification baesed on the `justified' class option
+% Set the justification based on the `justified' class option
 
 \newcommand{\@tufte@justification}{%
   \ifthenelse{\boolean{@tufte@justified}}%
@@ -836,7 +836,7 @@
 
 
 %%
-% A function that removes leading and trailling spaces from the supplied macro.
+% A function that removes leading and trailing spaces from the supplied macro.
 % Based on code written by Michael Downes (See ``Around the Bend'', #15.)
 % Executing \@tufte@trim@spaces\xyzzy will result in the contents of \xyzzy
 % being trimmed of leading and trailing white space.
@@ -1805,7 +1805,7 @@
 
 
 %%
-% A couple commands to incresae the number of floats you can use at a time.
+% A couple commands to increase the number of floats you can use at a time.
 
 \def\morefloats{% provides a total of 52 floats
   \ifthenelse{\isundefined{\bx@S}}{%

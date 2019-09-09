@@ -4,7 +4,7 @@
 
 %%
 % Declare we're tufte-book
-\newcommand{\@tufte@class}{book}% the base LaTeX class (defaults to the article/handout style)
+\newcommand{\@tufte@class}{book}% the base LaTeX class (defaults to the book style)
 \newcommand{\@tufte@pkgname}{tufte-book}% the name of the package (defaults to tufte-handout)
 
 %%
@@ -61,7 +61,7 @@
 
 %%
 % The back matter contains appendices, indices, glossaries, endnotes,
-% biliographies, list of contributors, illustration credits, etc.
+% bibliographies, list of contributors, illustration credits, etc.
 \renewcommand\backmatter{%
   \if@openright%
     \cleardoublepage%
