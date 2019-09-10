@@ -816,6 +816,8 @@ document class.  Therefore, you can pass any of the typical book
 options.  There are a few options that are specific to the
 \doccls{tufte-book} document class, however.
 
+The \doccls{book} document class can be replaced with a different base class by using the \docclsoptdef{baseclass} option. For example, the user may select the \smallcaps{KOMA-Script} class \doccls{scrbook} with \docclsoptdef{baseclass=scrbook}.
+
 The \docclsoptdef{a4paper} option will set the paper size to \smallcaps{A4} instead of
 the default \smallcaps{US} letter size.
 
@@ -929,7 +931,7 @@ sections or subsections, use the command:
   \doccmd{setcounter}\{secnumdepth\}\{0\}
 \end{docspec}
 
-The default \doccounter{secnumdepth} for the \TL document classes is $-1$.
+The default \doccounter{secnumdepth} for the \TL document classes is~$-1$.
 
 \begin{table}
   \footnotesize

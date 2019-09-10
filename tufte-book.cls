@@ -4,8 +4,9 @@
 
 %%
 % Declare we're tufte-book
-\newcommand{\@tufte@class}{book}% the base LaTeX class (defaults to the book style)
-\newcommand{\@tufte@pkgname}{tufte-book}% the name of the package (defaults to tufte-handout)
+\newcommand{\@tufte@class}{book}% the base LaTeX class
+% (defaults to the book style; override with 'baseclass' option)
+\newcommand{\@tufte@pkgname}{tufte-book}% the name of the package
 
 %%
 % Load the common style elements
