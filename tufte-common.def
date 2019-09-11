@@ -720,58 +720,17 @@
 }
 
 \ifthenelse{\boolean{@tufte@letterspace}}{%
-  \ifthenelse{\boolean{@tufte@pdf}\AND\boolean{@tufte@letterspace@pkg@prereqs}\AND\NOT\boolean{@tufte@xetex}}{%
-    % load letterspace pkg
-    \IfFileExists{letterspace.sty}{%
-      \@tufte@letterspacing@letterspace
-    }{}%
-  }{}%
-  % load soul pkg
-  \@ifpackageloaded{letterspace}{}{%
-    \IfFileExists{soul.sty}{%
-      \@tufte@letterspacing@soul
-    }{%
-      \@tufte@warning@noline{Couldn't locate `soul' package}%
-    }% soul not installed... giving up.
+  \IfFileExists{letterspace.sty}{%
+    \@tufte@letterspacing@letterspace
+  }{%
   }%
-}{}
-
-%\ifthenelse{\boolean{@tufte@letterspace}}{%
-  %\ifthenelse{\boolean{pdf}}{%
-    %\ifthenelse{\NOT\boolean{@tufte@letterspace@pkg@prereqs}}{%
-      %% pdfLaTeX version is too old or not using pdfLaTeX
-      %\ifthenelse{\boolean{@tufte@xetex}}{%
-        %% TODO use xetex letterspacing
-        %\@tufte@debug@info@noline{XeTeX detected. Reverting to `soul' package for letterspacing}%
-        %\@tufte@loadsoul%
-      %}{%
-        %% use `soul' package for letterspacing
-        %\@tufte@debug@info@noline{Old version of pdfTeX detected. Reverting to `soul' package for letterspacing}%
-        %\@tufte@loadsoul%
-      %}
-    %}{%
-      %\IfFileExists{letterspace.sty}{%
-        %\@tufte@debug@info@noline{Modern version of pdfTeX detected. Using `letterspace' package}
-        %\RequirePackage{letterspace}
-        %% Set up letterspacing (using microtype package) -- requires pdfTeX v1.40+
-        %\renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}
-        %\renewcommand{\smallcapsspacing}[1]{\textls[50]{##1}}
-        %\renewcommand{\allcaps}[1]{\textls[200]{\MakeTextUppercase{##1}}}
-        %\renewcommand{\smallcaps}[1]{\smallcapsspacing{\MakeTextLowercase{##1}}}
-        %\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{##1}}}
-      %}{% microtype failed, check for soul
-        %\@tufte@debug@info@noline{Modern version of pdfTeX detected, but `letterspace' package not installed.  Reverting to  `soul' package for letterspacing}
-        %\@tufte@loadsoul
-      %}%
-    %}%
-  %}{%
-    %\@tufte@debug@info@noline{Plain LaTeX detected. Using `soul' package for letterspacing}
-    %\@tufte@loadsoul
-  %}
-%}{%
-%% we're not to load letterspacing, so do nothing
-%}
-
+}{%
+  \IfFileExists{soul.sty}{%
+    \@tufte@letterspacing@soul
+  }{%
+    \@tufte@warning@noline{Can locate neither `letterspace' nor `soul' package}%
+  }%
+}
 
 %%
 % An environment for paragraph-style section
