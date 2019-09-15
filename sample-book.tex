@@ -626,6 +626,7 @@ environment and figure~\ref{fig:textfig} is an example of the normal
   %\zsavepos{pos:textfig}
 \end{figure}
 
+
 As with sidenotes and marginnotes, a caption may sometimes require vertical
 adjustment. The \doccmddef{caption} command now takes a second optional
 argument that enables you to do this by providing a dimension \docopt{offset}.
@@ -764,6 +765,47 @@ float has been placed on a verso page---that is, a page on the left side of a
 two-page spread.  Conversely, the \doccmddef{forcerectofloat} command causes
 the algorithm to assume the float has been placed on a recto page---that is, a
 page on the right side of a two-page spread.
+
+\paragraph{Full-width captions}\label{par:fullwidth-captions}
+To get a full width caption for a figure or table you can use the \texttt{figurefw} and \texttt{tablefw} environments.
+Both behave like their \texttt{*} counterparts, but also extend the caption across the full width of the page.
+Note that this is useful mostly for full-page figures and tables.
+An example with a regular sized figure:
+
+\begin{fullwidth}
+\begin{docspec}
+  \textbackslash begin\{figurefw\}[btp]\\
+  \qquad \textbackslash includegraphics\{sinewave\}\\
+  \qquad \textbackslash caption\{This graph shows ....\}\\
+  \qquad \textbackslash label\{fig:fullwidthsinewave\}\\
+  \textbackslash end\{figurefw\}
+\end{docspec}
+\end{fullwidth}
+
+\begin{figurefw}[h]
+  \includegraphics[width=\linewidth]{sine.pdf}%
+  \caption{This graph shows $y = \sin x$ from about $x = [-10, 10]$.
+  \emph{Notice that this figure takes up the full page width and that its caption takes up the full page width as well.}}%
+  \label{fig:fullcapfig}%
+\end{figurefw}%
+
+\begin{tablefw}[h]
+  \begin{center}
+    \footnotesize%
+    \begin{tabular}{ccl}
+      \toprule
+      First Column & Second Column & Filler Text \\
+      \midrule
+      42 & 23 & Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur dictum gravida mauris.\\
+      17 & 9 & Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna.\\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \caption{Example of a really wide table with a wide, left aligned caption.}
+  \label{tab:wide_table}
+\end{tablefw}
+
+
 
 
 \section{Full-width text blocks}
