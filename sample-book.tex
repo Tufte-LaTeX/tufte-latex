@@ -582,7 +582,7 @@ use the \docenvdef{marginfigure} or \docenvdef{margintable} environments as foll
 
 \begin{marginfigure}%
   \includegraphics[width=\linewidth]{helix}
-  \caption{This is a margin figure.  The helix is defined by 
+  \caption{This is a margin figure.  The helix is defined by
     $x = \cos(2\pi z)$, $y = \sin(2\pi z)$, and $z = [0, 2.7]$.  The figure was
     drawn using Asymptote (\url{http://asymptote.sf.net/}).}
   \label{fig:marginfig}
@@ -632,9 +632,9 @@ argument that enables you to do this by providing a dimension \docopt{offset}.
 You may specify the caption in any one of the following forms:
 \begin{docspec}
   \doccmd{caption}\{\docarg{long caption}\}\\
-  \doccmd{caption}[\docarg{short caption}]\{\docarg{long caption}\}\\
+  \doccmd{caption}[\docopt{short caption}]\{\docarg{long caption}\}\\
   \doccmd{caption}[][\docopt{offset}]\{\docarg{long caption}\}\\
-  \doccmd{caption}[\docarg{short caption}][\docopt{offset}]%
+  \doccmd{caption}[\docopt{short caption}][\docopt{offset}]%
                   \{\docarg{long caption}\}
 \end{docspec}
 A positive \docopt{offset} will push the caption down the page. The short
