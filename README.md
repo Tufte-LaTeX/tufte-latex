@@ -1,7 +1,21 @@
 Hi,
 
 This is the repo for the book on review of basic electrical engineering principles mostly for Integrated Circuit & Electronic System designers. This book follows Tufte-style typesetting from Edward Tufte's books.  This repo is forked from the Tufte LaTeX package at https://github.com/Tufte-LaTeX/tufte-latex.
-
+###
+Content scrapbook.
+- Math
+  - Algebra (Feynman's lecture)
+  - Art of appoximation (Sanjoy Mahajan)
+  - What's an imaginary number (Feynman's lecture and 1,2,3 infinity)
+  - Complex number (Feynman's lecture, 1,2,3.. Infity)
+  - Vector Calc
+  - Linear Algebra (Strang, UPenn lecture)
+  - Diff equations.
+- Electromagnetics
+  - Feynman lecture
+  - Griffith
+  - Purcell
+ 
 ### Working on Overleaf
 - This repo is linked to overleaf: `New Project` -> `Import from GitHub`
 - To keep the repo in sync: `Overleaf -> Menu -> Sync -> GitHub`
