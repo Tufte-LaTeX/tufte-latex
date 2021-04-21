@@ -1,5 +1,10 @@
 Hi,
 
+This is the repo for the book on review of basic electrical engineering principles mostly for Integrated Circuit & Electronic System designers. This book follows Tufte-style typesetting from Edward Tufte's books.  This repo is forked from the Tufte LaTeX package at https://github.com/Tufte-LaTeX/tufte-latex.
+
+
+# Documentation on the tufte-latex package.
+The following documention is from the tufte-latex's README.md
 Welcome to the beginnings of Tufte LaTeX package to help you
 produce Tufte-style handouts, reports, and notes.
 
