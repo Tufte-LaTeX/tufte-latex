@@ -1216,6 +1216,13 @@
   \gdef\@tufte@stored@caption{#3}%
 }
 
+% Tell nag package about Tufte captions
+\AtBeginDocument{%
+  \@ifpackageloaded{nag}{%
+    \g@addto@macro\nag@captions{,@tufte@caption}%
+  }{}%
+}
+
 \newcommand{\@tufte@label}[1]{%
   \gdef\@tufte@stored@label{#1}%
 }
