@@ -1112,10 +1112,14 @@
   \begin{lrbox}{\@tufte@margin@floatbox}%
   \begin{minipage}{\marginparwidth}%
     \@tufte@caption@font%
-    \def\@captype{#2}%
     \hbox{}\vspace*{#1}%
     \@tufte@caption@justification%
     \@tufte@margin@par%
+    \ifcsname captionsetup\endcsname%
+      \captionsetup{type=#2}%
+    \else%
+      \def\@captype{#2}%
+    \fi%
     \noindent%
   }
   {\end{minipage}%
