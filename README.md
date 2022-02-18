@@ -1,7 +1,4 @@
-Hi,
-
-Welcome to the beginnings of Tufte LaTeX package to help you
-produce Tufte-style handouts, reports, and notes.
+Sadly the "official" tufte-latex repository seems unmaintained, isues and pull-requests are left untouched for years now. Contributing to the mainrepository seems of little use in 2022. This fork merged some of the open pull-requests, tries to modernize the package and maintains a CHAIR specific style in a branch.
 
 ## Quick Start
 
