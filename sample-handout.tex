@@ -1,10 +1,13 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+
 \documentclass{tufte-handout}
 
 \title{An Example of the Usage of the Tufte-Handout Style\thanks{Inspired by Edward~R. Tufte!}}
 
 \author[The Tufte-LaTeX Developers]{The Tufte-\LaTeX\ Developers}
 
-%\date{28 March 2010} % without \date command, current date is supplied
+%\date{28 March 2022} % without \date command, current date is supplied
 
 %\geometry{showframe} % display margins for debugging page layout
 
@@ -12,7 +15,17 @@
   \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
   \graphicspath{{graphics/}} % set of paths to search for images
 \usepackage{amsmath}  % extended mathematics
-\usepackage{booktabs} % book-quality tables
+\usepackage{tabularray}
+  \UseTblrLibrary{booktabs} % book-quality tables
+  \UseTblrLibrary{siunitx}
+  \NewTblrTheme{fancy}{
+	%\SetTblrStyle{firsthead}{font=\bfseries}
+	%\SetTblrStyle{firstfoot}{fg=blue2}
+	%\SetTblrStyle{middlefoot}{\itshape}
+	%\SetTblrStyle{caption-tag}{red2}
+  }
+
+\usepackage{csquotes} 
 \usepackage{units}    % non-stacked fractions and better unit spacing
 \usepackage{multicol} % multiple column layout facilities
 \usepackage{lipsum}   % filler text
@@ -199,7 +212,7 @@ the table's data.
 \begin{table}[ht]
   \centering
   \fontfamily{ppl}\selectfont
-  \begin{tabular}{ll}
+  \begin{tblr}{ll}
     \toprule
     Margin & Length \\
     \midrule
@@ -209,7 +222,7 @@ the table's data.
     Textblock/sidenote gutter & \unit[\nicefrac{3}{8}]{inches} \\
     Sidenote width & \unit[2]{inches} \\
     \bottomrule
-  \end{tabular}
+  \end{tblr}
   \caption{Here are the dimensions of the various margins used in the Tufte-handout class.}
   \label{tab:normaltab}
   %\zsavepos{pos:normaltab}
@@ -282,6 +295,7 @@ mentioned in this handout), please see the sample book.
 The website for the Tufte-\LaTeX\ packages is located at
 \url{https://tufte-latex.github.io/tufte-latex}.  On our website, you'll find
 links to our \smallcaps{git} repository, mailing lists, bug tracker, and documentation.
+Sadly above homepage seems abandoned so this fork lives at \url{https://github.com/chairaudio/tufte-latex}
 
 \bibliography{sample-handout}
 \bibliographystyle{plainnat}
