@@ -2,25 +2,15 @@ Sadly the "official" tufte-latex repository seems unmaintained, isues and pull-r
 
 ## Quick Start
 
-Try typesetting `sample-handout.tex` with the following sequence
-of commands,
+Try typesetting `sample-handout.tex` with the following command,
 
-    pdflatex sample-handout
-    bibtex   sample-handout
-    pdflatex sample-handout
-    pdflatex sample-handout
+    xelatex sample-handout
+
+or open it in TeXstudio.
 
 The result should look like `sample-handout.pdf`.
 
-The sample book can be compiled with the following:
-
-    pdflatex sample-book
-    bibtex sample-book
-    texindy --language english sample-book.idx
-    # or makeindex sample-book.idx
-    pdflatex sample-book
-    pdflatex sample-book
-    pdflatex sample-book
+The sample book is not yet converted to xelatex.
 
 ## Troubleshooting
 
@@ -37,6 +27,7 @@ The following packages are required:
  * chngpage or changepage
  * fancyhdr
  * fontenc
+ * tabularray
  * geometry
  * hyperref
  * natbib and bibentry
