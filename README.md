@@ -59,8 +59,7 @@ The following packages are optional and will be automatically used if installed:
 
  * beramono
  * helvet
- * ifpdf
- * ifxetex
+ * iftex
  * letterspace (in the microtype package)
  * mathpazo
  * soul
