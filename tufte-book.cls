@@ -1,16 +1,17 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
-
-\ProvidesClass{tufte-book}[2015/06/30 v3.5.3 Tufte-book class]
+\ProvidesClass{tufte-book}
+  [2015/06/30 v3.5.3 Tufte-book class]
 
 %%
 % Declare we're tufte-book
-\newcommand{\@tufte@class}{book}% the base LaTeX class (defaults to the book style)
-\newcommand{\@tufte@pkgname}{tufte-book}% the name of the package (defaults to tufte-handout)
+% The base LaTeX class (defaults to the book style)
+\newcommand{\@tufte@class}{book}
+% The name of the package (defaults to tufte-handout)
+\newcommand{\@tufte@pkgname}{tufte-book}
 
 %%
 % Load the common style elements
 \input{tufte-common.def}
-
 
 %%
 % Set up any book-specific stuff now
@@ -30,11 +31,12 @@
   \pagenumbering{arabic}%
   %\pagestyle{plain}%
   \fancyhf{}%
-  \ifthenelse{\boolean{@tufte@twoside}}%
-    {\fancyhead[LE,RO]{\thepage}}%
-    {\fancyhead[RE,RO]{\thepage}}%
+  \ifthenelse{\boolean{@tufte@twoside}}{%
+    \fancyhead[LE,RO]{\thepage}
+  }{%
+    \fancyhead[RE,RO]{\thepage}
+  }%
 }
-
 
 %%
 % The main matter in Tufte's /Beautiful Evidence/ doesn't restart the page
@@ -47,17 +49,19 @@
   \fi%
   \@mainmattertrue%
   \fancyhf{}%
-  \ifthenelse{\boolean{@tufte@twoside}}%
-    {% two-side
-      \renewcommand{\chaptermark}[1]{\markboth{##1}{}}%
-      \fancyhead[LE]{\thepage\quad\smallcaps{\newlinetospace{\plaintitle}}}% book title
-      \fancyhead[RO]{\smallcaps{\newlinetospace{\leftmark}}\quad\thepage}% chapter title
-    }%
-    {% one-side
-      \fancyhead[RE,RO]{\smallcaps{\newlinetospace{\plaintitle}}\quad\thepage}% book title
-    }%
+  \ifthenelse{\boolean{@tufte@twoside}}{%
+    % Two-side
+    \renewcommand{\chaptermark}[1]{\markboth{##1}{}}%
+    % Book title
+    \fancyhead[LE]{\thepage\quad\smallcaps{\newlinetospace{\plaintitle}}}%
+    % Chapter title
+    \fancyhead[RO]{\smallcaps{\newlinetospace{\leftmark}}\quad\thepage}%
+  }{%
+    % One-side
+    %  Book title
+    \fancyhead[RE,RO]{\smallcaps{\newlinetospace{\plaintitle}}\quad\thepage}%
+  }%
 }
-
 
 %%
 % The back matter contains appendices, indices, glossaries, endnotes,
@@ -77,7 +81,6 @@
 
 %%
 % If there is a `tufte-book-local.sty' file, load it.
-
 \IfFileExists{tufte-book-local.tex}{%
   \@tufte@info@noline{Loading tufte-book-local.tex}%
   \input{tufte-book-local}%
