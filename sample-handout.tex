@@ -234,9 +234,14 @@ Lorem ipsum dolor sit amet...
 \section{Typography}\label{sec:typography}
 
 \subsection{Typefaces}\label{sec:typefaces}
-If the Palatino, \textsf{Helvetica}, and \texttt{Bera Mono} typefaces are installed, this style
-will use them automatically.  Otherwise, we'll fall back on the Computer Modern
-typefaces.
+If you're using Xe\LaTeX\ or Lua\LaTeX, the class defaults to the
+\TeX\ Gyre Pagella, \textsf{\TeX\ Gyre Heros}, and \texttt{\TeX\ Gyre
+Cursor} typefaces---which are usually included with \TeX\ Live
+distributions. In these cases, the class automatically loads the
+\texttt{fontspec} package, so you can easily select your own system
+fonts. Under pdf\LaTeX, the class defaults to the Palatino, \textsf{Helvetica},
+and \texttt{Bera Mono} typefaces if they're installed.  Otherwise,
+we'll fall back on the Computer Modern typefaces.
 
 \subsection{Letterspacing}\label{sec:letterspacing}
 This document class includes two new commands and some improvements on

@@ -785,9 +785,14 @@ Lorem ipsum dolor sit amet...
 \section{Typography}\label{sec:typography}
 
 \subsection{Typefaces}\label{sec:typefaces}\index{typefaces}
-If the Palatino, \textsf{Helvetica}, and \texttt{Bera Mono} typefaces are installed, this style
-will use them automatically.  Otherwise, we'll fall back on the Computer Modern
-typefaces.
+If you're using \tXeLaTeX\ or Lua\LaTeX, the class defaults to the
+\TeX\ Gyre Pagella, \textsf{\TeX\ Gyre Heros}, and \texttt{\TeX\ Gyre
+Cursor} typefaces---which are usually included with \TeX\ Live
+distributions. In these cases, the class automatically loads the
+\docpkg{fontspec} package, so you can easily select your own system
+fonts. Under pdf\LaTeX, the class defaults to the Palatino, \textsf{Helvetica},
+and \texttt{Bera Mono} typefaces if they're installed.  Otherwise,
+we'll fall back on the Computer Modern typefaces.
 
 \subsection{Letterspacing}\label{sec:letterspacing}
 This document class includes two new commands and some improvements on
@@ -847,16 +852,15 @@ information to the log file which is useful in troubleshooting bugs.  It will
 also cause the graphics to be replaced by outlines.
 
 The \docclsoptdef{nofonts} option prevents the \TL classes from
-automatically loading the Palatino and Helvetica typefaces.  You should use
-this option if you wish to load your own fonts.  If you're using \tXeLaTeX, this
-option is implied (i.e., the Palatino and Helvetica fonts aren't loaded if you
-use \tXeLaTeX).  
+automatically loading the Palatino and Helvetica typefaces if you're using
+pdf\LaTeX.  You should use this option if you wish to load your own fonts
+in pdf\LaTeX.  If you're using \tXeLaTeX\ or Lua\LaTeX, the default fonts
+will be loaded anyway but you can easily reset them using \docpkg{fontspec}.  
 
 The \docclsoptdef{nols} option inhibits the letterspacing code.  The \TL\
-classes try to load the appropriate letterspacing package (either pdf\TeX's
-\docpkg{letterspace} package or the \docpkg{soul} package).  If you're using
-\tXeLaTeX\ with \docpkg{fontenc}, however, you should configure your own
-letterspacing.  
+classes try to load the appropriate letterspacing package (either 
+\docpkg{letterspace} or the \docpkg{soul} under pdf\TeX, or \docpkg{fontspec}
+under \tXeLaTeX\ or Lua\LaTeX).
 
 The \docclsoptdef{notitlepage} option causes \doccmd{maketitle} to generate a title
 block instead of a title page.  The \doccls{book} class defaults to a title

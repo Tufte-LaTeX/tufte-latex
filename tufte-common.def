@@ -438,18 +438,35 @@
   \setboolean{@tufte@luatex}{false}
 }
 
-% xltxtra loads xunicode and fontspec; must be loaded before bidi
-\ifthenelse{\boolean{@tufte@xetex}}{%
-  \RequirePackage{xltxtra}%
-}{}
-
-% Set LuaTeX fonts
-\ifthenelse{\boolean{@tufte@luatex}}{%
-  \RequirePackage{fontspec}
+% Set XeTex/LuaTeX fonts
+\ifthenelse{\boolean{@tufte@xetex} \OR \boolean{@tufte@luatex}}{%
+  % Use fontspec version >= 2.4
+  \RequirePackage{fontspec}[2015/03/14]
   \RequirePackage[osf,sc]{mathpazo}
-  \setmainfont[Renderer=Basic, Numbers=OldStyle, Scale = 1.0]{TeX Gyre Pagella}
-  \setsansfont[Renderer=Basic, Scale=0.90]{TeX Gyre Heros}
-  \setmonofont[Renderer=Basic]{TeX Gyre Cursor}
+  \setmainfont{texgyrepagella}[
+    Extension = .otf,
+    UprightFont = *-regular,
+    BoldFont = *-bold,
+    ItalicFont = *-italic,
+    BoldItalicFont = *-bolditalic,
+    Numbers = OldStyle
+  ]
+  \setsansfont{texgyreheros}[
+    Extension = .otf,
+    UprightFont = *-regular,
+    BoldFont = *-bold,
+    ItalicFont = *-italic,
+    BoldItalicFont = *-bolditalic
+  ]
+  \setmonofont{texgyrecursor}[
+    Extension = .otf,
+    UprightFont = *-regular,
+    BoldFont = *-bold,
+    ItalicFont = *-italic,
+    BoldItalicFont = *-bolditalic,
+    Scale = 0.95,
+    Ligatures = Rare
+  ]
 }{}
 
 %%
@@ -842,9 +859,9 @@
 %%
 % Improved letterspacing of small caps and all-caps text.
 %
-% First, try to use the `microtype' package, if it's available. 
-% Failing that, try to use the `soul' package, if it's available.
-% Failing that, well, I give up.
+% If using XeTeX or LuaTeX, use the `fontspec' package; if using
+% pdfTeX: first, try to use the `microtype'/`letterspacing' package,
+% then try to use the `soul' package, then give up.
 \DeclareTextFontCommand{\textsmallcaps}{\scshape}
 
 % Provides \MakeTextUppercase and \MakeTextLowercase
@@ -868,7 +885,7 @@
 
 % If we're using pdfLaTeX v1.40+, use the letterspace package. 
 % If we're using pdfLaTex < v1.40, use the soul package.
-% If we're using XeLaTeX, use XeLaTeX letterspacing options.
+% If we're using XeLaTeX or LuaLaTeX, use fontspec.
 % Otherwise fall back on the soul package.
 \ifthenelse{\boolean{@tufte@pdf}}{%
   \@tufte@debug@info@noline{ifpdf = true}
@@ -880,6 +897,12 @@
   \@tufte@debug@info@noline{ifxetex = true}
 }{%
   \@tufte@debug@info@noline{ifxetex = false}
+}
+
+\ifthenelse{\boolean{@tufte@luatex}}{%
+  \@tufte@debug@info@noline{ifluatex = true}
+}{%
+  \@tufte@debug@info@noline{ifluatex = false}
 }
 
 % Check pdfLaTeX version
@@ -898,14 +921,19 @@
   \fi
 \fi
 
-\newboolean{@tufte@letterspace@pkg@prereqs}
-\setboolean{@tufte@letterspace@pkg@prereqs}{true}
-\ifnum\@tufte@pdftexversion<6
-  \setboolean{@tufte@letterspace@pkg@prereqs}{false}
-\fi
-
+% Check pdfTex version >= 1.40
+\newboolean{@tufte@letterspace@pdf@prereqs}
+\setboolean{@tufte@letterspace@pdf@prereqs}{false}
+\ifthenelse{\boolean{@tufte@pdf}}{%
+  \ifthenelse{\@tufte@pdftexversion < 6}{}{%
+    \setboolean{@tufte@letterspace@pdf@prereqs}{true}
+  }
+}{}
 
 \newcommand{\@tufte@letterspacing@soul}{%
+  \@tufte@debug@info@noline{%
+    Old version of pdfTeX detected. Using `soul' package
+  }%
   \RequirePackage{soul}%
   \sodef\allcapsspacing{}{0.15em}{0.65em}{0.6em}%
   \sodef\smallcapsspacing{}{0.075em}{0.5em}{0.6em}%
@@ -945,62 +973,37 @@
 }
 
 \ifthenelse{\boolean{@tufte@letterspace}}{%
-  \ifthenelse{%
-    \boolean{@tufte@pdf}\AND
-    \boolean{@tufte@letterspace@pkg@prereqs}\AND
-    \NOT\boolean{@tufte@xetex}}{%
+  \ifthenelse{\boolean{@tufte@letterspace@pdf@prereqs}}{%
     % load letterspace pkg
     \IfFileExists{letterspace.sty}{%
       \@tufte@letterspacing@letterspace
     }{}%
   }{}%
-  % load soul pkg
-  \@ifpackageloaded{letterspace}{}{%
-    \IfFileExists{soul.sty}{%
-      \@tufte@letterspacing@soul
-    }{%
-      % soul not installed... giving up.
-      \@tufte@warning@noline{Couldn't locate `soul' package}%
+  \ifthenelse{\boolean{@tufte@xetex} \OR \boolean{@tufte@luatex}}{%
+    \@tufte@debug@info@noline{%
+      Using fontspec for letter spacing in XeTeX or LuaTeX
+    }%
+    \renewcommand{\allcaps}[1]{%
+      {\addfontfeatures{LetterSpace=15.0} \MakeTextUppercase{#1}}%
+    }%
+    \renewcommand{\textsc}[1]{%
+      {\addfontfeatures{LetterSpace=8.0} {\scshape #1}}%
     }
+    \renewcommand{\smallcaps}[1]{%
+      \textsc{\MakeTextLowercase{#1}}%
+    }%
+  }{%
+    % load soul pkg
+    \@ifpackageloaded{letterspace}{}{%
+      \IfFileExists{soul.sty}{%
+        \@tufte@letterspacing@soul
+      }{%
+        % soul not installed... giving up.
+        \@tufte@warning@noline{Couldn't locate `soul' package}%
+      }%
+    }%
   }%
 }{}
-
-%\ifthenelse{\boolean{@tufte@letterspace}}{%
-  %\ifthenelse{\boolean{pdf}}{%
-    %\ifthenelse{\NOT\boolean{@tufte@letterspace@pkg@prereqs}}{%
-      %% pdfLaTeX version is too old or not using pdfLaTeX
-      %\ifthenelse{\boolean{@tufte@xetex}}{%
-        %% TODO use xetex letterspacing
-        %\@tufte@debug@info@noline{XeTeX detected. Reverting to `soul' package for letterspacing}%
-        %\@tufte@loadsoul%
-      %}{%
-        %% use `soul' package for letterspacing
-        %\@tufte@debug@info@noline{Old version of pdfTeX detected. Reverting to `soul' package for letterspacing}%
-        %\@tufte@loadsoul%
-      %}
-    %}{%
-      %\IfFileExists{letterspace.sty}{%
-        %\@tufte@debug@info@noline{Modern version of pdfTeX detected. Using `letterspace' package}
-        %\RequirePackage{letterspace}
-        %% Set up letterspacing (using microtype package) -- requires pdfTeX v1.40+
-        %\renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}
-        %\renewcommand{\smallcapsspacing}[1]{\textls[50]{##1}}
-        %\renewcommand{\allcaps}[1]{\textls[200]{\MakeTextUppercase{##1}}}
-        %\renewcommand{\smallcaps}[1]{\smallcapsspacing{\MakeTextLowercase{##1}}}
-        %\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{##1}}}
-      %}{% microtype failed, check for soul
-        %\@tufte@debug@info@noline{Modern version of pdfTeX detected, but `letterspace' package not installed.  Reverting to  `soul' package for letterspacing}
-        %\@tufte@loadsoul
-      %}%
-    %}%
-  %}{%
-    %\@tufte@debug@info@noline{Plain LaTeX detected. Using `soul' package for letterspacing}
-    %\@tufte@loadsoul
-  %}
-%}{%
-%% we're not to load letterspacing, so do nothing
-%}
-
 
 %%
 % An environment for paragraph-style section
