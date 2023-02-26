@@ -608,12 +608,12 @@
   letterpaper,
   left=1in,
   top=1in,
+  headheight=\baselineskip,
   headsep=2\baselineskip,
+  height=44\baselineskip,
   textwidth=26pc,
   marginparsep=2pc,
-  marginparwidth=12pc,
-  textheight=44\baselineskip,
-  headheight=\baselineskip
+  marginparwidth=12pc
 ]{geometry}
 
 \ifthenelse{\boolean{@tufte@afourpaper}}{%
@@ -1392,7 +1392,7 @@
   % in order.
   \FloatBarrier%
   \begin{lrbox}{\@tufte@margin@floatbox}%
-    \begin{minipage}{\marginparwidth}%
+    \begin{minipage}[t]{\marginparwidth}%
       \@tufte@caption@font%
       \def\@captype{#2}%
       \hbox{}\vspace*{#1}%
