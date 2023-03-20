@@ -139,6 +139,9 @@
 \newcommand{\docfilehook}[2]{\texttt{#1}\index{file hooks!#2}\index{#1@\texttt{#1}}}
 \newcommand{\doccounter}[1]{\texttt{#1}\index{#1 counter@\texttt{#1} counter}}
 
+% Bib resource file for Biblatex
+\addbibresource{sample-handout.bib}
+
 % Generates the index
 \usepackage{makeidx}
 \makeindex
@@ -555,18 +558,20 @@ The \doccmddef{marginnote} command has a similar \docarg{offset} argument:
 \section{References}
 References are placed alongside their citations as sidenotes,
 as well.  This can be accomplished using the normal \doccmddef{cite}
-command.\sidenote{The first paragraph of this document includes a citation.}
+command.\sidenote{If you use the \texttt{\textbackslash cite} command within
+a sidenote, it will render as an in-line parenthetical citation, as demonstrated
+here \cite{Tufte2001}.}
 
-The complete list of references may also be printed automatically by using
-the \doccmddef{bibliography} command.  (See the end of this document for an
-example.)  If you do not want to print a bibliography at the end of your
-document, use the \doccmddef{nobibliography} command in its place.  
+You will need to specify a bibliography resource file in the preamble of your
+document using \doccmddef{addbibresource}. The complete list of references may
+also be printed automatically by using the \doccmddef{printbibliography} command.
+See the end of this document for an example, and the Bib\LaTeX documentation
+for more information.
 
-To enter multiple citations at one location,\cite[-3\baselineskip]{Tufte2006,Tufte1990} you can
-provide a list of keys separated by commas and the same optional vertical
-offset argument: \Verb|\cite{Tufte2006,Tufte1990}|.  
+To enter multiple citations at one location,\cite{Tufte2006,Tufte1990} you can
+provide a list of keys separated by commas: \Verb|\cite{Tufte2006,Tufte1990}|.  
 \begin{docspec}
-  \doccmd{cite}[\docopt{offset}]\{\docarg{bibkey1,bibkey2,\ldots}\}
+  \doccmd{cite\{\docarg{bibkey1,bibkey2,\ldots}\}}
 \end{docspec}
 
 \section{Figures and Tables}\label{sec:figures-and-tables}
@@ -1140,7 +1145,7 @@ classes rely upon.  Packages marked with an asterisk are optional.
   \item soul*
   \item letterspace*
   \item setspace
-  \item natbib \emph{and} bibentry
+  \item biblatex \emph{and} biber
   \item optparams
   \item placeins
   \item mathpazo*
@@ -1169,9 +1174,7 @@ classes rely upon.  Packages marked with an asterisk are optional.
 
 \backmatter
 
-\bibliography{sample-handout}
-\bibliographystyle{plainnat}
-
+\printbibliography
 
 \printindex
 

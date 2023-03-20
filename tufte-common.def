@@ -59,11 +59,11 @@
 }
 
 %%
-% `nobib' option -- doesn't load natbib or adjust the \cite command
-\newboolean{@tufte@loadnatbib}
-\setboolean{@tufte@loadnatbib}{true}
+% `nobib' option -- doesn't load Biblatex or adjust the \cite command
+\newboolean{@tufte@loadbiblatex}
+\setboolean{@tufte@loadbiblatex}{true}
 \DeclareOptionX[tufte]<common>{nobib}{
-  \setboolean{@tufte@loadnatbib}{false}
+  \setboolean{@tufte@loadbiblatex}{false}
 }
 
 %%
@@ -1104,112 +1104,55 @@
 
 %%
 % Citations should go in the margin as sidenotes
-\ifthenelse{\boolean{@tufte@loadnatbib}}{%
-  \RequirePackage{natbib}%
-  % Allows bibitems to be typeset outside thebibliography environment
-  \RequirePackage{bibentry}%
-  % Redefine the \BR@b@bibitem command to fix a bug with bibentry+chicago style
-  \renewcommand\BR@b@bibitem[2][]{%
-    \ifthenelse{\isempty{#1}}{%
-      \BR@bibitem{#2}
-    }{%
-      \BR@bibitem[#1]{#2}
-    }%
-    \BR@c@bibitem{#2}%
-  }%
-  % Pre-loads the bibliography keys
-  \nobibliography*%
+\ifthenelse{\boolean{@tufte@loadbiblatex}}{%
+  \RequirePackage[
+    bibstyle=authoryear,
+    citestyle=authoryear-icomp,
+    backref=true
+  ]{biblatex}%
+  % Increase separation between bibliography items
+  \setlength\bibitemsep{1.1\itemsep}%
+  \setlength\bibnamesep{1.5\itemsep}%
   % Pre-defining this so it may be used before the \bibliography command
   % it issued
   \providecommand{\doi}[1]{\textsc{doi:} #1}%
 }{}
 
+\newcommand{\@tufte@cite@sidenote}[1]{%
+  \sidenote{#1\addperiod}%
+}
+
 %%
 % Normal \cite behavior
 \newcounter{@tufte@num@bibkeys}
-\newcommand{\@tufte@normal@cite}[2][0pt]{%
-  % Snag the last bibentry in the list for later comparison
-  \let\@temp@last@bibkey\@empty%
-  \@for\@temp@bibkey:=#2\do{\let\@temp@last@bibkey\@temp@bibkey}%
-  \sidenote[][#1]{%
-    % Loop through all the bibentries, separating them with semicolons
-    % and spaces
-    \normalsize\normalfont\@tufte@citation@font%
-    \setcounter{@tufte@num@bibkeys}{0}%
-    \@for\@temp@bibkeyx:=#2\do{%
-      \ifthenelse{\equal{\@temp@last@bibkey}{\@temp@bibkeyx}}{%
-        \ifthenelse{\equal{\value{@tufte@num@bibkeys}}{0}}{}{and\ }%
-        % Trim spaces around bibkey
-        \@tufte@trim@spaces\@temp@bibkeyx%
-        \bibentry{\@temp@bibkeyx}%
-      }{%
-        % Trim spaces around bibkey
-        \@tufte@trim@spaces\@temp@bibkeyx%
-        \bibentry{\@temp@bibkeyx};\ %
-      }%
-      \stepcounter{@tufte@num@bibkeys}%
-    }%
-  }%
-}
-
-%%
-% Macros for holding the list of cite keys until after the \sidenote
-% List of cite keys
-\gdef\@tufte@citations{}
-% Adds a new bibkey to the list of cite keys
-\newcommand\@tufte@add@citation[1]{%
-  \relax%
-  \ifx\@tufte@citations\@empty
-    \else
-    % Separate by commas
-    \g@addto@macro\@tufte@citations{,}%
-  \fi
-  \g@addto@macro\@tufte@citations{#1}
-}
-
-% Puts the citations in a margin note
-\newcommand{\@tufte@print@citations}[1][0pt]{%
-  % Snag the last bibentry in the list for later comparison
-  \let\@temp@last@bibkey\@empty%
-  \@for\@temp@bibkey:=\@tufte@citations\do{\let\@temp@last@bibkey\@temp@bibkey}%
-  \marginpar{%
-    \hbox{}\vspace*{#1}%
-    \@tufte@citation@font%
-    \@tufte@citation@justification%
-    % Use parindent and parskip settings for marginal text
-    \@tufte@margin@par%
-    \vspace*{-1\baselineskip}%
-    % Loop through all the bibentries, separating them with semicolons
-    % and spaces
-    \setcounter{@tufte@num@bibkeys}{0}%
-    \@for\@temp@bibkeyx:=\@tufte@citations\do{%
-      \ifthenelse{\equal{\@temp@last@bibkey}{\@temp@bibkeyx}}{%
-        \ifthenelse{\equal{\value{@tufte@num@bibkeys}}{0}}{}{and\ }%
-        % Trim spaces around bibkey
-        \@tufte@trim@spaces\@temp@bibkeyx%
-        \bibentry{\@temp@bibkeyx}%
-      }{%
-        % Trim spaces around bibkey
-        \@tufte@trim@spaces\@temp@bibkeyx%
-        \bibentry{\@temp@bibkeyx};\ %
-      }%
-      \stepcounter{@tufte@num@bibkeys}%
-    }%
-  }%
+\newcommand{\@tufte@normal@cite}{%
+  \DeclareCiteCommand{\cite}[\@tufte@cite@sidenote]
+    {\usebibmacro{cite:init}%
+      \usebibmacro{prenote}}
+    {\usebibmacro{citeindex}%
+      \usebibmacro{cite}}
+    {}
+    {\usebibmacro{cite:postnote}}
 }
 
 %%
 % \cite behavior when executed within a sidenote
-% Contains list of \cites in sidenote
+% Uses parenthetical citing
 \newcommand{\@tufte@sidenote@citations}{}
-\newcommand{\@tufte@infootnote@cite}[1]{%
-  \@tufte@add@citation{#1}
+\newcommand{\@tufte@infootnote@cite}{%
+  \DeclareCiteCommand{\cite}[\mkbibparens]
+    {\usebibmacro{cite:init}%
+      \usebibmacro{prenote}}
+    {\usebibmacro{citeindex}%
+      \usebibmacro{cite}}
+    {}
+    {\usebibmacro{cite:postnote}}
 }
 
 %%
 % Set the default \cite style.  This is set and reset by the \sidenote command.
-\ifthenelse{\boolean{@tufte@loadnatbib}}{%
-  \let\cite\@tufte@normal@cite
+\ifthenelse{\boolean{@tufte@loadbiblatex}}{%
+  \@tufte@normal@cite
 }{}
 
 %%
@@ -1235,7 +1178,7 @@
 
 % Set the in-text footnote mark in the same typeface as the body text itself.
 \def\@makefnmark{%
-  \hbox{\@textsuperscript{\normalfont\footnotesize\@thefnmark}}
+  \hbox{\@textsuperscript{\normalfont\footnotesize\@thefnmark}}%
 }
 
 \providecommand*{\multiplefootnotemarker}{3sp}
@@ -1271,7 +1214,7 @@
     \@tufte@margin@par%
     \vspace*{-1\baselineskip}\noindent%
     \protected@edef\@currentlabel{%
-      \csname p@footnote\endcsname\@thefnmark%
+      \csname p@footnote\endcsname\@thefnmark
     }%
     \color@begingroup%
       \@makefntext{%
@@ -1312,12 +1255,10 @@
 
 % #1 = footnote num, #2 = vertical offset, #3 = footnote text
 \long\def\@tufte@sidenote[#1][#2]#3{%
-  \ifthenelse{\boolean{@tufte@loadnatbib}}{%
+  \ifthenelse{\boolean{@tufte@loadbiblatex}}{%
   % Use the in-sidenote \cite command
-    \let\cite\@tufte@infootnote@cite%
+    \@tufte@infootnote@cite%
   }{}%
-  % Clear out any old citations
-  \gdef\@tufte@citations{}%
   \ifthenelse{\NOT\isempty{#2}}{%
     \gsetlength{\@tufte@sidenote@vertical@offset}{#2}%
   }{%
@@ -1327,20 +1268,18 @@
     % No specific footnote number provided
     \stepcounter\@mpfn%
     \protected@xdef\@thefnmark{\thempfn}%
-    \@footnotemark\@footnotetext[\@tufte@sidenote@vertical@offset]{#3}%
+    \unskip\@footnotemark\@footnotetext[\@tufte@sidenote@vertical@offset]{#3}%
   }{%
     % Specific footnote number provided
     \begingroup%
       \csname c@\@mpfn\endcsname #1\relax%
       \unrestored@protected@xdef\@thefnmark{\thempfn}%
     \endgroup%
-    \@footnotemark\@footnotetext[\@tufte@sidenote@vertical@offset]{#3}%
+    \unskip\@footnotemark\@footnotetext[\@tufte@sidenote@vertical@offset]{#3}%
   }%
-  % Print any citations
-  \@tufte@print@citations%
-  \ifthenelse{\boolean{@tufte@loadnatbib}}{%
+  \ifthenelse{\boolean{@tufte@loadbiblatex}}{%
   % Go back to using normal in-text \cite command
-    \let\cite\@tufte@normal@cite%
+    \@tufte@normal@cite%
   }{}%
   % Remove extra white space
   \unskip\ignorespaces%
@@ -1356,12 +1295,10 @@
 %%
 % Sidenote without the footnote mark
 \newcommand\marginnote[2][0pt]{%
-  \ifthenelse{\boolean{@tufte@loadnatbib}}{%
+  \ifthenelse{\boolean{@tufte@loadbiblatex}}{%
     % Use the in-sidenote \cite command
-    \let\cite\@tufte@infootnote@cite%
+    \@tufte@infootnote@cite%
   }{}%
-  % Clear out any old citations
-  \gdef\@tufte@citations{}%
   \marginpar{%
     \hbox{}\vspace*{#1}%
     \@tufte@marginnote@font%
@@ -1370,11 +1307,9 @@
     \vspace*{-1\baselineskip}%
     \noindent #2
   }%
-  % Print any citations
-  \@tufte@print@citations%
-  \ifthenelse{\boolean{@tufte@loadnatbib}}{%
+ \ifthenelse{\boolean{@tufte@loadbiblatex}}{%
   % Go back to using normal in-text \cite command
-    \let\cite\@tufte@normal@cite%
+    \@tufte@normal@cite%
   }{}%
 }
 
@@ -2220,17 +2155,17 @@
 %%
 % Redefine \bibsection to not mark the running heads.
 % (Code modified from natbib.sty.)
-\ifthenelse{\boolean{@tufte@loadnatbib}}{%
-  \@ifundefined{chapter}{%
-    \renewcommand\bibsection{\section*{\refname}}%
-  }{%
-    \@ifundefined{NAT@sectionbib}{%
-      \renewcommand\bibsection{\chapter{\bibname}}%
-    }{%
-      \renewcommand\bibsection{\section*{\bibname}}%
-    }%
-  }%
-}
+% \ifthenelse{\boolean{@tufte@loadnatbib}}{%
+%   \@ifundefined{chapter}{%
+%     \renewcommand\bibsection{\section*{\refname}}%
+%   }{%
+%     \@ifundefined{NAT@sectionbib}{%
+%       \renewcommand\bibsection{\chapter{\bibname}}%
+%     }{%
+%       \renewcommand\bibsection{\section*{\bibname}}%
+%     }%
+%   }%
+% }
 
 %%
 % An index environment to mimic Tufte's indexes
