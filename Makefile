@@ -21,6 +21,7 @@ install: test
 		README.md \
 		sample-*.tex \
 		sample-*.bib \
-		samples/sample-*.pdf \
 		$(DOCDIR)
+	cp samples/sample-handout-lualatex.pdf $(DOCDIR)/sample-handout.pdf
+	cp samples/sample-book-lualatex.pdf $(DOCDIR)/sample-book.pdf
 	texhash
