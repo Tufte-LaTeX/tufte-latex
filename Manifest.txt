@@ -1,6 +1,6 @@
 History.txt
 Manifest.txt
-README.txt
+README.md
 graphics/nasa_vision_sm.png
 graphics/satir_graph.png
 graphics/helix.asy
@@ -16,11 +16,15 @@ graphics/vdqi-contents.pdf
 graphics/vdqi-title.pdf
 graphics/ve-contents.pdf
 graphics/ve-title.pdf
-sample-book.pdf
 sample-book.tex
 sample-handout.bib
-sample-handout.pdf
 sample-handout.tex
+samples/sample-book-lualatex.pdf
+samples/sample-book-pdflatex.pdf
+samples/sample-book-xelatex.pdf
+samples/sample-handout-lualatex.pdf
+samples/sample-handout-pdflatex.pdf
+samples/sample-handout-xelatex.pdf
 tufte-book.cls
 tufte-common.def
 tufte-handout.cls

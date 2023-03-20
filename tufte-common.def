@@ -3,7 +3,7 @@
 %% classes.
 %%
 \ProvidesFile{tufte-common.def}
-  [2015/06/21 v3.5.2 Common code for the Tufte-LaTeX styles]
+  [2023/03/20 v3.6.0 Common code for the Tufte-LaTeX styles]
 
 %%
 % The `xkeyval' package simplifies the user interface for the document class

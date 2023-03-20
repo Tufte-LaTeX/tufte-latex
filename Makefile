@@ -23,3 +23,4 @@ install: test
 		sample-*.bib \
 		samples/sample-*.pdf \
 		$(DOCDIR)
+	texhash
