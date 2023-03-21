@@ -8,6 +8,7 @@
   this breaks the optional vertical offset argument of the re-defined `\cite`
   command, as biblatex also uses multiple optional arguments to `\cite`.
 * Add a Makefile for easy testing and installation of the classes.
+* Use ETbb as the default typeface if `etbb` package is installed.
 
 == 3.5.2 - 2015/06/21
 

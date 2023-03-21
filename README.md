@@ -93,6 +93,7 @@ The following packages are required:
 The following packages are optional and will be automatically used if installed:
 
  * beramono
+ * etbb
  * fontspec
  * helvet
  * iftex

@@ -443,14 +443,21 @@
   % Use fontspec version >= 2.4
   \RequirePackage{fontspec}[2015/03/14]
   \RequirePackage[osf,sc]{mathpazo}
-  \setmainfont{texgyrepagella}[
-    Extension = .otf,
-    UprightFont = *-regular,
-    BoldFont = *-bold,
-    ItalicFont = *-italic,
-    BoldItalicFont = *-bolditalic,
-    Numbers = OldStyle
-  ]
+  % If `etbb' package is installed, use the ETbb fontface
+  \IfFileExists{ETbb.fontspec}{
+    \setmainfont{ETbb}[
+      Numbers = {Proportional,OldStyle}
+    ]
+  }{% ETbb not installed, so use TeX Gyre Pagella
+    \setmainfont{texgyrepagella}[
+      Extension = .otf,
+      UprightFont = *-regular,
+      BoldFont = *-bold,
+      ItalicFont = *-italic,
+      BoldItalicFont = *-bolditalic,
+      Numbers = {Proportional,OldStyle}
+    ]
+  }
   \setsansfont{texgyreheros}[
     Extension = .otf,
     UprightFont = *-regular,
@@ -984,7 +991,10 @@
       Using fontspec for letter spacing in XeTeX or LuaTeX
     }%
     \renewcommand{\allcaps}[1]{%
-      {\addfontfeatures{LetterSpace=15.0} \MakeTextUppercase{#1}}%
+      {\addfontfeatures{
+        LetterSpace=15.0,
+        Numbers=Lining
+      } \MakeTextUppercase{#1}}%
     }%
     \renewcommand{\textsc}[1]{%
       {\addfontfeatures{LetterSpace=8.0} {\scshape #1}}%

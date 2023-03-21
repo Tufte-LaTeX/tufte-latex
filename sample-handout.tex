@@ -154,7 +154,7 @@ Full page--width figures and tables may be placed in \docenv{figure*} or
 use the \docenv{marginfigure} or \docenv{margintable} environments as follows
 (see figure~\ref{fig:marginfig}):
 
-\begin{marginfigure}%
+\begin{marginfigure}[-4cm]%
   \includegraphics[width=\linewidth]{helix}
   \caption{This is a margin figure.  The helix is defined by 
     $x = \cos(2\pi z)$, $y = \sin(2\pi z)$, and $z = [0, 2.7]$.  The figure was
@@ -245,10 +245,12 @@ Lorem ipsum dolor sit amet...
 \section{Typography}\label{sec:typography}
 
 \subsection{Typefaces}\label{sec:typefaces}
-If you're using \XeLaTeX\ or \LuaLaTeX, the class defaults to the
-\TeX\ Gyre Pagella, \textsf{\TeX\ Gyre Heros}, and \texttt{\TeX\ Gyre
-Cursor} typefaces---which are usually included with \TeX\ Live
-distributions. In these cases, the class automatically loads the
+If you're using \XeLaTeX\ or \LuaLaTeX, the class will use ETbb as the main
+typeface if the \texttt{etbb} package is installed and \TeX\ Gyre Pagella
+otherwise; \textsf{\TeX\ Gyre Heros}, and \texttt{\TeX\ Gyre
+Cursor} are the default for sans-serif and monospace text, respectively.
+(The \TeX\ Gyre faces are usually included with \TeX\ Live
+distributions.) In these cases, the class automatically loads the
 \texttt{fontspec} package, so you can easily select your own system
 fonts. Under pdf\LaTeX, the class defaults to the Palatino, \textsf{Helvetica},
 and \texttt{Bera Mono} typefaces if they're installed.  Otherwise,

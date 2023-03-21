@@ -790,11 +790,13 @@ Lorem ipsum dolor sit amet...
 \section{Typography}\label{sec:typography}
 
 \subsection{Typefaces}\label{sec:typefaces}\index{typefaces}
-If you're using \tXeLaTeX\ or Lua\LaTeX, the class defaults to the
-\TeX\ Gyre Pagella, \textsf{\TeX\ Gyre Heros}, and \texttt{\TeX\ Gyre
-Cursor} typefaces---which are usually included with \TeX\ Live
-distributions. In these cases, the class automatically loads the
-\docpkg{fontspec} package, so you can easily select your own system
+If you're using \tXeLaTeX\ or Lua\LaTeX, the class will use ETbb as the main
+typeface if the \docpkg{etbb} package is installed and \TeX\ Gyre Pagella
+otherwise; \textsf{\TeX\ Gyre Heros}, and \texttt{\TeX\ Gyre
+Cursor} are the default for sans-serif and monospace text, respectively.
+(The \TeX\ Gyre faces are usually included with \TeX\ Live
+distributions.) In these cases, the class automatically loads the
+\texttt{fontspec} package, so you can easily select your own system
 fonts. Under pdf\LaTeX, the class defaults to the Palatino, \textsf{Helvetica},
 and \texttt{Bera Mono} typefaces if they're installed.  Otherwise,
 we'll fall back on the Computer Modern typefaces.
@@ -1161,6 +1163,7 @@ classes rely upon.  Packages marked with an asterisk are optional.
   \item titlesec
   \item titletoc
   \item fontspec*
+  \item etbb*
 \end{itemize}
 \end{multicols}
 
