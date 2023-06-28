@@ -29,6 +29,10 @@
 \newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
 \newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
 
+\usepackage{microtype} 
+\renewcommand{\allcapsspacing}[1]{\textls[200]{#1}}% 
+\renewcommand{\smallcapsspacing}[1]{\textls[50]{#1}}%
+
 \begin{document}
 
 \maketitle% this prints the handout title, author, and date
