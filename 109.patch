@@ -1,0 +1,27 @@
+From e0db8797d4e963afda0dc374fac434bceacbd8f5 Mon Sep 17 00:00:00 2001
+From: Michael Rudolf <michael.rudolf01@sap.com>
+Date: Sun, 13 Dec 2015 13:01:41 +0100
+Subject: [PATCH] Issue 108: inform nag package about tufte captions.
+
+---
+ tufte-common.def | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tufte-common.def b/tufte-common.def
+index e3f2005..60d5e4b 100644
+--- a/tufte-common.def
++++ b/tufte-common.def
+@@ -1212,6 +1212,13 @@
+   \gdef\@tufte@stored@caption{#3}%
+ }
+ 
++% Tell nag package about Tufte captions
++\AtBeginDocument{%
++  \@ifpackageloaded{nag}{%
++    \g@addto@macro\nag@captions{,@tufte@caption}%
++  }{}%
++}
++
+ \newcommand{\@tufte@label}[1]{%
+   \gdef\@tufte@stored@label{#1}%
+ }

@@ -1,0 +1,23 @@
+From 3541e38c881b02ba4bf1192b4fe330c637563112 Mon Sep 17 00:00:00 2001
+From: Jonathan Polonsky <jonny.polonsky@gmail.com>
+Date: Fri, 30 Nov 2018 14:02:37 +0100
+Subject: [PATCH] Add `table` option to `xcolor` package
+
+This option allows for alternate shading of table rows
+---
+ tufte-common.def | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tufte-common.def b/tufte-common.def
+index 3fd41ea..2d27a0b 100644
+--- a/tufte-common.def
++++ b/tufte-common.def
+@@ -821,7 +821,7 @@
+ 
+ %%
+ % Color
+-\RequirePackage[dvipsnames,svgnames]{xcolor}% load before bidi
++\RequirePackage[dvipsnames,svgnames,table]{xcolor}% load before bidi
+ 
+ %%
+ % Load the bidi package if instructed to do so.  This package must be loaded
