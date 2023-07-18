@@ -1,0 +1,156 @@
+From b8f188c98bdb2894c1a2b7a6fd9e18013d9546d8 Mon Sep 17 00:00:00 2001
+From: Andreas Scherer <andreas_github@freenet.de>
+Date: Sat, 7 Sep 2019 19:13:41 +0200
+Subject: [PATCH 1/4] Relax the dependencies on 'book'.
+
+'tufte-book.cls' might set '\@tufte@class' to some different base class.
+The package _name_ will still be 'tufte-book'.
+---
+ tufte-common.def | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tufte-common.def b/tufte-common.def
+index 0d60c0e..921de5f 100644
+--- a/tufte-common.def
++++ b/tufte-common.def
+@@ -1713,7 +1713,7 @@
+ % Format lists of figures/tables
+ 
+ \renewcommand\listoffigures{%
+-  \ifthenelse{\equal{\@tufte@class}{book}}%
++  \ifthenelse{\equal{\@tufte@pkgname}{tufte-book}}%
+     {\chapter*{\listfigurename}}%
+     {\section*{\listfigurename}}%
+ %  \begin{fullwidth}%
+@@ -1722,7 +1722,7 @@
+ }
+ 
+ \renewcommand\listoftables{%
+-  \ifthenelse{\equal{\@tufte@class}{book}}%
++  \ifthenelse{\equal{\@tufte@pkgname}{tufte-book}}%
+     {\chapter*{\listtablename}}%
+     {\section*{\listtablename}}%
+ %  \begin{fullwidth}%
+@@ -1784,7 +1784,7 @@
+ 
+ \RequirePackage{multicol}
+ \renewenvironment{theindex}{%
+-  \ifthenelse{\equal{\@tufte@class}{book}}%
++  \ifthenelse{\equal{\@tufte@pkgname}{tufte-book}}%
+     {\chapter{\indexname}}%
+     {\section*{\indexname}}%
+   \begin{fullwidth}%
+
+From fcffca83130befeb250b3e2869e78d565ced37c4 Mon Sep 17 00:00:00 2001
+From: Andreas Scherer <andreas_github@freenet.de>
+Date: Sat, 7 Sep 2019 19:39:48 +0200
+Subject: [PATCH 2/4] Add class option 'baseclass' with argument.
+
+Enable executive (user) override of the base document class. For
+example, the user mayx want to use 'scrartcl' instead of 'article' or
+'scrbook' instead of 'book'. Now she can choose 'baseclass=scrartcl' or
+'baseclass=scrbook' as class option.
+---
+ tufte-common.def | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tufte-common.def b/tufte-common.def
+index 921de5f..6ff0567 100644
+--- a/tufte-common.def
++++ b/tufte-common.def
+@@ -19,6 +19,12 @@
+ \newcommand{\@tufte@debug@info}[1]{\ifthenelse{\boolean{@tufte@debug}}{\@tufte@info{#1}}{}}
+ \newcommand{\@tufte@debug@info@noline}[1]{\ifthenelse{\boolean{@tufte@debug}}{\@tufte@info@noline{#1}}{}}
+ 
++%%
++% `baseclass' option -- allow user-selected base document class,
++% e.g., `baseclass=scrartcl' instead of `article'
++% or `baseclass=scrbook' instead of `book'.
++\DeclareOptionX[tufte]<common>{baseclass}{\renewcommand{\@tufte@class}{#1}}
++
+ %%
+ % `debug' option -- provides more information in the .log file for use in
+ % troubleshooting problems
+@@ -1503,6 +1509,7 @@
+ \newcommand{\PrintTufteSettings}{%
+   \typeout{-------------------- Tufte-LaTeX settings ----------}
+   \typeout{Class: \@tufte@pkgname}
++  \typeout{[baseclass]: \@tufte@class}
+   \typeout{}
+   \typeout{Class options:}
+   \typeoutbool{a4paper}{@tufte@afourpaper}
+
+From 3dfcf143bbcec3787bdf9193e480628c1afde846 Mon Sep 17 00:00:00 2001
+From: Andreas Scherer <andreas_github@freenet.de>
+Date: Sun, 8 Sep 2019 11:20:44 +0200
+Subject: [PATCH 3/4] Add a short note in the book sample.
+
+---
+ sample-book.tex | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/sample-book.tex b/sample-book.tex
+index 6f168f3..8a7b627 100644
+--- a/sample-book.tex
++++ b/sample-book.tex
+@@ -816,6 +816,8 @@ \section{Document Class Options}\label{sec:options}
+ options.  There are a few options that are specific to the
+ \doccls{tufte-book} document class, however.
+ 
++The \doccls{book} document class can be replaced with a different base class by using the \docclsoptdef{baseclass} option. For example, the user may select the \smallcaps{KOMA-Script} class \doccls{scrbook} with \docclsoptdef{baseclass=scrbook}.
++
+ The \docclsoptdef{a4paper} option will set the paper size to \smallcaps{A4} instead of
+ the default \smallcaps{US} letter size.
+ 
+@@ -929,7 +931,7 @@ \section{Numbered Section Headings}
+   \doccmd{setcounter}\{secnumdepth\}\{0\}
+ \end{docspec}
+ 
+-The default \doccounter{secnumdepth} for the \TL document classes is $-1$.
++The default \doccounter{secnumdepth} for the \TL document classes is~$-1$.
+ 
+ \begin{table}
+   \footnotesize
+
+From 6c9fd57d3522321e4bea483500f58a334acf4f5c Mon Sep 17 00:00:00 2001
+From: Andreas Scherer <andreas_github@freenet.de>
+Date: Sun, 8 Sep 2019 14:38:44 +0200
+Subject: [PATCH 4/4] Correct comments about base classes.
+
+---
+ tufte-book.cls    | 5 +++--
+ tufte-handout.cls | 5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/tufte-book.cls b/tufte-book.cls
+index f733ce2..81e9148 100644
+--- a/tufte-book.cls
++++ b/tufte-book.cls
+@@ -4,8 +4,9 @@
+ 
+ %%
+ % Declare we're tufte-book
+-\newcommand{\@tufte@class}{book}% the base LaTeX class (defaults to the book style)
+-\newcommand{\@tufte@pkgname}{tufte-book}% the name of the package (defaults to tufte-handout)
++\newcommand{\@tufte@class}{book}% the base LaTeX class
++% (defaults to the book style; override with 'baseclass' option)
++\newcommand{\@tufte@pkgname}{tufte-book}% the name of the package
+ 
+ %%
+ % Load the common style elements
+diff --git a/tufte-handout.cls b/tufte-handout.cls
+index 2ad43c5..4a3a9c7 100644
+--- a/tufte-handout.cls
++++ b/tufte-handout.cls
+@@ -4,8 +4,9 @@
+ 
+ %%
+ % Declare we're tufte-handout
+-\newcommand{\@tufte@class}{article}% the base LaTeX class (defaults to the article/handout style)
+-\newcommand{\@tufte@pkgname}{tufte-handout}% the name of the package (defaults to tufte-handout)
++\newcommand{\@tufte@class}{article}% the base LaTeX class
++% (defaults to the article/handout style; override with 'baseclass' option)
++\newcommand{\@tufte@pkgname}{tufte-handout}% the name of the package
+ 
+ %%
+ % Load the common style elements

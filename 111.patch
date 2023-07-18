@@ -1,0 +1,29 @@
+From 11d48c641db2a2bdabedb78b8b5f709dc1fb7c41 Mon Sep 17 00:00:00 2001
+From: Michael Rudolf <michael.rudolf01@sap.com>
+Date: Sun, 13 Dec 2015 13:59:16 +0100
+Subject: [PATCH] Issue 110: inform caption package about margin floats.
+
+---
+ tufte-common.def | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/tufte-common.def b/tufte-common.def
+index e3f2005..d3c88c7 100644
+--- a/tufte-common.def
++++ b/tufte-common.def
+@@ -1112,10 +1112,14 @@
+   \begin{lrbox}{\@tufte@margin@floatbox}%
+   \begin{minipage}{\marginparwidth}%
+     \@tufte@caption@font%
+-    \def\@captype{#2}%
+     \hbox{}\vspace*{#1}%
+     \@tufte@caption@justification%
+     \@tufte@margin@par%
++    \ifcsname captionsetup\endcsname%
++      \captionsetup{type=#2}%
++    \else%
++      \def\@captype{#2}%
++    \fi%
+     \noindent%
+   }
+   {\end{minipage}%

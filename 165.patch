@@ -1,0 +1,22 @@
+From 9047bd95ece20ba3e83a8b3f3218d875dcae883d Mon Sep 17 00:00:00 2001
+From: Markus Schneider <mschneider@linkdot.org>
+Date: Tue, 18 Jan 2022 15:02:37 +0100
+Subject: [PATCH] respect nofonts class option
+
+---
+ tufte-common.def | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tufte-common.def b/tufte-common.def
+index 0d60c0e..660483d 100644
+--- a/tufte-common.def
++++ b/tufte-common.def
+@@ -302,7 +302,7 @@
+   \setboolean{@tufte@luatex}{false}
+ }
+ 
+-\ifthenelse{\boolean{@tufte@luatex}}{%
++\ifthenelse{\boolean{@tufte@loadfonts}\AND\boolean{@tufte@luatex}}{%
+   \RequirePackage{fontspec}
+   \RequirePackage[osf,sc]{mathpazo}
+   \setmainfont[Renderer=Basic, Numbers=OldStyle, Scale = 1.0]{TeX Gyre Pagella}
