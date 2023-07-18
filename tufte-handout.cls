@@ -4,8 +4,9 @@
 
 %%
 % Declare we're tufte-handout
-\newcommand{\@tufte@class}{article}% the base LaTeX class (defaults to the article/handout style)
-\newcommand{\@tufte@pkgname}{tufte-handout}% the name of the package (defaults to tufte-handout)
+\newcommand{\@tufte@class}{article}% the base LaTeX class
+% (defaults to the article/handout style; override with 'baseclass' option)
+\newcommand{\@tufte@pkgname}{tufte-handout}% the name of the package
 
 %%
 % Load the common style elements

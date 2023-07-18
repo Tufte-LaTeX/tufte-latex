@@ -20,6 +20,12 @@
 \newcommand{\@tufte@debug@info@noline}[1]{\ifthenelse{\boolean{@tufte@debug}}{\@tufte@info@noline{#1}}{}}
 
 %%
+% `baseclass' option -- allow user-selected base document class,
+% e.g., `baseclass=scrartcl' instead of `article'
+% or `baseclass=scrbook' instead of `book'.
+\DeclareOptionX[tufte]<common>{baseclass}{\renewcommand{\@tufte@class}{#1}}
+
+%%
 % `debug' option -- provides more information in the .log file for use in
 % troubleshooting problems
 \newboolean{@tufte@debug}
@@ -1511,6 +1517,7 @@
 \newcommand{\PrintTufteSettings}{%
   \typeout{-------------------- Tufte-LaTeX settings ----------}
   \typeout{Class: \@tufte@pkgname}
+  \typeout{[baseclass]: \@tufte@class}
   \typeout{}
   \typeout{Class options:}
   \typeoutbool{a4paper}{@tufte@afourpaper}
@@ -1723,7 +1730,7 @@
 % Format lists of figures/tables
 
 \renewcommand\listoffigures{%
-  \ifthenelse{\equal{\@tufte@class}{book}}%
+  \ifthenelse{\equal{\@tufte@pkgname}{tufte-book}}%
     {\chapter*{\listfigurename}}%
     {\section*{\listfigurename}}%
 %  \begin{fullwidth}%
@@ -1732,7 +1739,7 @@
 }
 
 \renewcommand\listoftables{%
-  \ifthenelse{\equal{\@tufte@class}{book}}%
+  \ifthenelse{\equal{\@tufte@pkgname}{tufte-book}}%
     {\chapter*{\listtablename}}%
     {\section*{\listtablename}}%
 %  \begin{fullwidth}%
@@ -1791,7 +1798,7 @@
 
 \RequirePackage{multicol}
 \renewenvironment{theindex}{%
-  \ifthenelse{\equal{\@tufte@class}{book}}%
+  \ifthenelse{\equal{\@tufte@pkgname}{tufte-book}}%
     {\chapter{\indexname}}%
     {\section*{\indexname}}%
   \begin{fullwidth}%
