@@ -308,7 +308,7 @@
   \setboolean{@tufte@luatex}{false}
 }
 
-\ifthenelse{\boolean{@tufte@luatex}}{%
+\ifthenelse{\boolean{@tufte@loadfonts}\AND\boolean{@tufte@luatex}}{%
   \RequirePackage{fontspec}
   \RequirePackage[osf,sc]{mathpazo}
   \setmainfont[Renderer=Basic, Numbers=OldStyle, Scale = 1.0]{TeX Gyre Pagella}
