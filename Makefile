@@ -1,7 +1,7 @@
 # You want latexmk to *always* run, because make does not have all the info.
 # Also, include non-file targets in .PHONY so they are run regardless of any
 # file of the given name existing.
-.PHONY: sample-book.pdf all clean
+.PHONY: sample-book.pdf sample-handout.pdf all clean clean_all clean_bbl
 
 # The first rule in a Makefile is the one executed by default ("make"). It
 # should always be the "all" rule, so that "make" and "make all" are identical.
@@ -35,5 +35,11 @@ sample-book.pdf: sample-book.tex
 sample-handout.pdf: sample-handout.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make sample-handout.tex
 
-clean:
+clean_all: clean_bbl
 	latexmk -CA
+
+clean: clean_bbl
+	latexmk -c
+
+clean_bbl:
+	-rm *.bbl
