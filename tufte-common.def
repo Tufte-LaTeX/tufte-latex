@@ -1658,16 +1658,6 @@
 %    related threads on Ask E.T. at http://www.edwardtufte.com/.}
 %} % commented out, because it's to be available
 
-\renewcommand\subsubsection{%
-  \@tufte@error{\string\subsubsection is undefined by this class.
-    See Robert Bringhurst's _The Elements of 
-    Typographic Style_, section 4.2.2.
-    \string\subsubsection was used}
-    {From Bringhurst's _The Elements of Typographic Style_, section 4.2.2: Use as 
-    many levels of headings as you need, no more and no fewer.  Also see the many 
-    related threads on Ask E.T. at http://www.edwardtufte.com/.}
-}
-
 \renewcommand\subparagraph{%
   \@tufte@error{\string\subparagraph is undefined by this class.%
     See Robert Bringhurst's _The Elements of 
