@@ -1633,6 +1633,14 @@
   {1em}% horizontal separation between label and title body
   {}% before the title body
   []% after the title body
+  
+  \titleformat{\subsubsection}%
+  [hang]% shape
+  {\normalfont\large\itshape}% format applied to label+text
+  {\thesubsection}% label
+  {1em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
 
 \titleformat{\paragraph}%
   [runin]% shape
