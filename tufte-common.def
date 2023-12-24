@@ -1118,6 +1118,7 @@
   \RequirePackage[
     bibstyle=authoryear,
     citestyle=authoryear-icomp,
+    autocite=plain,
     backref=true
   ]{biblatex}%
   % Increase separation between bibliography items
