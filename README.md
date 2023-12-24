@@ -1,29 +1,64 @@
-Hi,
+# The Tufte-LaTeX Classes
 
-Welcome to the beginnings of Tufte LaTeX package to help you
+Welcome to the beginnings of Tufte-LaTeX package to help you
 produce Tufte-style handouts, reports, and notes.
+
+## Installation
+
+If you're using TeX Live on Linux or macOS, you should be able to run
+`make install` after cloning the repo. Otherwise, you can copy
+`tufte-common.def`, `tufte-book.cls`, and `tufte-handout.cls` to the
+appropriate subdirectory of your `TEXMFHOME` directory (probably something
+like `$TEXMFHOME/tex/latex/tufte-latex`) and then run `texhash`.
+
+To use the Tufte-LaTeX classes in just one specific LaTeX document, you
+can copy `tufte-common.def`, `tufte-book.cls`, and `tufte-handout.cls`
+into the working directory of that document.
 
 ## Quick Start
 
-Try typesetting `sample-handout.tex` with the following sequence
-of commands,
+You can compile both the sample book and handout with all three TeX
+engines (LuaLaTeX, XeLaTeX, and pdfLaTeX) by running `make test`, or you
+can compile the book and handout with just one engine by running
+`make test-lua`, `make test-xe`, or `make test-pdf`.
 
-    pdflatex sample-handout
-    bibtex   sample-handout
-    pdflatex sample-handout
-    pdflatex sample-handout
+If you want to compile just the book or the handout, it's easiest to use
+`latexmk` (substituting `xelatex` or `pdflatex` for `lualatex`, if desired):
 
-The result should look like `sample-handout.pdf`.
+```shell
+$ latexmk -outdir=samples -bibtex -lualatex -jobname=%A-lualatex sample-book.tex
+```
+
+or
+
+```shell
+$ latexmk -outdir=samples -bibtex -lualatex -jobname=%A-lualatex sample-handout.tex
+```
+
+You could also do things manually. For the sample handout, run:
+
+```shell
+$ lualatex sample-handout
+$ biber sample-handout
+$ lualatex sample-handout
+$ lualatex sample-handout
+```
+
+The result should look like the sample handout PDFs in [`samples/`](samples/).
 
 The sample book can be compiled with the following:
 
-    pdflatex sample-book
-    bibtex sample-book
-    texindy --language english sample-book.idx
-    # or makeindex sample-book.idx
-    pdflatex sample-book
-    pdflatex sample-book
-    pdflatex sample-book
+```shell
+$ lualatex sample-book
+$ biber sample-book
+$ makeindex sample-book.idx
+$ lualatex sample-book
+$ lualatex sample-book
+$ lualatex sample-book
+```
+
+As when using `latexmk`, you can substitute `xelatex` or, less preferably,
+`pdflatex` for `lualatex` above.
 
 ## Troubleshooting
 
@@ -42,7 +77,7 @@ The following packages are required:
  * fontenc
  * geometry
  * hyperref
- * natbib and bibentry
+ * biblatex and biber
  * optparams
  * paralist
  * placeins
@@ -58,9 +93,10 @@ The following packages are required:
 The following packages are optional and will be automatically used if installed:
 
  * beramono
+ * etbb
+ * fontspec
  * helvet
- * ifpdf
- * ifxetex
+ * iftex
  * letterspace (in the microtype package)
  * mathpazo
  * soul

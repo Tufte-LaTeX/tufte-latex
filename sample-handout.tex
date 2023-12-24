@@ -16,6 +16,7 @@
 \usepackage{units}    % non-stacked fractions and better unit spacing
 \usepackage{multicol} % multiple column layout facilities
 \usepackage{lipsum}   % filler text
+\usepackage{metalogo} % TeX logos
 \usepackage{fancyvrb} % extended verbatim environments
   \fvset{fontsize=\normalsize}% default font size for fancy-verbatim environments
 
@@ -28,6 +29,11 @@
 \newcommand{\doccls}[1]{\texttt{#1}}% document class name
 \newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
 \newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+
+% Bib resource for Biblatex
+\addbibresource{sample-handout.bib}
+
+\hypersetup{colorlinks}
 
 \begin{document}
 
@@ -121,18 +127,21 @@ The \Verb|\marginnote| command has a similar \docarg{offset} argument:
 \subsection{References}
 References are placed alongside their citations as sidenotes,
 as well.  This can be accomplished using the normal \Verb|\cite|
-command.\sidenote{The first paragraph of this document includes a citation.}
+command or the \Verb|\autocite| command, which functions
+similarly.\sidenote{If you use the \texttt{\textbackslash cite} command
+within a sidenote, it will render as an in-line parenthetical citation, as
+demonstrated here \autocite{Tufte2001}.}
 
-The complete list of references may also be printed automatically by using
-the \Verb|\bibliography| command.  (See the end of this document for an
-example.)  If you do not want to print a bibliography at the end of your
-document, use the \Verb|\nobibliography| command in its place.  
+You will need to specify a bibliography resource file in the preamble of your
+document using \Verb|\addbibresource|. The complete list of references may
+also be printed automatically by using the \Verb|\printbibliography| command.
+See the end of this document for an example, and the Bib\LaTeX{} documentation
+for more information.
 
-To enter multiple citations at one location,\cite{Tufte2006,Tufte1990} you can
-provide a list of keys separated by commas and the same optional vertical
-offset argument: \Verb|\cite{Tufte2006,Tufte1990}|.  
+To enter multiple citations at one location,\autocite{Tufte2006,Tufte1990} you can
+provide a list of keys separated by commas: \Verb|\cite{Tufte2006,Tufte1990}|.  
 \begin{docspec}
-  \doccmd{cite[\docopt{offset}]\{\docarg{bibkey1,bibkey2,\ldots}\}}
+  \doccmd{cite\{\docarg{bibkey1,bibkey2,\ldots}\}}
 \end{docspec}
 
 \section{Figures and Tables}\label{sec:figures-and-tables}
@@ -146,7 +155,7 @@ Full page--width figures and tables may be placed in \docenv{figure*} or
 use the \docenv{marginfigure} or \docenv{margintable} environments as follows
 (see figure~\ref{fig:marginfig}):
 
-\begin{marginfigure}%
+\begin{marginfigure}[-4cm]%
   \includegraphics[width=\linewidth]{helix}
   \caption{This is a margin figure.  The helix is defined by 
     $x = \cos(2\pi z)$, $y = \sin(2\pi z)$, and $z = [0, 2.7]$.  The figure was
@@ -160,7 +169,10 @@ use the \docenv{marginfigure} or \docenv{margintable} environments as follows
 \end{marginfigure}
 \end{Verbatim}
 
-The \docenv{marginfigure} and \docenv{margintable} environments accept an optional parameter \docopt{offset} that adjusts the vertical position of the figure or table.  See the ``\nameref{sec:sidenotes}'' section above for examples.  The specifications are:
+The \docenv{marginfigure} and \docenv{margintable} environments accept an
+optional parameter \docopt{offset} that adjusts the vertical position of the
+figure or table.  See the ``\nameref{sec:sidenotes}'' section above for examples.
+The specifications are:
 \begin{docspec}
   \doccmd{begin\{marginfigure\}[\docopt{offset}]}\\
   \qquad\ldots\\
@@ -234,9 +246,16 @@ Lorem ipsum dolor sit amet...
 \section{Typography}\label{sec:typography}
 
 \subsection{Typefaces}\label{sec:typefaces}
-If the Palatino, \textsf{Helvetica}, and \texttt{Bera Mono} typefaces are installed, this style
-will use them automatically.  Otherwise, we'll fall back on the Computer Modern
-typefaces.
+If you're using \XeLaTeX\ or \LuaLaTeX, the class will use ETbb as the main
+typeface if the \texttt{etbb} package is installed and \TeX\ Gyre Pagella
+otherwise; \textsf{\TeX\ Gyre Heros}, and \texttt{\TeX\ Gyre
+Cursor} are the default for sans-serif and monospace text, respectively.
+(The \TeX\ Gyre faces are usually included with \TeX\ Live
+distributions.) In these cases, the class automatically loads the
+\texttt{fontspec} package, so you can easily select your own system
+fonts. Under pdf\LaTeX, the class defaults to the Palatino, \textsf{Helvetica},
+and \texttt{Bera Mono} typefaces if they're installed.  Otherwise,
+we'll fall back on the Computer Modern typefaces.
 
 \subsection{Letterspacing}\label{sec:letterspacing}
 This document class includes two new commands and some improvements on
@@ -283,8 +302,9 @@ The website for the Tufte-\LaTeX\ packages is located at
 \url{https://github.com/Tufte-LaTeX/tufte-latex}.  On our website, you'll find
 links to our \smallcaps{svn} repository, mailing lists, bug tracker, and documentation.
 
-\bibliography{sample-handout}
-\bibliographystyle{plainnat}
+
+\printbibliography
+
 
 
 

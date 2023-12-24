@@ -139,6 +139,9 @@
 \newcommand{\docfilehook}[2]{\texttt{#1}\index{file hooks!#2}\index{#1@\texttt{#1}}}
 \newcommand{\doccounter}[1]{\texttt{#1}\index{#1 counter@\texttt{#1} counter}}
 
+% Bib resource file for Biblatex
+\addbibresource{sample-handout.bib}
+
 % Generates the index
 \usepackage{makeidx}
 \makeindex
@@ -555,18 +558,21 @@ The \doccmddef{marginnote} command has a similar \docarg{offset} argument:
 \section{References}
 References are placed alongside their citations as sidenotes,
 as well.  This can be accomplished using the normal \doccmddef{cite}
-command.\sidenote{The first paragraph of this document includes a citation.}
+command or the \doccmddef{autocite} command, which functions
+similarly.\sidenote{If you use the \texttt{\textbackslash cite} command within
+a sidenote, it will render as an in-line parenthetical citation, as demonstrated
+here \autocite{Tufte2001}.}
 
-The complete list of references may also be printed automatically by using
-the \doccmddef{bibliography} command.  (See the end of this document for an
-example.)  If you do not want to print a bibliography at the end of your
-document, use the \doccmddef{nobibliography} command in its place.  
+You will need to specify a bibliography resource file in the preamble of your
+document using \doccmddef{addbibresource}. The complete list of references may
+also be printed automatically by using the \doccmddef{printbibliography} command.
+See the end of this document for an example, and the Bib\LaTeX{} documentation
+for more information.
 
-To enter multiple citations at one location,\cite[-3\baselineskip]{Tufte2006,Tufte1990} you can
-provide a list of keys separated by commas and the same optional vertical
-offset argument: \Verb|\cite{Tufte2006,Tufte1990}|.  
+To enter multiple citations at one location,\autocite{Tufte2006,Tufte1990} you can
+provide a list of keys separated by commas: \Verb|\cite{Tufte2006,Tufte1990}|.  
 \begin{docspec}
-  \doccmd{cite}[\docopt{offset}]\{\docarg{bibkey1,bibkey2,\ldots}\}
+  \doccmd{cite\{\docarg{bibkey1,bibkey2,\ldots}\}}
 \end{docspec}
 
 \section{Figures and Tables}\label{sec:figures-and-tables}
@@ -785,9 +791,16 @@ Lorem ipsum dolor sit amet...
 \section{Typography}\label{sec:typography}
 
 \subsection{Typefaces}\label{sec:typefaces}\index{typefaces}
-If the Palatino, \textsf{Helvetica}, and \texttt{Bera Mono} typefaces are installed, this style
-will use them automatically.  Otherwise, we'll fall back on the Computer Modern
-typefaces.
+If you're using \tXeLaTeX\ or Lua\LaTeX, the class will use ETbb as the main
+typeface if the \docpkg{etbb} package is installed and \TeX\ Gyre Pagella
+otherwise; \textsf{\TeX\ Gyre Heros}, and \texttt{\TeX\ Gyre
+Cursor} are the default for sans-serif and monospace text, respectively.
+(The \TeX\ Gyre faces are usually included with \TeX\ Live
+distributions.) In these cases, the class automatically loads the
+\texttt{fontspec} package, so you can easily select your own system
+fonts. Under pdf\LaTeX, the class defaults to the Palatino, \textsf{Helvetica},
+and \texttt{Bera Mono} typefaces if they're installed.  Otherwise,
+we'll fall back on the Computer Modern typefaces.
 
 \subsection{Letterspacing}\label{sec:letterspacing}
 This document class includes two new commands and some improvements on
@@ -847,16 +860,18 @@ information to the log file which is useful in troubleshooting bugs.  It will
 also cause the graphics to be replaced by outlines.
 
 The \docclsoptdef{nofonts} option prevents the \TL classes from
-automatically loading the Palatino and Helvetica typefaces.  You should use
-this option if you wish to load your own fonts.  If you're using \tXeLaTeX, this
-option is implied (i.e., the Palatino and Helvetica fonts aren't loaded if you
-use \tXeLaTeX).  
+automatically loading the Palatino and Helvetica typefaces if you're using
+pdf\LaTeX.  You should use this option if you wish to load your own fonts
+in pdf\LaTeX.  If you're using \tXeLaTeX\ or Lua\LaTeX, the default fonts
+will be loaded anyway but you can easily reset them using \docpkg{fontspec}.  
 
 The \docclsoptdef{nols} option inhibits the letterspacing code.  The \TL\
-classes try to load the appropriate letterspacing package (either pdf\TeX's
-\docpkg{letterspace} package or the \docpkg{soul} package).  If you're using
-\tXeLaTeX\ with \docpkg{fontenc}, however, you should configure your own
-letterspacing.  
+classes try to load the appropriate letterspacing package (either 
+\docpkg{letterspace} or the \docpkg{soul} under pdf\TeX, or \docpkg{fontspec}
+under \tXeLaTeX\ or Lua\LaTeX).
+
+The \docclsoptdef{nobib} option inhibits loading of the \docpkg{biblatex}
+package and modification of the \doccmd{cite} command.
 
 The \docclsoptdef{notitlepage} option causes \doccmd{maketitle} to generate a title
 block instead of a title page.  The \doccls{book} class defaults to a title
@@ -1126,8 +1141,7 @@ classes rely upon.  Packages marked with an asterisk are optional.
 \begin{multicols}{2}
 \begin{itemize}
   \item xifthen
-  \item ifpdf*
-  \item ifxetex*
+  \item iftex*
   \item hyperref
   \item geometry
   \item ragged2e
@@ -1137,7 +1151,7 @@ classes rely upon.  Packages marked with an asterisk are optional.
   \item soul*
   \item letterspace*
   \item setspace
-  \item natbib \emph{and} bibentry
+  \item biblatex \emph{and} biber
   \item optparams
   \item placeins
   \item mathpazo*
@@ -1149,6 +1163,8 @@ classes rely upon.  Packages marked with an asterisk are optional.
   \item textcomp
   \item titlesec
   \item titletoc
+  \item fontspec*
+  \item etbb*
 \end{itemize}
 \end{multicols}
 
@@ -1166,9 +1182,7 @@ classes rely upon.  Packages marked with an asterisk are optional.
 
 \backmatter
 
-\bibliography{sample-handout}
-\bibliographystyle{plainnat}
-
+\printbibliography
 
 \printindex
 
