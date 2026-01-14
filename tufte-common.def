@@ -1261,14 +1261,21 @@
       \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
       \end{minipage}%
     \end{lrbox}%
-    % build the caption box
-    \begin{lrbox}{\@tufte@caption@box}%
-      \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
-        \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}%
-        \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{\@tufte@orig@label{\@tufte@stored@label}}{}%
-        \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
-      \end{minipage}%
-    \end{lrbox}%
+    % build the caption box - FIX JROGEL 
+    \ \begin{lrbox}{\@tufte@caption@box}%
+  \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
+    \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{%
+      \@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}%
+    }{}%
+    \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{%
+      % --- FIX: ensure label captures the correct figure counter ---
+      \addtocounter{figure}{-1}%
+      \refstepcounter{figure}%
+      \@tufte@orig@label{\@tufte@stored@label}%
+      % --- END FIX ---
+    }{}%
+  \end{minipage}%
+\end{lrbox}%
     % now typeset the stored boxes
     \begin{fullwidth}%
       \begin{minipage}[\floatalignment]{\linewidth}%
