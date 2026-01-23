@@ -1226,6 +1226,15 @@
 
 \newenvironment{@tufte@float}[3][htbp]%
   {% begin @tufte@float
+    % NOTE ON LABELS/REFERENCES:
+    % Tufte-LaTeX places figure/table captions in the margin by *capturing*
+    % \caption and \label while the user writes the float body, then replaying
+    % them later in a separate margin minipage. If \label is not captured (e.g.,
+    % because \@float resets \label/\caption, or because minipage's
+    % \@parboxrestore resets them), the document may still show the caption text
+    % but cross-references like Figure~\ref{...} can come out blank or wrong.
+    % The fix is to (1) redefine \caption/\label after \@float, and (2) reassert
+    % those redefinitions inside the content minipage so they are reliably stored.
     % Should this float be full-width or just text-width?
     \ifthenelse{\equal{#3}{star}}%
       {\gsetboolean{@tufte@float@star}{true}}%
@@ -1241,7 +1250,8 @@
     \ifthenelse{\equal{#1}{b}\OR\equal{#1}{B}}%
       {\renewcommand{\floatalignment}{b}\@tufte@float@debug{Presumed position: [bottom]}}%
       {\renewcommand{\floatalignment}{t}\@tufte@float@debug{Presumed position: [top]}}%
-    % Capture the contents of the \caption and \label commands to use later
+    \@tufte@orig@float{#2}[#1]%
+    % Capture \caption/\label after \@float (\@float may reset them).
     \global\let\@tufte@orig@caption\caption%
     \global\let\@tufte@orig@label\label%
     \renewcommand{\caption}{\optparams{\@tufte@caption}{[][0pt]}}%
@@ -1251,31 +1261,32 @@
       % don't move the label while inside a \subfigure or \subtable command
       \global\let\label\@tufte@orig@label%
     }{}% subfigure package is not loaded
-    \@tufte@orig@float{#2}[#1]%
     \ifthenelse{\boolean{@tufte@float@star}}%
       {\setlength{\@tufte@float@contents@width}{\@tufte@fullwidth}}%
       {\setlength{\@tufte@float@contents@width}{\textwidth}}%
     \begin{lrbox}{\@tufte@figure@box}%
       \begin{minipage}[\floatalignment]{\@tufte@float@contents@width}\hbox{}%
+        % minipage may reset \caption/\label; reassert capture versions.
+        \renewcommand{\caption}{\optparams{\@tufte@caption}{[][0pt]}}%
+        \renewcommand{\label}[1]{\@tufte@label{##1}}%
   }{% end @tufte@float
       \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
       \end{minipage}%
     \end{lrbox}%
-    % build the caption box - FIX JROGEL 
-    \ \begin{lrbox}{\@tufte@caption@box}%
-  \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
-    \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{%
-      \@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}%
-    }{}%
-    \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{%
-      % --- FIX: ensure label captures the correct figure counter ---
-      \addtocounter{figure}{-1}%
-      \refstepcounter{figure}%
-      \@tufte@orig@label{\@tufte@stored@label}%
-      % --- END FIX ---
-    }{}%
-  \end{minipage}%
-\end{lrbox}%
+    % ====
+    % build the caption box - JR initial change was here; now managed with gwr3n
+    \begin{lrbox}{\@tufte@caption@box}%
+      \begin{minipage}[\floatalignment]{\marginparwidth}\hbox{}%
+        \ifx\@tufte@stored@caption\@empty\else
+          \@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}%
+        \fi
+        \ifx\@tufte@stored@label\@empty\else
+          \@tufte@orig@label{\@tufte@stored@label}%
+        \fi
+        \par\vspace{-\prevdepth}% align baselines of boxes
+      \end{minipage}%
+    \end{lrbox}%
+    % =====
     % now typeset the stored boxes
     \begin{fullwidth}%
       \begin{minipage}[\floatalignment]{\linewidth}%
