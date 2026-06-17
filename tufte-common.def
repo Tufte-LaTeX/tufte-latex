@@ -461,7 +461,7 @@
 %%
 % Separation marginpars by a line's worth of space.
 
-\setlength\marginparpush{10pt}
+\setlength\marginparpush{13pt}
 
 %%
 % Font for margin items
