@@ -1244,6 +1244,10 @@
     % Capture the contents of the \caption and \label commands to use later
     \global\let\@tufte@orig@caption\caption%
     \global\let\@tufte@orig@label\label%
+    % Compatibility with subcaption
+    \AtBeginEnvironment{subfigure}{%
+      \let\label\@tufte@orig@label
+    }
     \renewcommand{\caption}{\optparams{\@tufte@caption}{[][0pt]}}%
     \renewcommand{\label}[1]{\@tufte@label{##1}}%
     % Handle subfigure package compatibility
@@ -1257,6 +1261,7 @@
       {\setlength{\@tufte@float@contents@width}{\textwidth}}%
     \begin{lrbox}{\@tufte@figure@box}%
       \begin{minipage}[\floatalignment]{\@tufte@float@contents@width}\hbox{}%
+      \let\label\@tufte@label
   }{% end @tufte@float
       \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
       \end{minipage}%
