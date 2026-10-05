@@ -1616,7 +1616,10 @@
   {\itshape\huge\thechapter}% label
   {0pt}% horizontal separation between label and title body
   {\huge\rmfamily\itshape}% before the title body
-  [\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\end{fullwidth}}{}]% after the title body
+  [\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\end{fullwidth}\@endpefalse\@restorepar}{}]% after the title body
+% \@endpefalse\@restorepar: since LaTeX 2024-11-01 the end-of-list handling
+% (\@doendpe) of the fullwidth list leaks out of the chapter title, and a blank
+% line after \chapter{...} then removes the space above the first \section.
 
 \titleformat{\section}%
   [hang]% shape
